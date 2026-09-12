@@ -71,11 +71,18 @@ type SectionEdgeProps = {
   edge: EdgeName;
   /** Цвет секции (CSS-значение). */
   fill: string;
+  /**
+   * Какую сторону кривой заливать — по умолчанию та, что записана у кромки.
+   * Перевёрнутый вариант нужен, когда под кривой должен оказаться декор: заливка
+   * ложится поверх него и обрезает его самой кривой, а не прямым краем блока.
+   */
+  side?: EdgeDef['side'];
   className?: string;
 };
 
-export const SectionEdge = ({ edge, fill, className = '' }: SectionEdgeProps) => {
-  const { y, h, d, from, to, side } = EDGES[edge];
+export const SectionEdge = ({ edge, fill, side: sideProp, className = '' }: SectionEdgeProps) => {
+  const { y, h, d, from, to, side: defaultSide } = EDGES[edge];
+  const side = sideProp ?? defaultSide;
   // замыкаем фигуру за пределами полосы (+3), чтобы на стыке с заливкой секции не было щели
   const edgeY = side === 'below' ? y + h + 3 : y - 3;
   return (

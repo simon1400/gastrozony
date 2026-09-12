@@ -33,9 +33,9 @@ export const Hero = ({ hero, stats }: Pick<Homepage, 'hero' | 'stats'>) => (
 
         {stats.length > 0 && (
           <ul className="relative z-10 mt-10 flex flex-wrap gap-x-10 gap-y-6 lg:mt-24 xl:mt-[214px]">
-            {stats.map((s) => (
+            {stats.map((s, i) => (
               <li key={s.label}>
-                <Stat value={s.value} label={s.label} />
+                <Stat value={s.value} label={s.label} index={i} />
               </li>
             ))}
           </ul>

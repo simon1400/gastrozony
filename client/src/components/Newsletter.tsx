@@ -8,8 +8,11 @@ import { NewsletterForm, type NewsletterTexts } from './NewsletterForm';
  * Блок newsletter — всегда над патичкой (см. layout.tsx). Макет y 4111…4763:
  * жёлтая секция, волна сверху (кривая низа тёмной секции) и снизу,
  * слева H2 41/47 + текст 680, справа белая карта 680×243 с формой.
- * Декор (≥ xl — ниже ему не хватает места над патичкой): пицца слева обрезана нижней волной, бургер 582 справа вылезает вниз
- * на белое (z-20 — поверх патички). Координаты от краёв контейнера, как в XD.
+ * Декор (≥ xl — ниже ему не хватает места над патичкой): пицца слева обрезана нижней волной,
+ * бургер 582 справа висит между секциями и заходит на патичку (z-20). Координаты от краёв контейнера, как в XD.
+ *
+ * Нижняя кромка заливается цветом патички, а не белым: жёлтое переходит прямо в тёмное,
+ * без белой полосы между ними. Заливка идёт поверх пиццы — потому кривая её и обрезает.
  */
 
 const FALLBACK: NewsletterTexts = {
@@ -71,9 +74,11 @@ export const Newsletter = async () => {
           </div>
           <NewsletterForm texts={texts} />
         </div>
+        {/* жёлтая полоса под контентом — по ней проходит нижняя кромка */}
+        <div style={{ height: edgeHeight('yellowBottom') }} />
       </div>
 
-      {/* пицца (Mask Group 3) — под нижней волной, которая снаружи белая и её обрезает */}
+      {/* пицца (Mask Group 3) — лежит на жёлтом, но под заливкой нижней кромки, которая её и обрезает */}
       <div aria-hidden className="pointer-events-none absolute inset-0 hidden overflow-hidden xl:block">
         <div
           className="absolute h-[410px] w-[400.8px] origin-top-left"
@@ -88,8 +93,9 @@ export const Newsletter = async () => {
         </div>
       </div>
 
-      <div className="relative bg-white">
-        <SectionEdge edge="yellowBottom" fill="var(--color-yellow)" />
+      {/* нижняя кромка: тёмным заливаем то, что под кривой — дальше сразу патичка */}
+      <div className="absolute inset-x-0 bottom-0">
+        <SectionEdge edge="yellowBottom" side="below" fill="var(--color-ink)" />
       </div>
 
       {/* бургер (burger-2025 582×582 @ 1553,4450, +12°) */}

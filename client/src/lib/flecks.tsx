@@ -7,6 +7,7 @@ import type { CSSProperties, ReactNode } from 'react';
  * В XD это векторные кляксы (design/assets/Path 17/20/21/23.svg) + gaussian blur 21px.
  * Клякса — `::before` у `.fleck` (globals.css): контур как data-URI, размер и вылеты
  * за слово сняты с макета в em, blur ≈ 0.3em (21px при 61–77px заголовках).
+ * Она же медленно «дышит» — период и фазу задаёт fleckStyle через CSS-переменные.
  */
 
 const svg = (w: number, h: number, d: string) =>
@@ -63,11 +64,25 @@ export const splitFlecks = (input: string): FleckSegment[] => {
   return segments;
 };
 
+/**
+ * Детерминированный хеш строки — фаза и период «дыхания» кляксы должны совпасть
+ * на сервере и в браузере (иначе hydration mismatch), поэтому не Math.random().
+ */
+const hash = (text: string): number => {
+  let h = 0;
+  for (let i = 0; i < text.length; i += 1) h = (h * 31 + text.charCodeAt(i)) >>> 0;
+  return h;
+};
+
 const fleckStyle = (text: string): CSSProperties => {
   const shape = shapeFor(text);
+  const h = hash(text);
   return {
     '--fleck-img': `url("data:image/svg+xml,${shape.svg}")`,
     '--fleck-inset': shape.inset,
+    // период 4,5…7 с и отрицательная задержка 0…−6 с: соседние кляксы не дышат в такт
+    '--fleck-dur': `${4.5 + (h % 26) / 10}s`,
+    '--fleck-delay': `-${((h >> 6) % 61) / 10}s`,
   } as CSSProperties;
 };
 

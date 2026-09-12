@@ -139,9 +139,9 @@ export const LogosBlock = ({ block }: { block: LogosBlockData }) => (
 
 export const StatsBlock = ({ block }: { block: StatsBlockData }) => (
   <ul className="flex flex-wrap gap-x-16 gap-y-8">
-    {block.items.map((s) => (
+    {block.items.map((s, i) => (
       <li key={s.id}>
-        <Stat value={s.value} label={s.label} />
+        <Stat value={s.value} label={s.label} index={i} />
       </li>
     ))}
   </ul>
@@ -194,20 +194,27 @@ export const EventsBlock = ({ block, events }: { block: EventsBlockData; events:
   );
 };
 
-/** FAQ na nativním <details> — funguje bez JS, klávesnicí i čtečkou. */
+/**
+ * FAQ na nativním <details> — funguje bez JS, klávesnicí i čtečkou.
+ * Plus в кружке — вектор, а не текстовый глиф: глиф «+» не совпадает с оптическим
+ * центром кегля и после поворота на 45° выглядит смещённым.
+ * Плавное раскрытие — на ::details-content (globals.css, .gz-acc).
+ */
 export const AccordionBlock = ({ block }: { block: AccordionBlockData }) => (
   <div className="max-w-[1000px]">
     <Heading title={block.title} small />
     <div className={`divide-y divide-current/15 border-y border-current/15 ${block.title ? 'mt-10 xl:mt-12' : ''}`}>
       {block.items.map((item) => (
-        <details key={item.id} className="group">
+        <details key={item.id} className="gz-acc group">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-h4 font-extrabold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current [&::-webkit-details-marker]:hidden">
             {item.question}
             <span
               aria-hidden
-              className="flex size-10 shrink-0 items-center justify-center rounded-full bg-yellow text-[26px] leading-none text-ink transition-transform duration-200 group-open:rotate-45"
+              className="flex size-10 shrink-0 items-center justify-center rounded-full bg-yellow text-ink transition-transform duration-300 ease-out group-open:rotate-45"
             >
-              +
+              <svg viewBox="0 0 24 24" className="size-[15px]" fill="none" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round">
+                <path d="M12 4.5v15M4.5 12h15" />
+              </svg>
             </span>
           </summary>
           <RichText className="max-w-[800px] pb-8">{item.answer}</RichText>

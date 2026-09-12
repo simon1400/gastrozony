@@ -1,13 +1,13 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { getCookieTexts } from '@/lib/cookie-texts';
 import { strapiFetch } from '@/lib/strapi';
 import { CookieSettingsButton } from './CookieSettingsButton';
-import { SectionEdge } from './SectionEdge';
+import { Logo } from './Logo';
 
 /**
  * Патичка. В макете отсутствует (подтверждено письмом) — «pár sloupců a odkazy,
- * sociální sítě atd». Тёмная, с той же волной сверху, что у секции «Aktuální akce».
+ * sociální sítě atd». Тёмная, начинается сразу под жёлтой секцией newsletteru: волну
+ * рисует её нижняя кромка, поэтому своей у патички нет.
  * Данные из `navigation` (колонки, правовые ссылки) + `global` (контакты, соцсети),
  * с фолбэком, пока CMS пустая.
  */
@@ -93,13 +93,12 @@ export const Footer = async () => {
   const year = new Date().getFullYear();
 
   return (
-    // отступ сверху — место под бургер, который вылезает из newsletteru
-    <footer className="mt-24 xl:mt-[180px]">
-      <SectionEdge edge="darkTop" fill="var(--color-ink)" />
-      <div className="bg-ink text-white">
-        <div className="container grid gap-12 pb-16 pt-10 md:grid-cols-2 lg:grid-cols-4 lg:pb-20">
+    <footer className="bg-ink text-white">
+      <div>
+        {/* xl:pt — место под бургер, который свисает из newsletteru: он заходит на тёмное, но не на колонки */}
+        <div className="container grid gap-12 pb-16 pt-10 md:grid-cols-2 lg:grid-cols-4 lg:pb-20 xl:pt-[260px]">
           <div className="space-y-5">
-            <Image src="/logo.svg" alt="Gastrozóny" width={274} height={50} className="h-10 w-auto xl:h-[50px]" />
+            <Logo className="h-10 w-auto xl:h-[50px]" label="Gastrozóny" />
             {note && <p className="max-w-xs text-[15px] leading-relaxed text-white/70">{note}</p>}
           </div>
 

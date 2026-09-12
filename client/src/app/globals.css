@@ -42,6 +42,8 @@
    */
   html {
     overflow-x: clip;
+    /* разрешает переходы высоты к auto — нужно аккордеону (.gz-acc) */
+    interpolate-size: allow-keywords;
   }
 
   body {
@@ -89,6 +91,220 @@
     background: var(--fleck-img) center / 100% 100% no-repeat;
     filter: blur(0.3em);
     pointer-events: none;
+    /* «Живая» клякса: дышит и покачивается. Период и фаза — свои у каждого слова (flecks.tsx). */
+    animation: gz-fleck-breathe var(--fleck-dur, 11s) ease-in-out var(--fleck-delay, 0s) infinite;
+    will-change: transform;
+  }
+
+  /*
+   * Кляксы hero (HeroFood): каждая в своём слое, анимируется только transform —
+   * размытие растрируется один раз, дальше работает композитор.
+   */
+  .gz-blob {
+    animation-duration: var(--blob-dur, 30s);
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    animation-delay: var(--blob-delay, 0s);
+    animation-iteration-count: infinite;
+    will-change: transform;
+  }
+
+  /*
+   * Параллакс еды при прокрутке: каждый кусок отстаёт от скролла и тянется вниз,
+   * догоняя его, — свой коэффициент у каждого (--depth).
+   * Слой-обёртка отдельно от .gz-food: у той заняты
+   * translate/rotate парением, а две анимации на одно свойство не складываются.
+   * Scroll-driven анимация идёт на композиторе (без слушателей скролла); там, где
+   * браузер её не знает, еда просто стоит на месте — деградирует без поломок.
+   */
+  .gz-parallax {
+    /* на узких экранах сцена компактнее — там тот же разброс скучивает еду */
+    --depth-scale: 0.5;
+    animation: gz-parallax linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 70vh;
+    will-change: translate;
+  }
+
+  @media (min-width: 1024px) {
+    .gz-parallax {
+      --depth-scale: 1;
+    }
+  }
+
+  /*
+   * Еда hero: плавно проявляется на загрузке (парение — общий .gz-float).
+   * Поворот из макета лежит в transform, поэтому появление и парение идут через
+   * отдельные свойства scale / translate / rotate — они с transform не спорят.
+   */
+  .gz-food {
+    will-change: transform, opacity;
+  }
+
+  /*
+   * Парение «в воздухе»: еда hero и логотипы партнёров. Амплитуды — в переменных,
+   * кейфреймы их только умножают, поэтому у каждого элемента своя траектория.
+   */
+  .gz-float {
+    animation: gz-float var(--float-dur, 7s) ease-in-out var(--float-delay, 0s) infinite;
+    will-change: translate, rotate;
+  }
+
+  /*
+   * У еды парение и появление идут вместе. Оба — значения одного свойства animation,
+   * поэтому их нельзя развести по двум правилам равного веса: второе затрёт первое.
+   */
+  .gz-food.gz-float {
+    animation:
+      gz-food-in 0.75s cubic-bezier(0.22, 0.61, 0.36, 1) var(--food-in-delay, 0s) both,
+      gz-float var(--float-dur, 7s) ease-in-out var(--float-delay, 0s) infinite;
+  }
+
+  /* Два маршрута, чтобы кляксы не ходили строем. */
+  .gz-blob--a {
+    animation-name: gz-blob-drift-a;
+  }
+
+  .gz-blob--b {
+    animation-name: gz-blob-drift-b;
+  }
+
+  /*
+   * Логотип (Logo.tsx): при наведении знак делает полный оборот вправо, при уходе мыши
+   * тем же переходом откручивается назад. Центр круга — 65.613 в координатах viewBox
+   * (transform-box у SVG по умолчанию view-box, поэтому px здесь = единицы viewBox).
+   */
+  .gz-logo__mark {
+    transform-origin: 65.613px 65.613px;
+    transition: rotate 0.75s cubic-bezier(0.33, 0.02, 0.3, 1);
+  }
+
+  .gz-logo:hover .gz-logo__mark,
+  a:hover .gz-logo__mark,
+  a:focus-visible .gz-logo__mark {
+    rotate: 360deg;
+  }
+
+  /*
+   * FAQ (AccordionBlock): плавное раскрытие нативного <details>.
+   * Анимируем ::details-content — содержимое при этом остаётся в DOM и доступным;
+   * content-visibility в переходе с allow-discrete держит его видимым, пока схлопывается.
+   * Где браузер этого не знает, аккордеон открывается мгновенно, как и раньше.
+   */
+  .gz-acc::details-content {
+    block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      block-size 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.25s ease,
+      content-visibility 0.35s allow-discrete;
+  }
+
+  .gz-acc[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+
+  /*
+   * Шапка (HeaderNav): при прокрутке ужимается. Все размеры — в переменных,
+   * `data-compact` подменяет их набор, а transition отрабатывает переход.
+   * Значения без compact — ровно из макета (102/50/19, CTA 46×19).
+   */
+  .gz-header {
+    --hdr-h: 72px;
+    --hdr-logo: 36px;
+    --hdr-font: 19px;
+    --hdr-cta-h: 46px;
+    --hdr-cta-px: 19px;
+  }
+
+  .gz-header[data-compact] {
+    --hdr-h: 56px;
+    --hdr-logo: 28px;
+    --hdr-font: 17px;
+    --hdr-cta-h: 38px;
+    --hdr-cta-px: 15px;
+  }
+
+  @media (min-width: 1280px) {
+    .gz-header {
+      --hdr-h: 102px;
+      --hdr-logo: 50px;
+    }
+
+    .gz-header[data-compact] {
+      --hdr-h: 68px;
+      --hdr-logo: 34px;
+    }
+  }
+
+  .gz-header__bar {
+    height: var(--hdr-h);
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .gz-header__logo {
+    height: var(--hdr-logo);
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .gz-header__link {
+    font-size: var(--hdr-font);
+    transition:
+      font-size 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.15s;
+  }
+
+  .gz-header__cta {
+    height: var(--hdr-cta-h);
+    padding-inline: var(--hdr-cta-px);
+    font-size: var(--hdr-font);
+    transition:
+      height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      padding-inline 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      font-size 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      filter 0.15s;
+  }
+
+  /*
+   * Статистика (Stat.tsx): содержимое выезжает из-под жёлтой черты. Обрезаем только
+   * по горизонтали — overflow-x: clip, чтобы не резать выносные элементы букв.
+   */
+  .gz-stat__clip {
+    overflow-x: clip;
+  }
+
+  /*
+   * Спрятано сразу в CSS, а не по готовности JS: иначе на медленном соединении
+   * готовые цифры успевают мелькнуть до гидратации и только потом исчезают.
+   */
+  .gz-stat__inner {
+    translate: -100% 0;
+    opacity: 0;
+  }
+
+  .gz-stat[data-anim='in'] .gz-stat__inner {
+    animation: gz-stat-in 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) var(--stat-delay, 0s) both;
+  }
+
+  /* Без JS показать сразу — прятать было бы некому. */
+  @media (scripting: none) {
+    .gz-stat__inner {
+      translate: 0 0;
+      opacity: 1;
+    }
+  }
+
+  /*
+   * Стрелка селекта: appearance-none убирает нативную, рисуем свою.
+   * Data-URI держим здесь, а не в Tailwind-классе bg-[url(...)]: внутри есть пробелы,
+   * произвольное значение обрывается на первом из них и правило не генерируется вовсе.
+   */
+  .gz-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 5.5l6 5 6-5' fill='none' stroke='%230E0E0E' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 22px center;
+    background-size: 16px;
   }
 
   /* Чекбокс из макета: 26×26, r 4, рамка #707070 */
@@ -112,5 +328,144 @@
   .gz-checkbox:focus-visible {
     outline: 2px solid var(--color-ink);
     outline-offset: 2px;
+  }
+}
+
+/*
+ * Анимации жёлтых клякс. Амплитуды лежат в CSS-переменных, keyframes их только умножают,
+ * поэтому одни и те же кадры дают разное движение каждой кляксе.
+ */
+@keyframes gz-blob-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  20% {
+    transform: translate3d(calc(var(--blob-x) * 1), calc(var(--blob-y) * -0.6), 0) rotate(calc(var(--blob-r) * 1)) scale(calc(1 + var(--blob-s)));
+  }
+  40% {
+    transform: translate3d(calc(var(--blob-x) * -0.45), calc(var(--blob-y) * -1), 0) rotate(calc(var(--blob-r) * -0.7)) scale(calc(1 - var(--blob-s) * 0.65));
+  }
+  60% {
+    transform: translate3d(calc(var(--blob-x) * -1), calc(var(--blob-y) * 0.45), 0) rotate(calc(var(--blob-r) * 0.85)) scale(calc(1 + var(--blob-s) * 0.55));
+  }
+  80% {
+    transform: translate3d(calc(var(--blob-x) * 0.6), calc(var(--blob-y) * 1), 0) rotate(calc(var(--blob-r) * -0.35)) scale(calc(1 - var(--blob-s) * 0.4));
+  }
+}
+
+@keyframes gz-blob-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate3d(calc(var(--blob-x) * -1), calc(var(--blob-y) * 0.75), 0) rotate(calc(var(--blob-r) * -0.9)) scale(calc(1 + var(--blob-s) * 0.7));
+  }
+  45% {
+    transform: translate3d(calc(var(--blob-x) * 0.65), calc(var(--blob-y) * 1), 0) rotate(calc(var(--blob-r) * 0.8)) scale(calc(1 - var(--blob-s) * 0.55));
+  }
+  65% {
+    transform: translate3d(calc(var(--blob-x) * 1), calc(var(--blob-y) * -0.55), 0) rotate(calc(var(--blob-r) * 0.45)) scale(calc(1 + var(--blob-s)));
+  }
+  85% {
+    transform: translate3d(calc(var(--blob-x) * -0.5), calc(var(--blob-y) * -1), 0) rotate(calc(var(--blob-r) * -0.6)) scale(calc(1 - var(--blob-s) * 0.3));
+  }
+}
+
+/*
+ * Клякса за словом дышит вбок и покачивается, но НЕ растёт вниз: по вертикали
+ * масштаб не превышает 1, а сдвиг всегда вверх — иначе на многострочном заголовке
+ * жёлтое наползает на следующую строку.
+ */
+@keyframes gz-fleck-breathe {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1, 1);
+    opacity: 0.93;
+  }
+  25% {
+    transform: translate3d(3%, -2.5%, 0) rotate(1.8deg) scale(1.13, 1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate3d(-3.5%, -1.5%, 0) rotate(-1.7deg) scale(1.03, 0.94);
+    opacity: 0.88;
+  }
+  75% {
+    transform: translate3d(2%, -3%, 0) rotate(1deg) scale(1.16, 0.98);
+    opacity: 1;
+  }
+}
+
+@keyframes gz-stat-in {
+  from {
+    translate: -100% 0;
+    opacity: 0;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+@keyframes gz-parallax {
+  to {
+    translate: 0 calc(var(--depth, 0) * var(--depth-scale, 1) * 1vh);
+  }
+}
+
+@keyframes gz-food-in {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes gz-float {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: 0deg;
+  }
+  25% {
+    translate: calc(var(--float-x) * 1) calc(var(--float-y) * -1);
+    rotate: calc(var(--float-r) * 1);
+  }
+  50% {
+    translate: calc(var(--float-x) * -0.6) calc(var(--float-y) * -0.35);
+    rotate: calc(var(--float-r) * -0.8);
+  }
+  75% {
+    translate: calc(var(--float-x) * 0.4) calc(var(--float-y) * -1.15);
+    rotate: calc(var(--float-r) * 0.45);
+  }
+}
+
+/* Системная настройка «меньше движения» — всё замирает, еда просто на месте. */
+@media (prefers-reduced-motion: reduce) {
+  .gz-blob,
+  .gz-food,
+  .gz-float,
+  .gz-food.gz-float,
+  .gz-parallax,
+  .gz-stat[data-anim='in'] .gz-stat__inner,
+  .fleck::before {
+    animation: none;
+    will-change: auto;
+  }
+
+  .gz-stat__inner {
+    translate: 0 0;
+    opacity: 1;
+  }
+
+  .gz-food {
+    opacity: 1;
+    scale: 1;
   }
 }

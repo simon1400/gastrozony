@@ -51,18 +51,8 @@ export const NumberedCardList = ({
   </ul>
 );
 
-/** Статистика: жёлтая черта 4×80, справа число 49/56 жёлтым и подпись 20/33 (блок по центру черты). */
-export const Stat = ({ value, label }: { value: string; label: string }) => (
-  <div className="flex items-center gap-[6px]">
-    <span aria-hidden className="h-20 w-1 shrink-0 bg-yellow" />
-    <div>
-      <div className="text-[38px] font-extrabold leading-[44px] text-yellow sm:text-[49px] sm:leading-[56px]">
-        {value}
-      </div>
-      <div className="text-lead">{label}</div>
-    </div>
-  </div>
-);
+/** Статистика (жёлтая черта 4×80 + число 49/56): клиентский — со счётчиком и выездом из-под черты. */
+export { Stat } from './Stat';
 
 /**
  * Тег «Stavíme pro»: как outline-кнопка — 66px, рамка 1px жёлтая, 19/24 ExtraBold.

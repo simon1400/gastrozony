@@ -15,10 +15,8 @@ export const INPUT_CLASS =
 
 export const TEXTAREA_CLASS = `${INPUT_CLASS} h-auto min-h-[180px] resize-y py-[18px] leading-[28px]`;
 
-/** Nativní select s vlastní šipkou (appearance-none). */
-export const SELECT_CLASS =
-  `${INPUT_CLASS} cursor-pointer appearance-none bg-[length:16px] bg-[right_22px_center] bg-no-repeat pr-14 ` +
-  "bg-[url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 5.5l6 5 6-5' fill='none' stroke='%230E0E0E' stroke-width='2.4'/%3E%3C/svg%3E\")]";
+/** Nativní select s vlastní šipkou — sama šipka je v .gz-select (globals.css). */
+export const SELECT_CLASS = `${INPUT_CLASS} gz-select cursor-pointer appearance-none pr-14`;
 
 const LABEL_CLASS = 'block text-[18px] font-extrabold leading-[24px]';
 
