@@ -63,8 +63,10 @@
       добавлены `NEXT_PUBLIC_SITE_URL` и `STRAPI_ADMIN_URL`.
       **Оба .env приведены к LF** — в скопированных с Windows файлах был CRLF, из-за `\r` ломались шелл-скрипты.
 - [x] Сборка обеих частей, `pm2 start` + `pm2 save`: `gastrozony-strapi` (1343), `gastrozony-client` (3012).
-- [x] nginx: `gastrozony-client` (тестовый + прод-домены) и `gastrozony-strapi` в sites-enabled,
-      **пока только HTTP** — сертификаты выпускаются после того, как A-записи укажут на сервер.
+- [x] nginx: `gastrozony-client` (тестовый + прод-домены) и `gastrozony-strapi` в sites-enabled.
+- [x] **HTTPS работает:** сертификаты Let's Encrypt на оба тестовых домена, http → https 301 (certbot --redirect).
+      Грабли: certbot сначала упал с NXDOMAIN — публичные резолверы держали отрицательный кеш от запросов,
+      сделанных до создания A-записей. Лечится ожиданием (лимит LE: 5 неудачных проверок на домен в час).
       Проверено `Host`-заголовком: `/`, `/akce`, `/prihlaska`, `/novinky`, `/kontakt`, `/sitemap.xml` → 200,
       админка Strapi → 200, `/sprava/prihlasky` → 401 без логина и 200 с логином, `X-Robots-Tag: noindex` отдаётся.
 - [x] Клиент пересобран под тестовый домен: sitemap и canonical → `https://gastrozony.hardart.cz`.
@@ -74,7 +76,6 @@
 
 - [ ] **Секреты GitHub** (без них workflow падает с `missing server host` — уже проверено):
       команды в шаге 1 ниже.
-- [ ] **DNS** → 157.90.169.205, затем `certbot --nginx` (шаг 7) — до этого сайт доступен только по IP/Host-заголовку.
 - [ ] Бэкап БД: скрипт ниже + строка в crontab (у соседей `/root/backups/scripts/<проект>_db_backup.sh`).
 - [ ] Ключи Resend / Ecomail и `NEXT_PUBLIC_GA_ID` в `client/.env.local` на сервере.
 - [ ] Чек-лист безопасности внизу (публичный `create`, custom-токен, новый private key ImageKit).
