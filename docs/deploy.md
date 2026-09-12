@@ -38,6 +38,35 @@
 
 ---
 
+## Что уже сделано на сервере (12.09.2026)
+
+- [x] БД `gastrozony_db` + пользователь `gastrozony_user` (пароль сгенерирован, лежит в `strapi/.env` на сервере).
+- [x] Репозиторий клонирован в `/opt/gastrozony`.
+- [x] `strapi/.env` — **скопирован с dev**, изменены только `HOST/PORT` и `DATABASE_*`.
+      Секреты (`API_TOKEN_SALT`, `ENCRYPTION_KEY`, …) намеренно те же: иначе API-токены и зашифрованный
+      конфиг ImageKit из перенесённого дампа стали бы невалидны.
+- [x] Контент перенесён дампом dev-базы (`pg_dump --no-owner --no-privileges`).
+      Подводный камень: дамп из PostgreSQL 17 не заходит в 16 — надо удалить строку `SET transaction_timeout = 0;`.
+- [x] `client/.env.local` — с dev, но `STRAPI_URL=http://127.0.0.1:1343`, новый `ADMIN_PASS`,
+      добавлены `NEXT_PUBLIC_SITE_URL` и `STRAPI_ADMIN_URL`.
+      **Оба .env приведены к LF** — в скопированных с Windows файлах был CRLF, из-за `\r` ломались шелл-скрипты.
+- [x] Сборка обеих частей, `pm2 start` + `pm2 save`: `gastrozony-strapi` (1343), `gastrozony-client` (3012).
+- [x] nginx: `gastrozony-client` и `gastrozony-strapi` в sites-enabled, **пока только HTTP** (DNS не переехал).
+      Проверено `Host`-заголовком: `/`, `/akce`, `/prihlaska` → 200, `strapi.gastrozony.cz/admin` → 200,
+      `/sprava/prihlasky` → 401 без логина и 200 с логином.
+- [x] Тестовые записи удалены: 7 заявок (`demo.*`, `test.*`) и 2 подписчика — в прод-базе 0 и 0.
+
+### Осталось
+
+- [ ] **Секреты GitHub** (без них workflow падает с `missing server host` — уже проверено):
+      команды в шаге 1 ниже.
+- [ ] **DNS** → 157.90.169.205, затем `certbot --nginx` (шаг 7) — до этого сайт доступен только по IP/Host-заголовку.
+- [ ] Бэкап БД: скрипт ниже + строка в crontab (у соседей `/root/backups/scripts/<проект>_db_backup.sh`).
+- [ ] Ключи Resend / Ecomail и `NEXT_PUBLIC_GA_ID` в `client/.env.local` на сервере.
+- [ ] Чек-лист безопасности внизу (публичный `create`, custom-токен, новый private key ImageKit).
+
+---
+
 ## Порядок развёртывания
 
 ### 1. GitHub: секреты репозитория
@@ -154,12 +183,36 @@ cd /opt/gastrozony && node scripts/seed.mjs     # идемпотентен; сн
       секретов в нём нет, но путь админки перестаёт быть неизвестным).
 
 ## Бэкапы (cron)
-Uploads бэкапить не нужно — медиа в ImageKit. Нужна только БД:
-```cron
-0 3 * * * sudo -u postgres pg_dump gastrozony_db | gzip > /opt/gastrozony/backups/db-$(date +\%F).sql.gz
-0 4 * * * find /opt/gastrozony/backups -name 'db-*.sql.gz' -mtime +30 -delete
+
+Uploads бэкапить не нужно — медиа в ImageKit, нужна только БД. На сервере уже есть договорённость:
+скрипты в `/root/backups/scripts/<проект>_db_backup.sh`, дампы в `/root/backups/daily`, пароль в `/root/.<проект>_db_pw`.
+Делаем так же (пароль взять из `DATABASE_PASSWORD` в `/opt/gastrozony/strapi/.env`):
+
+```bash
+printf '%s' '<пароль_из_strapi/.env>' > /root/.gastrozony_db_pw && chmod 600 /root/.gastrozony_db_pw
+cat > /root/backups/scripts/gastrozony_db_backup.sh <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+PGDUMP=/usr/lib/postgresql/16/bin/pg_dump      # на сервере PostgreSQL 16
+OUTDIR=/root/backups/daily
+RETENTION_DAYS=14
+PW="$(cat /root/.gastrozony_db_pw)"
+OUT="$OUTDIR/gastrozony_db_$(date +%Y%m%d_%H%M%S).dump"
+LOG="$OUTDIR/backup.log"
+mkdir -p "$OUTDIR"
+if PGPASSWORD="$PW" "$PGDUMP" "host=localhost port=5432 dbname=gastrozony_db user=gastrozony_user" \
+     --format=custom --no-owner --no-privileges --file="$OUT" 2>>"$LOG"; then
+  echo "$(date '+%F %T') OK   $OUT ($(du -h "$OUT" | cut -f1))" >> "$LOG"
+else
+  echo "$(date '+%F %T') FAIL dump failed" >> "$LOG"; rm -f "$OUT"; exit 1
+fi
+find "$OUTDIR" -name 'gastrozony_db_*.dump' -mtime +"$RETENTION_DAYS" -delete
+EOF
+chmod +x /root/backups/scripts/gastrozony_db_backup.sh
+/root/backups/scripts/gastrozony_db_backup.sh    # пробный запуск
+( crontab -l; echo '40 3 * * * /root/backups/scripts/gastrozony_db_backup.sh >/dev/null 2>&1' ) | crontab -
 ```
-(каталог `backups` есть и у BSF — `/opt/burger/backups`).
+(3:30 и 3:35 уже заняты barbitch и studycz — поэтому 3:40.)
 
 ## Как работает автодеплой
 

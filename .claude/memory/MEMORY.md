@@ -53,8 +53,15 @@ D:\gastrozony
 - **Репозиторий:** `git@github.com:simon1400/gastrozony.git`, ветка `main`, **публичный**. Монорепо целиком.
 - **Блокер DNS:** `gastrozony.cz` → 46.28.106.212 (чужой IP), у `www`/`strapi` записей нет. Пока A-записи не переведут
   на 157.90.169.205 — certbot и прод-домен невозможны.
-- `gh` CLI локально авторизован как `simon1400`. Установку секретов (`gh secret set`) и провижининг сервера
-  классификатор auto-mode блокирует — делает пользователь либо отдельно разрешает.
+- `gh` CLI локально авторизован как `simon1400`. `gh secret set` с приватным ключом и правку crontab
+  классификатор auto-mode блокирует — эти два шага делает пользователь (команды в `docs/deploy.md`).
+- **Прод поднят 2026-09-12:** `/opt/gastrozony`, БД `gastrozony_db`, контент перенесён дампом dev-базы,
+  pm2 `gastrozony-strapi` (1343) + `gastrozony-client` (3012) online, nginx (пока HTTP), тестовые заявки
+  и подписчики удалены. Ждёт: секреты GitHub, DNS + certbot, ключи Resend/Ecomail, бэкап-cron.
+- Грабли переноса: дамп pg_dump 17 не заходит в PostgreSQL 16 сервера (`SET transaction_timeout = 0;` — удалить);
+  `.env`, скопированные с Windows, приходят с CRLF — `\r` попадает в переменные шелла (лечится `sed -i 's/\r$//'`).
+  Секреты Strapi (`API_TOKEN_SALT`, `ENCRYPTION_KEY`…) на проде **те же, что в dev**, иначе перенесённые
+  API-токены и зашифрованный конфиг ImageKit стали бы невалидны.
 
 ## Ключевые ссылки
 - XD макет: https://xd.adobe.com/view/3c6d2321-bb64-4f48-bbdd-dedf589c9998-693e/ (specs: `/specs`)
