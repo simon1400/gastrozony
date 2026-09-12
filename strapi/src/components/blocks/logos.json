@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_blocks_logoss",
+  "info": {
+    "displayName": "Logotypy klientů",
+    "icon": "briefcase",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.cta"
+    },
+    "moreLabel": {
+      "type": "string"
+    },
+    "logos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::client-logo.client-logo"
+    }
+  }
+}

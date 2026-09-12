@@ -1,0 +1,26 @@
+# Монорепо Gastrozony: client/ (Next) + strapi/ (CMS) + scripts/ + docs/.
+# У client/ и strapi/ есть свои .gitignore — здесь только общее для корня.
+
+# зависимости и сборки (на всякий случай, дублирует вложенные .gitignore)
+node_modules/
+.next/
+dist/
+build/
+.tmp/
+
+# секреты — никогда в репозиторий (.env.example версионируем)
+.env
+.env.local
+.env.*.local
+
+# логи dev-серверов из сессий
+*.log
+
+# исходники макета: 66 МБ XD-ассетов и скриншотов, для сборки не нужны.
+# Лежат только локально в D:\gastrozony\design — при переносе на другую машину скопировать вручную.
+design/
+
+# служебное
+.playwright-mcp/
+.DS_Store
+Thumbs.db

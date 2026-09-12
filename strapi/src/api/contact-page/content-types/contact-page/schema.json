@@ -1,0 +1,83 @@
+{
+  "kind": "singleType",
+  "collectionName": "contact_pages",
+  "info": {
+    "singularName": "contact-page",
+    "pluralName": "contact-pages",
+    "displayName": "Kontakt",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Kontakt"
+    },
+    "perex": {
+      "type": "text"
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "address": {
+      "type": "text"
+    },
+    "googleMapsUrl": {
+      "type": "string"
+    },
+    "emailLabel": {
+      "type": "string",
+      "default": "E-mail"
+    },
+    "phoneLabel": {
+      "type": "string",
+      "default": "Telefon"
+    },
+    "addressLabel": {
+      "type": "string",
+      "default": "Adresa"
+    },
+    "mapLabel": {
+      "type": "string",
+      "default": "Zobrazit na mapě"
+    },
+    "teamTitle": {
+      "type": "string",
+      "default": "Náš tým"
+    },
+    "team": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::team-member.team-member"
+    },
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "blocks.text",
+        "blocks.gallery",
+        "blocks.cta",
+        "blocks.cards",
+        "blocks.tags",
+        "blocks.logos",
+        "blocks.stats",
+        "blocks.image-text",
+        "blocks.events",
+        "blocks.accordion"
+      ]
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}

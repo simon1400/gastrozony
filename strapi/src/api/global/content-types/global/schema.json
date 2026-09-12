@@ -1,0 +1,63 @@
+{
+  "kind": "singleType",
+  "collectionName": "globals",
+  "info": {
+    "singularName": "global",
+    "pluralName": "globals",
+    "displayName": "Global",
+    "description": "Kontakty, logo, sociální sítě, výchozí SEO"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "siteName": {
+      "type": "string",
+      "default": "Gastrozóny"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "address": {
+      "type": "text"
+    },
+    "ico": {
+      "type": "string"
+    },
+    "dic": {
+      "type": "string"
+    },
+    "socials": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.social-link"
+    },
+    "applicationRecipients": {
+      "type": "text"
+    },
+    "defaultSeo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    },
+    "notFoundTitle": {
+      "type": "string",
+      "default": "Tahle stránka **neexistuje**"
+    },
+    "notFoundText": {
+      "type": "text"
+    },
+    "notFoundHomeLabel": {
+      "type": "string",
+      "default": "Zpět na úvod"
+    },
+    "notFoundEventsLabel": {
+      "type": "string",
+      "default": "Aktuální akce"
+    }
+  }
+}

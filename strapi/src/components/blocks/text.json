@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_blocks_texts",
+  "info": {
+    "displayName": "Text",
+    "icon": "alignLeft",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "richtext",
+      "required": true
+    },
+    "background": {
+      "type": "enumeration",
+      "enum": [
+        "white",
+        "grey",
+        "black"
+      ],
+      "default": "white"
+    }
+  }
+}

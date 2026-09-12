@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_blocks_gallerys",
+  "info": {
+    "displayName": "Galerie",
+    "icon": "picture",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "columns": {
+      "type": "integer",
+      "default": 3,
+      "min": 1,
+      "max": 6
+    }
+  }
+}

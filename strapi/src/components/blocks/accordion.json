@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_blocks_accordions",
+  "info": {
+    "displayName": "Akordeon / FAQ",
+    "icon": "chevronDown",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "blocks.accordion-item"
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "kind": "singleType",
+  "collectionName": "homepages",
+  "info": {
+    "singularName": "homepage",
+    "pluralName": "homepages",
+    "displayName": "Homepage",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero": {
+      "type": "component",
+      "repeatable": false,
+      "component": "home.hero"
+    },
+    "stats": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.stat"
+    },
+    "intro": {
+      "type": "component",
+      "repeatable": false,
+      "component": "home.intro"
+    },
+    "cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.numbered-card"
+    },
+    "tagsTitle": {
+      "type": "string",
+      "default": "Stavíme pro:"
+    },
+    "tags": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.tag"
+    },
+    "clients": {
+      "type": "component",
+      "repeatable": false,
+      "component": "home.clients-block"
+    },
+    "events": {
+      "type": "component",
+      "repeatable": false,
+      "component": "home.events-block"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}

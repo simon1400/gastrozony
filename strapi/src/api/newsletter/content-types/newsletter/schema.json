@@ -1,0 +1,58 @@
+{
+  "kind": "singleType",
+  "collectionName": "newsletters",
+  "info": {
+    "singularName": "newsletter",
+    "pluralName": "newsletters",
+    "displayName": "Newsletter",
+    "description": "Blok nad patičkou (Ecomail)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Nezmeškejte žádnou akci"
+    },
+    "text": {
+      "type": "text"
+    },
+    "emailLabel": {
+      "type": "string",
+      "default": "Váš e-mail"
+    },
+    "placeholder": {
+      "type": "string",
+      "default": "jmeno@email.cz"
+    },
+    "buttonLabel": {
+      "type": "string",
+      "default": "Odebírat"
+    },
+    "consentText": {
+      "type": "text"
+    },
+    "successText": {
+      "type": "text"
+    },
+    "errorText": {
+      "type": "text"
+    },
+    "ecomailListId": {
+      "type": "string"
+    },
+    "ecomailTags": {
+      "type": "string"
+    },
+    "doubleOptIn": {
+      "type": "boolean",
+      "default": true
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "singleType",
+  "collectionName": "navigations",
+  "info": {
+    "singularName": "navigation",
+    "pluralName": "navigations",
+    "displayName": "Navigace",
+    "description": "Menu v hlavičce a patičce"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "header": {
+      "type": "component",
+      "repeatable": true,
+      "component": "nav.nav-item"
+    },
+    "headerCta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.cta"
+    },
+    "footerColumns": {
+      "type": "component",
+      "repeatable": true,
+      "component": "nav.footer-column"
+    },
+    "footerNote": {
+      "type": "text"
+    },
+    "footerLegal": {
+      "type": "component",
+      "repeatable": true,
+      "component": "nav.nav-link"
+    }
+  }
+}

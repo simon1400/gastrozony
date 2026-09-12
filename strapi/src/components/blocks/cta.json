@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_blocks_ctas",
+  "info": {
+    "displayName": "CTA blok",
+    "icon": "cursor",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.cta"
+    },
+    "background": {
+      "type": "enumeration",
+      "enum": [
+        "white",
+        "grey",
+        "black",
+        "yellow"
+      ],
+      "default": "yellow"
+    }
+  }
+}

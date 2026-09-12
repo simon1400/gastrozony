@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_form_select_items",
+  "info": {
+    "displayName": "Položka výběru",
+    "icon": "bulletList",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

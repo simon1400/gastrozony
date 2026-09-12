@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_form_result_items",
+  "info": {
+    "displayName": "Položka výsledku",
+    "icon": "bulletList",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "key": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string"
+    },
+    "value": {
+      "type": "text"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "kind": "singleType",
+  "collectionName": "cookie_consents",
+  "info": {
+    "singularName": "cookie-consent",
+    "pluralName": "cookie-consents",
+    "displayName": "Cookies lišta",
+    "description": "Texty cookie lišty a nastavení souhlasu (GA4 Consent Mode)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Používáme cookies"
+    },
+    "text": {
+      "type": "text"
+    },
+    "acceptAllLabel": {
+      "type": "string",
+      "default": "Přijmout vše"
+    },
+    "necessaryOnlyLabel": {
+      "type": "string",
+      "default": "Pouze nutné"
+    },
+    "settingsLabel": {
+      "type": "string",
+      "default": "Nastavení"
+    },
+    "saveLabel": {
+      "type": "string",
+      "default": "Uložit volbu"
+    },
+    "necessaryTitle": {
+      "type": "string",
+      "default": "Nutné"
+    },
+    "necessaryText": {
+      "type": "text"
+    },
+    "alwaysActiveLabel": {
+      "type": "string",
+      "default": "Vždy aktivní"
+    },
+    "analyticsTitle": {
+      "type": "string",
+      "default": "Analytické"
+    },
+    "analyticsText": {
+      "type": "text"
+    },
+    "footerLinkLabel": {
+      "type": "string",
+      "default": "Nastavení cookies"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_form_checkboxs",
+  "info": {
+    "displayName": "Zaškrtávátko",
+    "icon": "check",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "text",
+      "required": true
+    },
+    "errorMessage": {
+      "type": "string"
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

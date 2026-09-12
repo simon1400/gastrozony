@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_nav_nav_links",
+  "info": {
+    "displayName": "Odkaz",
+    "icon": "link",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "newTab": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

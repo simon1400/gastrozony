@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_blocks_eventss",
+  "info": {
+    "displayName": "Výpis akcí",
+    "icon": "calendar",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "limit": {
+      "type": "integer",
+      "default": 3,
+      "min": 1,
+      "max": 12
+    },
+    "filter": {
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "upcoming",
+        "past"
+      ],
+      "default": "upcoming"
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.cta"
+    }
+  }
+}

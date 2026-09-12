@@ -1,0 +1,52 @@
+{
+  "collectionName": "components_form_text_fields",
+  "info": {
+    "displayName": "Textové pole",
+    "icon": "write",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "placeholder": {
+      "type": "string"
+    },
+    "helperText": {
+      "type": "string"
+    },
+    "errorMessage": {
+      "type": "string"
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "inputType": {
+      "type": "enumeration",
+      "enum": [
+        "text",
+        "email",
+        "tel",
+        "number",
+        "url",
+        "textarea"
+      ],
+      "default": "text"
+    },
+    "width": {
+      "type": "enumeration",
+      "enum": [
+        "full",
+        "half"
+      ],
+      "default": "full"
+    }
+  }
+}

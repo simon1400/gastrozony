@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_form_radios",
+  "info": {
+    "displayName": "Přepínače (radio)",
+    "icon": "dot-circle",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "helperText": {
+      "type": "string"
+    },
+    "errorMessage": {
+      "type": "string"
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "form.select-item"
+    }
+  }
+}

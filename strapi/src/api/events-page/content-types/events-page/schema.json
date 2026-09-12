@@ -1,0 +1,76 @@
+{
+  "kind": "singleType",
+  "collectionName": "events_pages",
+  "info": {
+    "singularName": "events-page",
+    "pluralName": "events-pages",
+    "displayName": "Výpis akcí",
+    "description": "Úvod stránky /akce a texty detailu akce"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Akce"
+    },
+    "perex": {
+      "type": "text"
+    },
+    "emptyText": {
+      "type": "string",
+      "default": "Momentálně tu nic není."
+    },
+    "tabCurrentLabel": {
+      "type": "string",
+      "default": "Aktuální"
+    },
+    "tabUpcomingLabel": {
+      "type": "string",
+      "default": "Připravujeme"
+    },
+    "tabPastLabel": {
+      "type": "string",
+      "default": "Proběhlé"
+    },
+    "applyLabel": {
+      "type": "string",
+      "default": "Přihlásit se na tuto akci"
+    },
+    "applicationClosedText": {
+      "type": "string",
+      "default": "Přihlášky na tuto akci jsou uzavřené."
+    },
+    "dateLabel": {
+      "type": "string",
+      "default": "Termín"
+    },
+    "placeLabel": {
+      "type": "string",
+      "default": "Místo"
+    },
+    "capacityLabel": {
+      "type": "string",
+      "default": "Kapacita"
+    },
+    "mapLabel": {
+      "type": "string",
+      "default": "Zobrazit na mapě"
+    },
+    "galleryTitle": {
+      "type": "string",
+      "default": "Galerie"
+    },
+    "backLabel": {
+      "type": "string",
+      "default": "Všechny akce"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}

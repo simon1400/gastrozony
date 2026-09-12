@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_home_clients_blocks",
+  "info": {
+    "displayName": "Blok klientů",
+    "icon": "briefcase",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.cta"
+    },
+    "moreLabel": {
+      "type": "string",
+      "default": "a další…"
+    },
+    "logos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::client-logo.client-logo"
+    }
+  }
+}

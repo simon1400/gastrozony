@@ -1,0 +1,93 @@
+{
+  "kind": "collectionType",
+  "collectionName": "events",
+  "info": {
+    "singularName": "event",
+    "pluralName": "events",
+    "displayName": "Akce",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "perex": {
+      "type": "text"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "place": {
+      "type": "string"
+    },
+    "dateFrom": {
+      "type": "date"
+    },
+    "dateTo": {
+      "type": "date"
+    },
+    "cover": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "gallery": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "statusOverride": {
+      "type": "enumeration",
+      "enum": [
+        "pripravujeme",
+        "aktualni",
+        "ukonceno"
+      ]
+    },
+    "applicationOpen": {
+      "type": "boolean",
+      "default": true
+    },
+    "capacityState": {
+      "type": "enumeration",
+      "enum": [
+        "volno",
+        "posledni-mista",
+        "obsazeno",
+        "nahradnik"
+      ]
+    },
+    "googleMapsUrl": {
+      "type": "string"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "collectionName": "components_blocks_image_texts",
+  "info": {
+    "displayName": "Obrázek + text",
+    "icon": "layout",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "imagePosition": {
+      "type": "enumeration",
+      "enum": [
+        "left",
+        "right"
+      ],
+      "default": "right"
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.cta"
+    },
+    "background": {
+      "type": "enumeration",
+      "enum": [
+        "white",
+        "grey",
+        "black"
+      ],
+      "default": "white"
+    }
+  }
+}

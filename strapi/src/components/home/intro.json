@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_home_intros",
+  "info": {
+    "displayName": "Intro (2 sloupce)",
+    "icon": "layer",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "text": {
+      "type": "text"
+    }
+  }
+}

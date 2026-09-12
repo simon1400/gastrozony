@@ -1,0 +1,70 @@
+{
+  "kind": "collectionType",
+  "collectionName": "applications",
+  "info": {
+    "singularName": "application",
+    "pluralName": "applications",
+    "displayName": "Přihláška",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "formKey": {
+      "type": "enumeration",
+      "enum": [
+        "prodejce",
+        "poradatel"
+      ],
+      "required": true
+    },
+    "result": {
+      "type": "component",
+      "repeatable": true,
+      "component": "form.result-item"
+    },
+    "event": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::event.event"
+    },
+    "contactEmail": {
+      "type": "string"
+    },
+    "contactName": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "nova",
+        "kontaktovana",
+        "schvalena",
+        "zamitnuta"
+      ],
+      "default": "nova"
+    },
+    "note": {
+      "type": "text"
+    },
+    "attachments": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "mailSent": {
+      "type": "boolean",
+      "default": false
+    },
+    "source": {
+      "type": "string",
+      "private": true
+    }
+  }
+}

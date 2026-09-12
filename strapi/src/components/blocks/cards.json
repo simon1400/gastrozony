@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_blocks_cardss",
+  "info": {
+    "displayName": "Karty 01/02/03",
+    "icon": "grid",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.numbered-card"
+    },
+    "background": {
+      "type": "enumeration",
+      "enum": [
+        "white",
+        "grey",
+        "black"
+      ],
+      "default": "grey"
+    }
+  }
+}
