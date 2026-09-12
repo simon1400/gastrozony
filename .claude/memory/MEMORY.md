@@ -33,7 +33,8 @@ D:\gastrozony
 ```
 
 ## Git (2026-09-12)
-- **Монорепо в корне `D:\gastrozony`** (`main`, первый коммит `03072bb`, 238 файлов). **Remote пока нет.**
+- **Монорепо в корне `D:\gastrozony`** (`main`, первый коммит `03072bb`, 238 файлов),
+  remote `git@github.com:simon1400/gastrozony.git`, запушено.
 - Репозиторий-скаффолд `client/.git` (один коммит create-next-app, без remote) убран, чтобы не было вложенного репо;
   бэкап — в scratchpad сессии (после закрытия сессии исчезнет, ценности не имеет).
 - `design/` (66 МБ исходников XD) **вне репозитория** по решению пользователя — только на локальном диске,
@@ -51,8 +52,10 @@ D:\gastrozony
   Ключ `github-actions-deploy` уже в `authorized_keys` сервера и локально в `~/.ssh/github_deploy_key` — новый не нужен.
 - Наши порты: **client 3012, Strapi 1343** (3011 из старого плана занят tulsio; заняты 1333–1342, 1346, 1350).
 - **Репозиторий:** `git@github.com:simon1400/gastrozony.git`, ветка `main`, **публичный**. Монорепо целиком.
-- **Блокер DNS:** `gastrozony.cz` → 46.28.106.212 (чужой IP), у `www`/`strapi` записей нет. Пока A-записи не переведут
-  на 157.90.169.205 — certbot и прод-домен невозможны.
+- **Домены:** пока тестовые `gastrozony.hardart.cz` и `strapi-gastrozony.hardart.cz` (решение 12.09.2026).
+  `hardart.cz` — служебный домен на Wedos, wildcard нет, каждому поддомену нужна своя A-запись на 157.90.169.205.
+  У тестового клиента в nginx `X-Robots-Tag: noindex` — при переезде на `gastrozony.cz` убрать, заменить
+  `NEXT_PUBLIC_SITE_URL`/`STRAPI_ADMIN_URL` и **пересобрать клиент** (NEXT_PUBLIC_* вшивается при сборке).
 - `gh` CLI локально авторизован как `simon1400`. `gh secret set` с приватным ключом и правку crontab
   классификатор auto-mode блокирует — эти два шага делает пользователь (команды в `docs/deploy.md`).
 - **Прод поднят 2026-09-12:** `/opt/gastrozony`, БД `gastrozony_db`, контент перенесён дампом dev-базы,

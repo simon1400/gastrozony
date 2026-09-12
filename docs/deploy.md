@@ -28,13 +28,25 @@
 | Strapi | **1343** | заняты 1333–1342, 1346, 1350 |
 | pm2 | `gastrozony-client`, `gastrozony-strapi` | `deploy/ecosystem.config.js` |
 | БД | `gastrozony_db` / `gastrozony_user` | |
-| Домены | `gastrozony.cz`, `www.gastrozony.cz`, `strapi.gastrozony.cz` | |
+| Домены (тест) | `gastrozony.hardart.cz`, `strapi-gastrozony.hardart.cz` | |
+| Домены (прод) | `gastrozony.cz`, `www.gastrozony.cz`, `strapi.gastrozony.cz` | позже |
 
-## ⚠ Блокер: DNS
+## Домены
 
-На 12.09.2026 `gastrozony.cz` → **46.28.106.212** (не наш сервер), у `www` и `strapi` записей нет.
-Пока A-записи не переведут на **157.90.169.205**, certbot сертификаты не выпустит и сайт не откроется.
-Нужны записи: `gastrozony.cz`, `www.gastrozony.cz`, `strapi.gastrozony.cz` → `157.90.169.205`.
+**Сейчас тестовые** (решение 12.09.2026): `gastrozony.hardart.cz` и `strapi-gastrozony.hardart.cz`.
+`hardart.cz` — служебный домен на Wedos, там уже живут `burger-strapi.hardart.cz`, `monitor.hardart.cz` и др.
+**Wildcard нет** — на каждый поддомен нужна своя A-запись на `157.90.169.205`.
+Конфиги nginx уже содержат оба тестовых имени; у клиента добавлен `X-Robots-Tag: noindex, nofollow`,
+чтобы тестовый сайт не попал в выдачу — **при переезде на прод-домен строку убрать**.
+
+Прод-домен `gastrozony.cz` в конфиг клиента уже вписан (плюс `www`), но DNS смотрит на 46.28.106.212 —
+переключение позже. Что сделать при переезде:
+1. A-записи `gastrozony.cz`, `www.gastrozony.cz`, `strapi.gastrozony.cz` → `157.90.169.205`;
+2. `certbot --nginx -d gastrozony.cz -d www.gastrozony.cz` и `certbot --nginx -d strapi.gastrozony.cz`;
+3. в `client/.env.local` заменить `NEXT_PUBLIC_SITE_URL` и `STRAPI_ADMIN_URL` на прод-домены
+   и **пересобрать клиент** — `NEXT_PUBLIC_*` вшивается на этапе сборки (иначе canonical/sitemap/OG
+   останутся на тестовом домене);
+4. убрать `X-Robots-Tag` из `gastrozony-client`.
 
 ---
 
@@ -51,9 +63,11 @@
       добавлены `NEXT_PUBLIC_SITE_URL` и `STRAPI_ADMIN_URL`.
       **Оба .env приведены к LF** — в скопированных с Windows файлах был CRLF, из-за `\r` ломались шелл-скрипты.
 - [x] Сборка обеих частей, `pm2 start` + `pm2 save`: `gastrozony-strapi` (1343), `gastrozony-client` (3012).
-- [x] nginx: `gastrozony-client` и `gastrozony-strapi` в sites-enabled, **пока только HTTP** (DNS не переехал).
-      Проверено `Host`-заголовком: `/`, `/akce`, `/prihlaska` → 200, `strapi.gastrozony.cz/admin` → 200,
-      `/sprava/prihlasky` → 401 без логина и 200 с логином.
+- [x] nginx: `gastrozony-client` (тестовый + прод-домены) и `gastrozony-strapi` в sites-enabled,
+      **пока только HTTP** — сертификаты выпускаются после того, как A-записи укажут на сервер.
+      Проверено `Host`-заголовком: `/`, `/akce`, `/prihlaska`, `/novinky`, `/kontakt`, `/sitemap.xml` → 200,
+      админка Strapi → 200, `/sprava/prihlasky` → 401 без логина и 200 с логином, `X-Robots-Tag: noindex` отдаётся.
+- [x] Клиент пересобран под тестовый домен: sitemap и canonical → `https://gastrozony.hardart.cz`.
 - [x] Тестовые записи удалены: 7 заявок (`demo.*`, `test.*`) и 2 подписчика — в прод-базе 0 и 0.
 
 ### Осталось
