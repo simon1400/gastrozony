@@ -72,5 +72,185 @@
       "repeatable": false,
       "component": "shared.seo"
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Titulek stránky"
+        },
+        "list": {
+          "label": "Titulek stránky"
+        }
+      },
+      "perex": {
+        "edit": {
+          "label": "Perex"
+        },
+        "list": {
+          "label": "Perex"
+        }
+      },
+      "contentBefore": {
+        "edit": {
+          "label": "Text nad formulářem"
+        },
+        "list": {
+          "label": "Text nad formulářem"
+        }
+      },
+      "contentAfter": {
+        "edit": {
+          "label": "Text pod formulářem"
+        },
+        "list": {
+          "label": "Text pod formulářem"
+        }
+      },
+      "eventSelectLabel": {
+        "edit": {
+          "label": "Popisek výběru akce"
+        },
+        "list": {
+          "label": "Popisek výběru akce"
+        }
+      },
+      "eventPlaceholder": {
+        "edit": {
+          "label": "Placeholder výběru akce"
+        },
+        "list": {
+          "label": "Placeholder výběru akce"
+        }
+      },
+      "noEventsText": {
+        "edit": {
+          "label": "Text, když nejsou žádné akce"
+        },
+        "list": {
+          "label": "Text, když nejsou žádné akce"
+        }
+      },
+      "uploadLabel": {
+        "edit": {
+          "label": "Popisek nahrávání souborů"
+        },
+        "list": {
+          "label": "Popisek nahrávání souborů"
+        }
+      },
+      "submitLabel": {
+        "edit": {
+          "label": "Text tlačítka pro odeslání"
+        },
+        "list": {
+          "label": "Text tlačítka pro odeslání"
+        }
+      },
+      "successTitle": {
+        "edit": {
+          "label": "Titulek po odeslání"
+        },
+        "list": {
+          "label": "Titulek po odeslání"
+        }
+      },
+      "successText": {
+        "edit": {
+          "label": "Text po odeslání"
+        },
+        "list": {
+          "label": "Text po odeslání"
+        }
+      },
+      "errorText": {
+        "edit": {
+          "label": "Text při chybě"
+        },
+        "list": {
+          "label": "Text při chybě"
+        }
+      },
+      "rateLimitText": {
+        "edit": {
+          "label": "Text při příliš častém odesílání"
+        },
+        "list": {
+          "label": "Text při příliš častém odesílání"
+        }
+      },
+      "mailSubject": {
+        "edit": {
+          "label": "Potvrzovací e-mail — předmět"
+        },
+        "list": {
+          "label": "Potvrzovací e-mail — předmět"
+        }
+      },
+      "mailIntro": {
+        "edit": {
+          "label": "Potvrzovací e-mail — úvod"
+        },
+        "list": {
+          "label": "Potvrzovací e-mail — úvod"
+        }
+      },
+      "mailNote": {
+        "edit": {
+          "label": "Potvrzovací e-mail — poznámka"
+        },
+        "list": {
+          "label": "Potvrzovací e-mail — poznámka"
+        }
+      },
+      "seo": {
+        "edit": {
+          "label": "SEO"
+        },
+        "list": {
+          "label": "SEO"
+        }
+      }
+    }
   }
 }

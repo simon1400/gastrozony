@@ -7,6 +7,8 @@ import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { labelsFor } from './cs-labels.mjs';
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', 'strapi');
 const COMPONENTS = join(ROOT, 'src', 'components');
 const API = join(ROOT, 'src', 'api');
@@ -16,6 +18,30 @@ const write = (p, data) => {
   writeFileSync(p, typeof data === 'string' ? data : JSON.stringify(data, null, 2) + '\n', 'utf8');
 };
 const writeIfAbsent = (p, data) => { if (!existsSync(p)) write(p, data); };
+
+/** Поля, которые Strapi добавляет сам — в attributes их нет, а в админке они видны. */
+const COMMON_ATTRIBUTES = {
+  createdAt: true, updatedAt: true, publishedAt: true, createdBy: true, updatedBy: true,
+};
+
+/**
+ * Чешские подписи полей для Content Manager (scripts/cs-labels.mjs).
+ * Strapi читает их из `config.metadatas` схемы, когда генерирует конфигурацию админки
+ * для ещё неизвестной модели — то есть на чистой базе. На уже существующей базе
+ * приоритет у значений из БД, туда подписи пишет `scripts/apply-cs-labels.mjs`.
+ */
+const labelConfig = (uid, attributes) => {
+  const labels = labelsFor(uid);
+  if (!labels) return undefined;
+  const metadatas = {};
+  for (const [field, label] of Object.entries(labels)) {
+    // системные поля (createdAt…) в attributes нет — Strapi добавляет их сам
+    if (field in attributes || field in COMMON_ATTRIBUTES) {
+      metadatas[field] = { edit: { label }, list: { label } };
+    }
+  }
+  return { metadatas };
+};
 
 /* ------------------------------------------------------------------ helpers */
 
@@ -272,7 +298,7 @@ const FORM_FIELDS = ['form.text-field', 'form.select', 'form.radio', 'form.check
 const contentTypes = {
   /* ---------------------------- single types ---------------------------- */
   global: {
-    kind: 'singleType', displayName: 'Global', description: 'Kontakty, logo, sociální sítě, výchozí SEO',
+    kind: 'singleType', displayName: 'Globální nastavení', description: 'Kontakty, logo, sociální sítě, výchozí SEO',
     draftAndPublish: false,
     attributes: {
       siteName: str({ default: 'Gastrozóny' }),
@@ -304,7 +330,7 @@ const contentTypes = {
     },
   },
   homepage: {
-    kind: 'singleType', displayName: 'Homepage',
+    kind: 'singleType', displayName: 'Domovská stránka',
     attributes: {
       hero: comp('home.hero'),
       stats: comp('shared.stat', true),
@@ -555,6 +581,7 @@ for (const [path, def] of Object.entries(components)) {
     info: { displayName: def.displayName, icon: def.icon, description: def.description ?? '' },
     options: {},
     attributes: def.attributes,
+    config: labelConfig(`${category}.${name}`, def.attributes),
   });
   nComp++;
 }
@@ -575,6 +602,7 @@ for (const [name, def] of Object.entries(contentTypes)) {
     options: { draftAndPublish: def.draftAndPublish ?? true },
     pluginOptions: {},
     attributes: def.attributes,
+    config: labelConfig(`api::${name}.${name}`, def.attributes),
   });
 
   const ref = `api::${name}.${name}`;

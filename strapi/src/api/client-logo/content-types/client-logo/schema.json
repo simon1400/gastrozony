@@ -31,5 +31,81 @@
       "type": "integer",
       "default": 0
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "name": {
+        "edit": {
+          "label": "Název klienta"
+        },
+        "list": {
+          "label": "Název klienta"
+        }
+      },
+      "logo": {
+        "edit": {
+          "label": "Logo"
+        },
+        "list": {
+          "label": "Logo"
+        }
+      },
+      "url": {
+        "edit": {
+          "label": "Odkaz na web"
+        },
+        "list": {
+          "label": "Odkaz na web"
+        }
+      },
+      "order": {
+        "edit": {
+          "label": "Pořadí"
+        },
+        "list": {
+          "label": "Pořadí"
+        }
+      }
+    }
   }
 }

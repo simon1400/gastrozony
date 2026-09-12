@@ -57,5 +57,105 @@
       "repeatable": false,
       "component": "shared.seo"
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "URL adresa (slug)"
+        },
+        "list": {
+          "label": "URL adresa (slug)"
+        }
+      },
+      "perex": {
+        "edit": {
+          "label": "Perex"
+        },
+        "list": {
+          "label": "Perex"
+        }
+      },
+      "cover": {
+        "edit": {
+          "label": "Hlavní obrázek"
+        },
+        "list": {
+          "label": "Hlavní obrázek"
+        }
+      },
+      "cta": {
+        "edit": {
+          "label": "Tlačítko (CTA)"
+        },
+        "list": {
+          "label": "Tlačítko (CTA)"
+        }
+      },
+      "blocks": {
+        "edit": {
+          "label": "Bloky obsahu"
+        },
+        "list": {
+          "label": "Bloky obsahu"
+        }
+      },
+      "seo": {
+        "edit": {
+          "label": "SEO"
+        },
+        "list": {
+          "label": "SEO"
+        }
+      }
+    }
   }
 }

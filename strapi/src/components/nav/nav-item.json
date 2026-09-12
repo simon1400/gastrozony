@@ -19,5 +19,33 @@
       "repeatable": true,
       "component": "nav.nav-link"
     }
+  },
+  "config": {
+    "metadatas": {
+      "label": {
+        "edit": {
+          "label": "Popisek"
+        },
+        "list": {
+          "label": "Popisek"
+        }
+      },
+      "url": {
+        "edit": {
+          "label": "Odkaz (URL)"
+        },
+        "list": {
+          "label": "Odkaz (URL)"
+        }
+      },
+      "children": {
+        "edit": {
+          "label": "Podpoložky"
+        },
+        "list": {
+          "label": "Podpoložky"
+        }
+      }
+    }
   }
 }

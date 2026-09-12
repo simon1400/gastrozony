@@ -17,5 +17,33 @@
     "value": {
       "type": "text"
     }
+  },
+  "config": {
+    "metadatas": {
+      "key": {
+        "edit": {
+          "label": "Klíč pole"
+        },
+        "list": {
+          "label": "Klíč pole"
+        }
+      },
+      "label": {
+        "edit": {
+          "label": "Popisek"
+        },
+        "list": {
+          "label": "Popisek"
+        }
+      },
+      "value": {
+        "edit": {
+          "label": "Hodnota"
+        },
+        "list": {
+          "label": "Hodnota"
+        }
+      }
+    }
   }
 }

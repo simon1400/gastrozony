@@ -44,5 +44,113 @@
       "repeatable": false,
       "component": "shared.seo"
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "perex": {
+        "edit": {
+          "label": "Perex"
+        },
+        "list": {
+          "label": "Perex"
+        }
+      },
+      "emptyText": {
+        "edit": {
+          "label": "Text, když nejsou žádné články"
+        },
+        "list": {
+          "label": "Text, když nejsou žádné články"
+        }
+      },
+      "backLabel": {
+        "edit": {
+          "label": "Popisek odkazu zpět"
+        },
+        "list": {
+          "label": "Popisek odkazu zpět"
+        }
+      },
+      "moreTitle": {
+        "edit": {
+          "label": "Titulek sekce dalších článků"
+        },
+        "list": {
+          "label": "Titulek sekce dalších článků"
+        }
+      },
+      "prevLabel": {
+        "edit": {
+          "label": "Popisek — předchozí"
+        },
+        "list": {
+          "label": "Popisek — předchozí"
+        }
+      },
+      "nextLabel": {
+        "edit": {
+          "label": "Popisek — další"
+        },
+        "list": {
+          "label": "Popisek — další"
+        }
+      },
+      "seo": {
+        "edit": {
+          "label": "SEO"
+        },
+        "list": {
+          "label": "SEO"
+        }
+      }
+    }
   }
 }

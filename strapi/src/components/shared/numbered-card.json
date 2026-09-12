@@ -26,5 +26,41 @@
         "images"
       ]
     }
+  },
+  "config": {
+    "metadatas": {
+      "number": {
+        "edit": {
+          "label": "Číslo"
+        },
+        "list": {
+          "label": "Číslo"
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Text"
+        },
+        "list": {
+          "label": "Text"
+        }
+      },
+      "image": {
+        "edit": {
+          "label": "Obrázek"
+        },
+        "list": {
+          "label": "Obrázek"
+        }
+      }
+    }
   }
 }

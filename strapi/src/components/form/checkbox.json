@@ -22,5 +22,41 @@
       "type": "boolean",
       "default": false
     }
+  },
+  "config": {
+    "metadatas": {
+      "name": {
+        "edit": {
+          "label": "Klíč pole (name)"
+        },
+        "list": {
+          "label": "Klíč pole (name)"
+        }
+      },
+      "label": {
+        "edit": {
+          "label": "Popisek"
+        },
+        "list": {
+          "label": "Popisek"
+        }
+      },
+      "errorMessage": {
+        "edit": {
+          "label": "Chybová zpráva"
+        },
+        "list": {
+          "label": "Chybová zpráva"
+        }
+      },
+      "required": {
+        "edit": {
+          "label": "Povinné"
+        },
+        "list": {
+          "label": "Povinné"
+        }
+      }
+    }
   }
 }

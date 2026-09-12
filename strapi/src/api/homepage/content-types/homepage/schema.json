@@ -4,7 +4,7 @@
   "info": {
     "singularName": "homepage",
     "pluralName": "homepages",
-    "displayName": "Homepage",
+    "displayName": "Domovská stránka",
     "description": ""
   },
   "options": {
@@ -55,6 +55,122 @@
       "type": "component",
       "repeatable": false,
       "component": "shared.seo"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "hero": {
+        "edit": {
+          "label": "Hero (úvodní sekce)"
+        },
+        "list": {
+          "label": "Hero (úvodní sekce)"
+        }
+      },
+      "stats": {
+        "edit": {
+          "label": "Statistiky"
+        },
+        "list": {
+          "label": "Statistiky"
+        }
+      },
+      "intro": {
+        "edit": {
+          "label": "Intro (dva sloupce)"
+        },
+        "list": {
+          "label": "Intro (dva sloupce)"
+        }
+      },
+      "cards": {
+        "edit": {
+          "label": "Číslované karty"
+        },
+        "list": {
+          "label": "Číslované karty"
+        }
+      },
+      "tagsTitle": {
+        "edit": {
+          "label": "Titulek sekce se štítky"
+        },
+        "list": {
+          "label": "Titulek sekce se štítky"
+        }
+      },
+      "tags": {
+        "edit": {
+          "label": "Štítky"
+        },
+        "list": {
+          "label": "Štítky"
+        }
+      },
+      "clients": {
+        "edit": {
+          "label": "Blok klientů"
+        },
+        "list": {
+          "label": "Blok klientů"
+        }
+      },
+      "events": {
+        "edit": {
+          "label": "Blok akcí"
+        },
+        "list": {
+          "label": "Blok akcí"
+        }
+      },
+      "seo": {
+        "edit": {
+          "label": "SEO"
+        },
+        "list": {
+          "label": "SEO"
+        }
+      }
     }
   }
 }

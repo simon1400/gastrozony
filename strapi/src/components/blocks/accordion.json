@@ -15,5 +15,25 @@
       "repeatable": true,
       "component": "blocks.accordion-item"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "items": {
+        "edit": {
+          "label": "Otázky a odpovědi"
+        },
+        "list": {
+          "label": "Otázky a odpovědi"
+        }
+      }
+    }
   }
 }

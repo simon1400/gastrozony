@@ -19,5 +19,33 @@
       "type": "boolean",
       "default": false
     }
+  },
+  "config": {
+    "metadatas": {
+      "label": {
+        "edit": {
+          "label": "Popisek"
+        },
+        "list": {
+          "label": "Popisek"
+        }
+      },
+      "url": {
+        "edit": {
+          "label": "Odkaz (URL)"
+        },
+        "list": {
+          "label": "Odkaz (URL)"
+        }
+      },
+      "newTab": {
+        "edit": {
+          "label": "Otevřít v novém okně"
+        },
+        "list": {
+          "label": "Otevřít v novém okně"
+        }
+      }
+    }
   }
 }

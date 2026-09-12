@@ -15,5 +15,25 @@
       "type": "richtext",
       "required": true
     }
+  },
+  "config": {
+    "metadatas": {
+      "question": {
+        "edit": {
+          "label": "Otázka"
+        },
+        "list": {
+          "label": "Otázka"
+        }
+      },
+      "answer": {
+        "edit": {
+          "label": "Odpověď"
+        },
+        "list": {
+          "label": "Odpověď"
+        }
+      }
+    }
   }
 }

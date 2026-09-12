@@ -15,5 +15,25 @@
       "type": "string",
       "required": true
     }
+  },
+  "config": {
+    "metadatas": {
+      "value": {
+        "edit": {
+          "label": "Hodnota"
+        },
+        "list": {
+          "label": "Hodnota"
+        }
+      },
+      "label": {
+        "edit": {
+          "label": "Popisek"
+        },
+        "list": {
+          "label": "Popisek"
+        }
+      }
+    }
   }
 }

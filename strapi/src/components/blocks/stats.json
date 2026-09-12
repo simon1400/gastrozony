@@ -12,5 +12,17 @@
       "repeatable": true,
       "component": "shared.stat"
     }
+  },
+  "config": {
+    "metadatas": {
+      "items": {
+        "edit": {
+          "label": "Statistiky"
+        },
+        "list": {
+          "label": "Statistiky"
+        }
+      }
+    }
   }
 }

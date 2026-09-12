@@ -24,5 +24,33 @@
       "min": 1,
       "max": 6
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "images": {
+        "edit": {
+          "label": "Obrázky"
+        },
+        "list": {
+          "label": "Obrázky"
+        }
+      },
+      "columns": {
+        "edit": {
+          "label": "Počet sloupců"
+        },
+        "list": {
+          "label": "Počet sloupců"
+        }
+      }
+    }
   }
 }

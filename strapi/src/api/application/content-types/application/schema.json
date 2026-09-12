@@ -66,5 +66,129 @@
       "type": "string",
       "private": true
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "formKey": {
+        "edit": {
+          "label": "Typ formuláře"
+        },
+        "list": {
+          "label": "Typ formuláře"
+        }
+      },
+      "result": {
+        "edit": {
+          "label": "Odpovědi z formuláře"
+        },
+        "list": {
+          "label": "Odpovědi z formuláře"
+        }
+      },
+      "event": {
+        "edit": {
+          "label": "Akce"
+        },
+        "list": {
+          "label": "Akce"
+        }
+      },
+      "contactEmail": {
+        "edit": {
+          "label": "Kontaktní e-mail"
+        },
+        "list": {
+          "label": "Kontaktní e-mail"
+        }
+      },
+      "contactName": {
+        "edit": {
+          "label": "Kontaktní jméno"
+        },
+        "list": {
+          "label": "Kontaktní jméno"
+        }
+      },
+      "status": {
+        "edit": {
+          "label": "Stav"
+        },
+        "list": {
+          "label": "Stav"
+        }
+      },
+      "note": {
+        "edit": {
+          "label": "Interní poznámka"
+        },
+        "list": {
+          "label": "Interní poznámka"
+        }
+      },
+      "attachments": {
+        "edit": {
+          "label": "Přílohy"
+        },
+        "list": {
+          "label": "Přílohy"
+        }
+      },
+      "mailSent": {
+        "edit": {
+          "label": "Potvrzovací e-mail odeslán"
+        },
+        "list": {
+          "label": "Potvrzovací e-mail odeslán"
+        }
+      },
+      "source": {
+        "edit": {
+          "label": "Zdroj"
+        },
+        "list": {
+          "label": "Zdroj"
+        }
+      }
+    }
   }
 }

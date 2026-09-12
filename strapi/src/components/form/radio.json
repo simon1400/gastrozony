@@ -30,5 +30,57 @@
       "repeatable": true,
       "component": "form.select-item"
     }
+  },
+  "config": {
+    "metadatas": {
+      "name": {
+        "edit": {
+          "label": "Klíč pole (name)"
+        },
+        "list": {
+          "label": "Klíč pole (name)"
+        }
+      },
+      "label": {
+        "edit": {
+          "label": "Popisek"
+        },
+        "list": {
+          "label": "Popisek"
+        }
+      },
+      "helperText": {
+        "edit": {
+          "label": "Nápověda pod polem"
+        },
+        "list": {
+          "label": "Nápověda pod polem"
+        }
+      },
+      "errorMessage": {
+        "edit": {
+          "label": "Chybová zpráva"
+        },
+        "list": {
+          "label": "Chybová zpráva"
+        }
+      },
+      "required": {
+        "edit": {
+          "label": "Povinné"
+        },
+        "list": {
+          "label": "Povinné"
+        }
+      },
+      "items": {
+        "edit": {
+          "label": "Možnosti"
+        },
+        "list": {
+          "label": "Možnosti"
+        }
+      }
+    }
   }
 }

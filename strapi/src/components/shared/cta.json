@@ -28,5 +28,41 @@
       "type": "boolean",
       "default": false
     }
+  },
+  "config": {
+    "metadatas": {
+      "label": {
+        "edit": {
+          "label": "Text tlačítka"
+        },
+        "list": {
+          "label": "Text tlačítka"
+        }
+      },
+      "url": {
+        "edit": {
+          "label": "Odkaz (URL)"
+        },
+        "list": {
+          "label": "Odkaz (URL)"
+        }
+      },
+      "variant": {
+        "edit": {
+          "label": "Varianta vzhledu"
+        },
+        "list": {
+          "label": "Varianta vzhledu"
+        }
+      },
+      "newTab": {
+        "edit": {
+          "label": "Otevřít v novém okně"
+        },
+        "list": {
+          "label": "Otevřít v novém okně"
+        }
+      }
+    }
   }
 }

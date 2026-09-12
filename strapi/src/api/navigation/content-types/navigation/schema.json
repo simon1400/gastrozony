@@ -35,5 +35,89 @@
       "repeatable": true,
       "component": "nav.nav-link"
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "header": {
+        "edit": {
+          "label": "Hlavní menu"
+        },
+        "list": {
+          "label": "Hlavní menu"
+        }
+      },
+      "headerCta": {
+        "edit": {
+          "label": "Tlačítko v hlavičce"
+        },
+        "list": {
+          "label": "Tlačítko v hlavičce"
+        }
+      },
+      "footerColumns": {
+        "edit": {
+          "label": "Sloupce v patičce"
+        },
+        "list": {
+          "label": "Sloupce v patičce"
+        }
+      },
+      "footerNote": {
+        "edit": {
+          "label": "Text v patičce"
+        },
+        "list": {
+          "label": "Text v patičce"
+        }
+      },
+      "footerLegal": {
+        "edit": {
+          "label": "Právní odkazy v patičce"
+        },
+        "list": {
+          "label": "Právní odkazy v patičce"
+        }
+      }
+    }
   }
 }

@@ -16,5 +16,25 @@
       "repeatable": true,
       "component": "nav.nav-link"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek sloupce"
+        },
+        "list": {
+          "label": "Titulek sloupce"
+        }
+      },
+      "links": {
+        "edit": {
+          "label": "Odkazy"
+        },
+        "list": {
+          "label": "Odkazy"
+        }
+      }
+    }
   }
 }

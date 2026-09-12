@@ -43,5 +43,57 @@
       ],
       "default": "white"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "body": {
+        "edit": {
+          "label": "Text"
+        },
+        "list": {
+          "label": "Text"
+        }
+      },
+      "image": {
+        "edit": {
+          "label": "Obrázek"
+        },
+        "list": {
+          "label": "Obrázek"
+        }
+      },
+      "imagePosition": {
+        "edit": {
+          "label": "Pozice obrázku"
+        },
+        "list": {
+          "label": "Pozice obrázku"
+        }
+      },
+      "cta": {
+        "edit": {
+          "label": "Tlačítko"
+        },
+        "list": {
+          "label": "Tlačítko"
+        }
+      },
+      "background": {
+        "edit": {
+          "label": "Pozadí"
+        },
+        "list": {
+          "label": "Pozadí"
+        }
+      }
+    }
   }
 }

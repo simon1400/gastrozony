@@ -23,5 +23,25 @@
       "type": "string",
       "required": true
     }
+  },
+  "config": {
+    "metadatas": {
+      "platform": {
+        "edit": {
+          "label": "Sociální síť"
+        },
+        "list": {
+          "label": "Sociální síť"
+        }
+      },
+      "url": {
+        "edit": {
+          "label": "Odkaz (URL)"
+        },
+        "list": {
+          "label": "Odkaz (URL)"
+        }
+      }
+    }
   }
 }

@@ -26,5 +26,49 @@
       "relation": "oneToMany",
       "target": "api::client-logo.client-logo"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Text"
+        },
+        "list": {
+          "label": "Text"
+        }
+      },
+      "cta": {
+        "edit": {
+          "label": "Tlačítko"
+        },
+        "list": {
+          "label": "Tlačítko"
+        }
+      },
+      "moreLabel": {
+        "edit": {
+          "label": "Popisek „další“"
+        },
+        "list": {
+          "label": "Popisek „další“"
+        }
+      },
+      "logos": {
+        "edit": {
+          "label": "Loga klientů"
+        },
+        "list": {
+          "label": "Loga klientů"
+        }
+      }
+    }
   }
 }

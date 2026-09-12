@@ -27,5 +27,41 @@
         "images"
       ]
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "perex": {
+        "edit": {
+          "label": "Perex"
+        },
+        "list": {
+          "label": "Perex"
+        }
+      },
+      "ctas": {
+        "edit": {
+          "label": "Tlačítka"
+        },
+        "list": {
+          "label": "Tlačítka"
+        }
+      },
+      "images": {
+        "edit": {
+          "label": "Obrázky"
+        },
+        "list": {
+          "label": "Obrázky"
+        }
+      }
+    }
   }
 }

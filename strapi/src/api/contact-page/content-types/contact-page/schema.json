@@ -79,5 +79,169 @@
       "repeatable": false,
       "component": "shared.seo"
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "perex": {
+        "edit": {
+          "label": "Perex"
+        },
+        "list": {
+          "label": "Perex"
+        }
+      },
+      "body": {
+        "edit": {
+          "label": "Obsah"
+        },
+        "list": {
+          "label": "Obsah"
+        }
+      },
+      "phone": {
+        "edit": {
+          "label": "Telefon"
+        },
+        "list": {
+          "label": "Telefon"
+        }
+      },
+      "email": {
+        "edit": {
+          "label": "E-mail"
+        },
+        "list": {
+          "label": "E-mail"
+        }
+      },
+      "address": {
+        "edit": {
+          "label": "Adresa"
+        },
+        "list": {
+          "label": "Adresa"
+        }
+      },
+      "googleMapsUrl": {
+        "edit": {
+          "label": "Odkaz na Google Maps"
+        },
+        "list": {
+          "label": "Odkaz na Google Maps"
+        }
+      },
+      "emailLabel": {
+        "edit": {
+          "label": "Popisek e-mailu"
+        },
+        "list": {
+          "label": "Popisek e-mailu"
+        }
+      },
+      "phoneLabel": {
+        "edit": {
+          "label": "Popisek telefonu"
+        },
+        "list": {
+          "label": "Popisek telefonu"
+        }
+      },
+      "addressLabel": {
+        "edit": {
+          "label": "Popisek adresy"
+        },
+        "list": {
+          "label": "Popisek adresy"
+        }
+      },
+      "mapLabel": {
+        "edit": {
+          "label": "Popisek odkazu na mapu"
+        },
+        "list": {
+          "label": "Popisek odkazu na mapu"
+        }
+      },
+      "teamTitle": {
+        "edit": {
+          "label": "Titulek sekce týmu"
+        },
+        "list": {
+          "label": "Titulek sekce týmu"
+        }
+      },
+      "team": {
+        "edit": {
+          "label": "Členové týmu"
+        },
+        "list": {
+          "label": "Členové týmu"
+        }
+      },
+      "blocks": {
+        "edit": {
+          "label": "Bloky obsahu"
+        },
+        "list": {
+          "label": "Bloky obsahu"
+        }
+      },
+      "seo": {
+        "edit": {
+          "label": "SEO"
+        },
+        "list": {
+          "label": "SEO"
+        }
+      }
+    }
   }
 }

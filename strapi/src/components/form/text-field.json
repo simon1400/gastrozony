@@ -48,5 +48,73 @@
       ],
       "default": "full"
     }
+  },
+  "config": {
+    "metadatas": {
+      "name": {
+        "edit": {
+          "label": "Klíč pole (name)"
+        },
+        "list": {
+          "label": "Klíč pole (name)"
+        }
+      },
+      "label": {
+        "edit": {
+          "label": "Popisek"
+        },
+        "list": {
+          "label": "Popisek"
+        }
+      },
+      "placeholder": {
+        "edit": {
+          "label": "Placeholder"
+        },
+        "list": {
+          "label": "Placeholder"
+        }
+      },
+      "helperText": {
+        "edit": {
+          "label": "Nápověda pod polem"
+        },
+        "list": {
+          "label": "Nápověda pod polem"
+        }
+      },
+      "errorMessage": {
+        "edit": {
+          "label": "Chybová zpráva"
+        },
+        "list": {
+          "label": "Chybová zpráva"
+        }
+      },
+      "required": {
+        "edit": {
+          "label": "Povinné"
+        },
+        "list": {
+          "label": "Povinné"
+        }
+      },
+      "inputType": {
+        "edit": {
+          "label": "Typ pole"
+        },
+        "list": {
+          "label": "Typ pole"
+        }
+      },
+      "width": {
+        "edit": {
+          "label": "Šířka pole"
+        },
+        "list": {
+          "label": "Šířka pole"
+        }
+      }
+    }
   }
 }

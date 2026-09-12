@@ -89,5 +89,177 @@
       "repeatable": false,
       "component": "shared.seo"
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Název akce"
+        },
+        "list": {
+          "label": "Název akce"
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "URL adresa (slug)"
+        },
+        "list": {
+          "label": "URL adresa (slug)"
+        }
+      },
+      "perex": {
+        "edit": {
+          "label": "Perex"
+        },
+        "list": {
+          "label": "Perex"
+        }
+      },
+      "content": {
+        "edit": {
+          "label": "Obsah"
+        },
+        "list": {
+          "label": "Obsah"
+        }
+      },
+      "place": {
+        "edit": {
+          "label": "Místo"
+        },
+        "list": {
+          "label": "Místo"
+        }
+      },
+      "dateFrom": {
+        "edit": {
+          "label": "Datum od"
+        },
+        "list": {
+          "label": "Datum od"
+        }
+      },
+      "dateTo": {
+        "edit": {
+          "label": "Datum do"
+        },
+        "list": {
+          "label": "Datum do"
+        }
+      },
+      "cover": {
+        "edit": {
+          "label": "Hlavní obrázek"
+        },
+        "list": {
+          "label": "Hlavní obrázek"
+        }
+      },
+      "gallery": {
+        "edit": {
+          "label": "Galerie"
+        },
+        "list": {
+          "label": "Galerie"
+        }
+      },
+      "statusOverride": {
+        "edit": {
+          "label": "Stav akce (ruční nastavení)"
+        },
+        "list": {
+          "label": "Stav akce (ruční nastavení)"
+        }
+      },
+      "applicationOpen": {
+        "edit": {
+          "label": "Přihlášky otevřené"
+        },
+        "list": {
+          "label": "Přihlášky otevřené"
+        }
+      },
+      "capacityState": {
+        "edit": {
+          "label": "Stav kapacity"
+        },
+        "list": {
+          "label": "Stav kapacity"
+        }
+      },
+      "googleMapsUrl": {
+        "edit": {
+          "label": "Odkaz na Google Maps"
+        },
+        "list": {
+          "label": "Odkaz na Google Maps"
+        }
+      },
+      "featured": {
+        "edit": {
+          "label": "Zvýraznit na úvodní stránce"
+        },
+        "list": {
+          "label": "Zvýraznit na úvodní stránce"
+        }
+      },
+      "order": {
+        "edit": {
+          "label": "Pořadí"
+        },
+        "list": {
+          "label": "Pořadí"
+        }
+      },
+      "seo": {
+        "edit": {
+          "label": "SEO"
+        },
+        "list": {
+          "label": "SEO"
+        }
+      }
+    }
   }
 }

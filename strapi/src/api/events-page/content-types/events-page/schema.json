@@ -72,5 +72,169 @@
       "repeatable": false,
       "component": "shared.seo"
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "perex": {
+        "edit": {
+          "label": "Perex"
+        },
+        "list": {
+          "label": "Perex"
+        }
+      },
+      "emptyText": {
+        "edit": {
+          "label": "Text, když nejsou žádné akce"
+        },
+        "list": {
+          "label": "Text, když nejsou žádné akce"
+        }
+      },
+      "tabCurrentLabel": {
+        "edit": {
+          "label": "Záložka — aktuální"
+        },
+        "list": {
+          "label": "Záložka — aktuální"
+        }
+      },
+      "tabUpcomingLabel": {
+        "edit": {
+          "label": "Záložka — připravujeme"
+        },
+        "list": {
+          "label": "Záložka — připravujeme"
+        }
+      },
+      "tabPastLabel": {
+        "edit": {
+          "label": "Záložka — ukončené"
+        },
+        "list": {
+          "label": "Záložka — ukončené"
+        }
+      },
+      "applyLabel": {
+        "edit": {
+          "label": "Text tlačítka pro přihlášení"
+        },
+        "list": {
+          "label": "Text tlačítka pro přihlášení"
+        }
+      },
+      "applicationClosedText": {
+        "edit": {
+          "label": "Text, když jsou přihlášky uzavřené"
+        },
+        "list": {
+          "label": "Text, když jsou přihlášky uzavřené"
+        }
+      },
+      "dateLabel": {
+        "edit": {
+          "label": "Popisek data"
+        },
+        "list": {
+          "label": "Popisek data"
+        }
+      },
+      "placeLabel": {
+        "edit": {
+          "label": "Popisek místa"
+        },
+        "list": {
+          "label": "Popisek místa"
+        }
+      },
+      "capacityLabel": {
+        "edit": {
+          "label": "Popisek kapacity"
+        },
+        "list": {
+          "label": "Popisek kapacity"
+        }
+      },
+      "mapLabel": {
+        "edit": {
+          "label": "Popisek odkazu na mapu"
+        },
+        "list": {
+          "label": "Popisek odkazu na mapu"
+        }
+      },
+      "galleryTitle": {
+        "edit": {
+          "label": "Titulek galerie"
+        },
+        "list": {
+          "label": "Titulek galerie"
+        }
+      },
+      "backLabel": {
+        "edit": {
+          "label": "Popisek odkazu zpět"
+        },
+        "list": {
+          "label": "Popisek odkazu zpět"
+        }
+      },
+      "seo": {
+        "edit": {
+          "label": "SEO"
+        },
+        "list": {
+          "label": "SEO"
+        }
+      }
+    }
   }
 }

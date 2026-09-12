@@ -11,5 +11,17 @@
       "type": "string",
       "required": true
     }
+  },
+  "config": {
+    "metadatas": {
+      "label": {
+        "edit": {
+          "label": "Text štítku"
+        },
+        "list": {
+          "label": "Text štítku"
+        }
+      }
+    }
   }
 }

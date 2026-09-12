@@ -54,5 +54,145 @@
       "type": "boolean",
       "default": true
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Text"
+        },
+        "list": {
+          "label": "Text"
+        }
+      },
+      "emailLabel": {
+        "edit": {
+          "label": "Popisek pole e-mail"
+        },
+        "list": {
+          "label": "Popisek pole e-mail"
+        }
+      },
+      "placeholder": {
+        "edit": {
+          "label": "Placeholder pole e-mail"
+        },
+        "list": {
+          "label": "Placeholder pole e-mail"
+        }
+      },
+      "buttonLabel": {
+        "edit": {
+          "label": "Text tlačítka"
+        },
+        "list": {
+          "label": "Text tlačítka"
+        }
+      },
+      "consentText": {
+        "edit": {
+          "label": "Text souhlasu"
+        },
+        "list": {
+          "label": "Text souhlasu"
+        }
+      },
+      "successText": {
+        "edit": {
+          "label": "Text po úspěšném přihlášení"
+        },
+        "list": {
+          "label": "Text po úspěšném přihlášení"
+        }
+      },
+      "errorText": {
+        "edit": {
+          "label": "Text při chybě"
+        },
+        "list": {
+          "label": "Text při chybě"
+        }
+      },
+      "ecomailListId": {
+        "edit": {
+          "label": "Ecomail — ID seznamu"
+        },
+        "list": {
+          "label": "Ecomail — ID seznamu"
+        }
+      },
+      "ecomailTags": {
+        "edit": {
+          "label": "Ecomail — štítky"
+        },
+        "list": {
+          "label": "Ecomail — štítky"
+        }
+      },
+      "doubleOptIn": {
+        "edit": {
+          "label": "Dvojí potvrzení (double opt-in)"
+        },
+        "list": {
+          "label": "Dvojí potvrzení (double opt-in)"
+        }
+      },
+      "enabled": {
+        "edit": {
+          "label": "Zapnuto"
+        },
+        "list": {
+          "label": "Zapnuto"
+        }
+      }
+    }
   }
 }

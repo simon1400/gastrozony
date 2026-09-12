@@ -29,5 +29,81 @@
     "source": {
       "type": "string"
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "email": {
+        "edit": {
+          "label": "E-mail"
+        },
+        "list": {
+          "label": "E-mail"
+        }
+      },
+      "consent": {
+        "edit": {
+          "label": "Souhlas"
+        },
+        "list": {
+          "label": "Souhlas"
+        }
+      },
+      "syncedToEcomail": {
+        "edit": {
+          "label": "Přeneseno do Ecomailu"
+        },
+        "list": {
+          "label": "Přeneseno do Ecomailu"
+        }
+      },
+      "source": {
+        "edit": {
+          "label": "Zdroj"
+        },
+        "list": {
+          "label": "Zdroj"
+        }
+      }
+    }
   }
 }

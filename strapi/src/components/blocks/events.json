@@ -33,5 +33,49 @@
       "repeatable": false,
       "component": "shared.cta"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Text"
+        },
+        "list": {
+          "label": "Text"
+        }
+      },
+      "limit": {
+        "edit": {
+          "label": "Počet akcí"
+        },
+        "list": {
+          "label": "Počet akcí"
+        }
+      },
+      "filter": {
+        "edit": {
+          "label": "Filtr akcí"
+        },
+        "list": {
+          "label": "Filtr akcí"
+        }
+      },
+      "cta": {
+        "edit": {
+          "label": "Tlačítko"
+        },
+        "list": {
+          "label": "Tlačítko"
+        }
+      }
+    }
   }
 }

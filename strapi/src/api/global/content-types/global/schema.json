@@ -4,7 +4,7 @@
   "info": {
     "singularName": "global",
     "pluralName": "globals",
-    "displayName": "Global",
+    "displayName": "Globální nastavení",
     "description": "Kontakty, logo, sociální sítě, výchozí SEO"
   },
   "options": {
@@ -58,6 +58,154 @@
     "notFoundEventsLabel": {
       "type": "string",
       "default": "Aktuální akce"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "siteName": {
+        "edit": {
+          "label": "Název webu"
+        },
+        "list": {
+          "label": "Název webu"
+        }
+      },
+      "phone": {
+        "edit": {
+          "label": "Telefon"
+        },
+        "list": {
+          "label": "Telefon"
+        }
+      },
+      "email": {
+        "edit": {
+          "label": "E-mail"
+        },
+        "list": {
+          "label": "E-mail"
+        }
+      },
+      "address": {
+        "edit": {
+          "label": "Adresa"
+        },
+        "list": {
+          "label": "Adresa"
+        }
+      },
+      "ico": {
+        "edit": {
+          "label": "IČO"
+        },
+        "list": {
+          "label": "IČO"
+        }
+      },
+      "dic": {
+        "edit": {
+          "label": "DIČ"
+        },
+        "list": {
+          "label": "DIČ"
+        }
+      },
+      "socials": {
+        "edit": {
+          "label": "Sociální sítě"
+        },
+        "list": {
+          "label": "Sociální sítě"
+        }
+      },
+      "applicationRecipients": {
+        "edit": {
+          "label": "Příjemci přihlášek (e-maily)"
+        },
+        "list": {
+          "label": "Příjemci přihlášek (e-maily)"
+        }
+      },
+      "defaultSeo": {
+        "edit": {
+          "label": "Výchozí SEO"
+        },
+        "list": {
+          "label": "Výchozí SEO"
+        }
+      },
+      "notFoundTitle": {
+        "edit": {
+          "label": "Stránka 404 — titulek"
+        },
+        "list": {
+          "label": "Stránka 404 — titulek"
+        }
+      },
+      "notFoundText": {
+        "edit": {
+          "label": "Stránka 404 — text"
+        },
+        "list": {
+          "label": "Stránka 404 — text"
+        }
+      },
+      "notFoundHomeLabel": {
+        "edit": {
+          "label": "Stránka 404 — tlačítko na úvod"
+        },
+        "list": {
+          "label": "Stránka 404 — tlačítko na úvod"
+        }
+      },
+      "notFoundEventsLabel": {
+        "edit": {
+          "label": "Stránka 404 — tlačítko na akce"
+        },
+        "list": {
+          "label": "Stránka 404 — tlačítko na akce"
+        }
+      }
     }
   }
 }

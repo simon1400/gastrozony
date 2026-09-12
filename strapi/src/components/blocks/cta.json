@@ -28,5 +28,41 @@
       ],
       "default": "yellow"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Text"
+        },
+        "list": {
+          "label": "Text"
+        }
+      },
+      "cta": {
+        "edit": {
+          "label": "Tlačítko"
+        },
+        "list": {
+          "label": "Tlačítko"
+        }
+      },
+      "background": {
+        "edit": {
+          "label": "Pozadí"
+        },
+        "list": {
+          "label": "Pozadí"
+        }
+      }
+    }
   }
 }

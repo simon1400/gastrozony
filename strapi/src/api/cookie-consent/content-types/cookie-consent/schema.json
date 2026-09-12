@@ -57,5 +57,145 @@
       "type": "string",
       "default": "Nastavení cookies"
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Text"
+        },
+        "list": {
+          "label": "Text"
+        }
+      },
+      "acceptAllLabel": {
+        "edit": {
+          "label": "Tlačítko — přijmout vše"
+        },
+        "list": {
+          "label": "Tlačítko — přijmout vše"
+        }
+      },
+      "necessaryOnlyLabel": {
+        "edit": {
+          "label": "Tlačítko — pouze nutné"
+        },
+        "list": {
+          "label": "Tlačítko — pouze nutné"
+        }
+      },
+      "settingsLabel": {
+        "edit": {
+          "label": "Tlačítko — nastavení"
+        },
+        "list": {
+          "label": "Tlačítko — nastavení"
+        }
+      },
+      "saveLabel": {
+        "edit": {
+          "label": "Tlačítko — uložit volbu"
+        },
+        "list": {
+          "label": "Tlačítko — uložit volbu"
+        }
+      },
+      "necessaryTitle": {
+        "edit": {
+          "label": "Nutné cookies — titulek"
+        },
+        "list": {
+          "label": "Nutné cookies — titulek"
+        }
+      },
+      "necessaryText": {
+        "edit": {
+          "label": "Nutné cookies — text"
+        },
+        "list": {
+          "label": "Nutné cookies — text"
+        }
+      },
+      "alwaysActiveLabel": {
+        "edit": {
+          "label": "Popisek „vždy aktivní“"
+        },
+        "list": {
+          "label": "Popisek „vždy aktivní“"
+        }
+      },
+      "analyticsTitle": {
+        "edit": {
+          "label": "Analytické cookies — titulek"
+        },
+        "list": {
+          "label": "Analytické cookies — titulek"
+        }
+      },
+      "analyticsText": {
+        "edit": {
+          "label": "Analytické cookies — text"
+        },
+        "list": {
+          "label": "Analytické cookies — text"
+        }
+      },
+      "footerLinkLabel": {
+        "edit": {
+          "label": "Popisek odkazu v patičce"
+        },
+        "list": {
+          "label": "Popisek odkazu v patičce"
+        }
+      }
+    }
   }
 }

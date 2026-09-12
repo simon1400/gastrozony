@@ -30,5 +30,49 @@
       "type": "boolean",
       "default": false
     }
+  },
+  "config": {
+    "metadatas": {
+      "metaTitle": {
+        "edit": {
+          "label": "Meta titulek"
+        },
+        "list": {
+          "label": "Meta titulek"
+        }
+      },
+      "metaDescription": {
+        "edit": {
+          "label": "Meta popis"
+        },
+        "list": {
+          "label": "Meta popis"
+        }
+      },
+      "metaImage": {
+        "edit": {
+          "label": "Obrázek pro sdílení"
+        },
+        "list": {
+          "label": "Obrázek pro sdílení"
+        }
+      },
+      "keywords": {
+        "edit": {
+          "label": "Klíčová slova"
+        },
+        "list": {
+          "label": "Klíčová slova"
+        }
+      },
+      "noIndex": {
+        "edit": {
+          "label": "Nezařazovat do vyhledávačů (noindex)"
+        },
+        "list": {
+          "label": "Nezařazovat do vyhledávačů (noindex)"
+        }
+      }
+    }
   }
 }

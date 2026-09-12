@@ -14,5 +14,25 @@
     "text": {
       "type": "text"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Text (odstavce oddělte prázdným řádkem)"
+        },
+        "list": {
+          "label": "Text (odstavce oddělte prázdným řádkem)"
+        }
+      }
+    }
   }
 }

@@ -27,5 +27,41 @@
       ],
       "default": "grey"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "text": {
+        "edit": {
+          "label": "Text"
+        },
+        "list": {
+          "label": "Text"
+        }
+      },
+      "items": {
+        "edit": {
+          "label": "Karty"
+        },
+        "list": {
+          "label": "Karty"
+        }
+      },
+      "background": {
+        "edit": {
+          "label": "Pozadí"
+        },
+        "list": {
+          "label": "Pozadí"
+        }
+      }
+    }
   }
 }

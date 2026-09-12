@@ -16,5 +16,25 @@
       "repeatable": true,
       "component": "shared.tag"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "items": {
+        "edit": {
+          "label": "Štítky"
+        },
+        "list": {
+          "label": "Štítky"
+        }
+      }
+    }
   }
 }

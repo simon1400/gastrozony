@@ -18,5 +18,33 @@
       "type": "boolean",
       "default": false
     }
+  },
+  "config": {
+    "metadatas": {
+      "label": {
+        "edit": {
+          "label": "Popisek"
+        },
+        "list": {
+          "label": "Popisek"
+        }
+      },
+      "value": {
+        "edit": {
+          "label": "Hodnota"
+        },
+        "list": {
+          "label": "Hodnota"
+        }
+      },
+      "disabled": {
+        "edit": {
+          "label": "Nedostupné"
+        },
+        "list": {
+          "label": "Nedostupné"
+        }
+      }
+    }
   }
 }

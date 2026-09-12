@@ -23,5 +23,33 @@
       ],
       "default": "white"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Titulek"
+        },
+        "list": {
+          "label": "Titulek"
+        }
+      },
+      "body": {
+        "edit": {
+          "label": "Text"
+        },
+        "list": {
+          "label": "Text"
+        }
+      },
+      "background": {
+        "edit": {
+          "label": "Pozadí"
+        },
+        "list": {
+          "label": "Pozadí"
+        }
+      }
+    }
   }
 }

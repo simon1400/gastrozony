@@ -43,5 +43,89 @@
       "type": "boolean",
       "default": false
     }
+  },
+  "config": {
+    "metadatas": {
+      "createdAt": {
+        "edit": {
+          "label": "Vytvořeno"
+        },
+        "list": {
+          "label": "Vytvořeno"
+        }
+      },
+      "updatedAt": {
+        "edit": {
+          "label": "Naposledy upraveno"
+        },
+        "list": {
+          "label": "Naposledy upraveno"
+        }
+      },
+      "publishedAt": {
+        "edit": {
+          "label": "Publikováno"
+        },
+        "list": {
+          "label": "Publikováno"
+        }
+      },
+      "createdBy": {
+        "edit": {
+          "label": "Vytvořil"
+        },
+        "list": {
+          "label": "Vytvořil"
+        }
+      },
+      "updatedBy": {
+        "edit": {
+          "label": "Upravil"
+        },
+        "list": {
+          "label": "Upravil"
+        }
+      },
+      "name": {
+        "edit": {
+          "label": "Název formuláře"
+        },
+        "list": {
+          "label": "Název formuláře"
+        }
+      },
+      "key": {
+        "edit": {
+          "label": "Klíč formuláře"
+        },
+        "list": {
+          "label": "Klíč formuláře"
+        }
+      },
+      "fields": {
+        "edit": {
+          "label": "Pole formuláře"
+        },
+        "list": {
+          "label": "Pole formuláře"
+        }
+      },
+      "consent": {
+        "edit": {
+          "label": "Souhlas (GDPR)"
+        },
+        "list": {
+          "label": "Souhlas (GDPR)"
+        }
+      },
+      "requiresEvent": {
+        "edit": {
+          "label": "Vyžaduje výběr akce"
+        },
+        "list": {
+          "label": "Vyžaduje výběr akce"
+        }
+      }
+    }
   }
 }
