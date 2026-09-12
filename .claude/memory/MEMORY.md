@@ -41,6 +41,21 @@ D:\gastrozony
   `.env.example`), `*.log`, `strapi/public/uploads` (медиа в ImageKit).
 - В `client/.gitignore` добавлено `!.env.example` — иначе правило `.env*` из скаффолда глушило и образец.
 
+## Сервер и деплой (изучено 2026-09-12)
+- Сервер BSF = хост **`het`** в `~/.ssh/config` → `157.90.169.205`, `dimi-strapi-server`, root. (Второй хост `wedos`
+  не нужен и сейчас ругается на смену host key.) Полное описание — `docs/deploy.md`.
+- Конвенции: `/opt/<проект>/{client,strapi}` (свой git-клон), pm2 `<проект>-client/-strapi` + `ecosystem.config.js`
+  в репо, логи `/var/log/pm2/`, nginx `<домен>` → порт клиента, **Strapi на поддомене `strapi.<домен>`**,
+  certbot, PostgreSQL `<проект>_db`/`<проект>_user`, Node для сборок `/opt/node-v22/bin`.
+- Деплой у соседей: GitHub Actions + `appleboy/ssh-action@v1.2.0`, секреты SSH_HOST/SSH_USER/SSH_PRIVATE_KEY.
+  Ключ `github-actions-deploy` уже в `authorized_keys` сервера и локально в `~/.ssh/github_deploy_key` — новый не нужен.
+- Наши порты: **client 3012, Strapi 1343** (3011 из старого плана занят tulsio; заняты 1333–1342, 1346, 1350).
+- **Репозиторий:** `git@github.com:simon1400/gastrozony.git`, ветка `main`, **публичный**. Монорепо целиком.
+- **Блокер DNS:** `gastrozony.cz` → 46.28.106.212 (чужой IP), у `www`/`strapi` записей нет. Пока A-записи не переведут
+  на 157.90.169.205 — certbot и прод-домен невозможны.
+- `gh` CLI локально авторизован как `simon1400`. Установку секретов (`gh secret set`) и провижининг сервера
+  классификатор auto-mode блокирует — делает пользователь либо отдельно разрешает.
+
 ## Ключевые ссылки
 - XD макет: https://xd.adobe.com/view/3c6d2321-bb64-4f48-bbdd-dedf589c9998-693e/ (specs: `/specs`)
 - Референс формы: https://burgerstreetfestival.cz/registrace · код: `D:\burger`
