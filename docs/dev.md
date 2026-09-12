@@ -136,6 +136,19 @@ npm run dev         # http://localhost:3000
   4. `node scripts/seed.mjs --reupload-local` — удалит локальные seed-медиа (provider=local) и зальёт их в ImageKit.
      Иначе плагин перепишет старые `/uploads/...` на `ik.imagekit.io/<id>/uploads/...`, а до localhost ImageKit не достучится.
 
+### Аналитика: Google Tag Manager
+
+- ID контейнера — `NEXT_PUBLIC_GTM_ID` (прод: `GTM-K6H6424Z`). GA4 настраивается **внутри GTM**, отдельный
+  `NEXT_PUBLIC_GA_ID` нужен, только если GTM не используется (тогда грузится gtag.js напрямую).
+- `lib/analytics.ts`: без согласия **не грузится ничего** (базовый Consent Mode). После согласия —
+  `consent default` (всё denied) → `consent update: analytics_storage granted` → `gtm.js`. Рекламные сигналы
+  всегда denied. Отзыв согласия удаляет `_ga`/`_ga_*`.
+- `<noscript><iframe>` из инструкции Google **не ставим**: без JS нельзя ни спросить согласие, ни его учесть,
+  контейнер грузился бы безусловно.
+- Проверка (Playwright, 12.09.2026): до согласия 0 запросов к google, после «Přijmout vše» —
+  `gtm.js?id=GTM-K6H6424Z` 200, в `dataLayer` обе записи consent, cookie `gz_consent=v1.analytics-1`.
+- Локально аналитики нет, пока не задать переменную: `NEXT_PUBLIC_GTM_ID=GTM-K6H6424Z npm run dev`.
+
 ### E-maily (Resend) и newsletter (Ecomail) — шаг 12
 
 **Код:** `client/src/lib/mailer.ts` (Resend REST, без SDK), `client/src/lib/mail-template.ts` (HTML+text шаблон),

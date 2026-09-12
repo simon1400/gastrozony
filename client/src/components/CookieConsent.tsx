@@ -15,7 +15,8 @@ type Props = {
   texts: CookieTexts;
   /** `texts.text` vykreslený na serveru z markdownu (odkazy na /cookies a GDPR). */
   text: ReactNode;
-  /** GA4 Measurement ID (NEXT_PUBLIC_GA_ID); prázdné → analytika se nikdy nenačte. */
+  /** GTM kontejner (NEXT_PUBLIC_GTM_ID) a GA4 měřicí ID (NEXT_PUBLIC_GA_ID); obojí prázdné → analytika se nenačte. */
+  gtmId: string | null;
   gaId: string | null;
 };
 
@@ -25,18 +26,18 @@ const textButton =
   'px-2 py-3 text-[16px] font-extrabold underline decoration-yellow decoration-[3px] underline-offset-4 ' +
   'transition-colors hover:text-yellow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow';
 
-export const CookieConsent = ({ texts, text, gaId }: Props) => {
+export const CookieConsent = ({ texts, text, gtmId, gaId }: Props) => {
   const [view, setView] = useState<View>('closed');
   const [analytics, setAnalytics] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const apply = useCallback(
     (consent: Consent) => {
-      if (!gaId) return;
-      if (consent.analytics) enableAnalytics(gaId);
+      if (!gtmId && !gaId) return;
+      if (consent.analytics) enableAnalytics({ gtmId, gaId });
       else disableAnalytics();
     },
-    [gaId],
+    [gtmId, gaId],
   );
 
   useEffect(() => {

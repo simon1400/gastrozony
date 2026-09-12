@@ -17,6 +17,7 @@ export default async function SiteLayout({ children }: Readonly<{ children: Reac
       <CookieConsent
         texts={cookieTexts}
         text={<RichInline>{cookieTexts.text}</RichInline>}
+        gtmId={process.env.NEXT_PUBLIC_GTM_ID || null}
         gaId={process.env.NEXT_PUBLIC_GA_ID || null}
       />
     </>

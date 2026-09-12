@@ -70,15 +70,15 @@
       Проверено `Host`-заголовком: `/`, `/akce`, `/prihlaska`, `/novinky`, `/kontakt`, `/sitemap.xml` → 200,
       админка Strapi → 200, `/sprava/prihlasky` → 401 без логина и 200 с логином, `X-Robots-Tag: noindex` отдаётся.
 - [x] Клиент пересобран под тестовый домен: sitemap и canonical → `https://gastrozony.hardart.cz`.
+- [x] Бэкапы: вся база 1-го числа, заявки пн/чт — см. «Бэкапы» ниже (проверено пробным запуском).
 - [x] Тестовые записи удалены: 7 заявок (`demo.*`, `test.*`) и 2 подписчика — в прод-базе 0 и 0.
 
 ### Осталось
 
 - [ ] **Секреты GitHub** (без них workflow падает с `missing server host` — уже проверено):
       команды в шаге 1 ниже.
-- [ ] Бэкап БД: скрипт ниже + строка в crontab (у соседей `/root/backups/scripts/<проект>_db_backup.sh`).
-- [ ] Ключи Resend / Ecomail и `NEXT_PUBLIC_GA_ID` в `client/.env.local` на сервере.
-- [ ] Чек-лист безопасности внизу (публичный `create`, custom-токен, новый private key ImageKit).
+- [ ] Ключи Resend / Ecomail в `client/.env.local` на сервере (GTM уже прописан: `NEXT_PUBLIC_GTM_ID=GTM-K6H6424Z`).
+- [ ] Чек-лист безопасности внизу (публичный `create`, custom-токен).
 
 ---
 
@@ -135,7 +135,7 @@ STRAPI_URL=http://127.0.0.1:1343
 STRAPI_API_TOKEN=<создать в админке после шага 6 — custom, только нужные права>
 NEXT_PUBLIC_SITE_URL=https://gastrozony.cz
 NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/ev2rmbc0ca
-NEXT_PUBLIC_GA_ID=<от заказчика>
+NEXT_PUBLIC_GTM_ID=GTM-K6H6424Z
 ADMIN_USER=gastrozony
 ADMIN_PASS=<свой, не dev-овский>
 STRAPI_ADMIN_URL=https://strapi.gastrozony.cz
@@ -189,45 +189,57 @@ cd /opt/gastrozony && node scripts/seed.mjs     # идемпотентен; сн
 - [ ] **Убрать публичный `create`** на `application` и `newsletter-subscriber` в `strapi/src/index.ts` (bootstrap) —
       писать должен только серверный токен.
 - [ ] Прод-токен Strapi — **custom** (только нужные права), а не full-access dev-токен.
-- [ ] **Новый private key ImageKit** (текущий проходил через чат) — Developer options → API keys.
-      Конфиг из `.env` плагин читает только при первом запуске, дальше — Settings → ImageKit в админке.
+- [x] ~~Новый private key ImageKit~~ — **решено не перевыпускать** (12.09.2026): проект небольшой, риск принят.
 - [ ] Свой `ADMIN_PASS` для `/sprava` (dev-овский не переносить).
 - [ ] Удалить тестовые записи: заявки `demo.*@example.com`, `test.e2e@`, `test.ui@`, `test.mail@`,
       `test.mailkey@`, `test.final@example.com`; подписчики `test.ecomail@`, `test.ecomail2@example.com`.
 - [ ] Репозиторий **публичный** — убедиться, что это осознанно (виден весь код, docs и путь `/sprava`;
       секретов в нём нет, но путь админки перестаёт быть неизвестным).
 
-## Бэкапы (cron)
+## Бэкапы
 
-Uploads бэкапить не нужно — медиа в ImageKit, нужна только БД. На сервере уже есть договорённость:
-скрипты в `/root/backups/scripts/<проект>_db_backup.sh`, дампы в `/root/backups/daily`, пароль в `/root/.<проект>_db_pw`.
-Делаем так же (пароль взять из `DATABASE_PASSWORD` в `/opt/gastrozony/strapi/.env`):
+Медиа не бэкапим — файлы в ImageKit. Настроено 12.09.2026, схема по решению заказчика:
+**вся база — раз в месяц, заявки — два раза в неделю.**
 
+| Что | Когда | Скрипт | Куда | Хранение |
+|---|---|---|---|---|
+| Вся база (контент, страницы, настройки, заявки) | 1-го числа в 03:40 | `/root/backups/scripts/gastrozony_db_backup.sh` | `/root/backups/gastrozony/full/` | 400 дней (~13 копий) |
+| Только заявки + вложения | пн и чт в 03:45 | `/root/backups/scripts/gastrozony_applications_backup.sh` | `/root/backups/gastrozony/applications/` | 180 дней |
+
+Пароль БД — в `/root/.gastrozony_db_pw` (режим 600), берётся из `strapi/.env`.
+Лог каждого набора — `backup.log` в его каталоге (строка `OK`/`FAIL` на запуск).
+
+**Бэкап заявок даёт два файла:**
+- `applications_<дата>.dump` — таблицы `applications`, `applications_cmps`, `applications_event_lnk`,
+  `components_form_result_items`, `files`, `files_related_mph` (формат custom, для `pg_restore`);
+- `prihlasky_<дата>.csv` — тот же CSV, что кнопка «Exportovat CSV» на `/sprava/prihlasky`
+  (скрипт дёргает сам сайт с Basic Auth из `client/.env.local`), можно сразу открыть в Excel или переслать заказчику.
+
+### Восстановление
+
+Вся база:
 ```bash
-printf '%s' '<пароль_из_strapi/.env>' > /root/.gastrozony_db_pw && chmod 600 /root/.gastrozony_db_pw
-cat > /root/backups/scripts/gastrozony_db_backup.sh <<'EOF'
-#!/usr/bin/env bash
-set -euo pipefail
-PGDUMP=/usr/lib/postgresql/16/bin/pg_dump      # на сервере PostgreSQL 16
-OUTDIR=/root/backups/daily
-RETENTION_DAYS=14
-PW="$(cat /root/.gastrozony_db_pw)"
-OUT="$OUTDIR/gastrozony_db_$(date +%Y%m%d_%H%M%S).dump"
-LOG="$OUTDIR/backup.log"
-mkdir -p "$OUTDIR"
-if PGPASSWORD="$PW" "$PGDUMP" "host=localhost port=5432 dbname=gastrozony_db user=gastrozony_user" \
-     --format=custom --no-owner --no-privileges --file="$OUT" 2>>"$LOG"; then
-  echo "$(date '+%F %T') OK   $OUT ($(du -h "$OUT" | cut -f1))" >> "$LOG"
-else
-  echo "$(date '+%F %T') FAIL dump failed" >> "$LOG"; rm -f "$OUT"; exit 1
-fi
-find "$OUTDIR" -name 'gastrozony_db_*.dump' -mtime +"$RETENTION_DAYS" -delete
-EOF
-chmod +x /root/backups/scripts/gastrozony_db_backup.sh
-/root/backups/scripts/gastrozony_db_backup.sh    # пробный запуск
-( crontab -l; echo '40 3 * * * /root/backups/scripts/gastrozony_db_backup.sh >/dev/null 2>&1' ) | crontab -
+sudo -u postgres pg_restore -d gastrozony_db --clean --if-exists --no-owner \
+  /root/backups/gastrozony/full/gastrozony_db_<дата>.dump
+pm2 restart gastrozony-strapi gastrozony-client
 ```
-(3:30 и 3:35 уже заняты barbitch и studycz — поэтому 3:40.)
+
+Только заявки (когда остальной контент трогать нельзя):
+```bash
+sudo -u postgres pg_restore -d gastrozony_db --data-only --no-owner \
+  -t applications -t applications_cmps -t applications_event_lnk -t components_form_result_items \
+  /root/backups/gastrozony/applications/applications_<дата>.dump
+```
+Перед восстановлением заявок сделайте свежий полный дамп — `--data-only` конфликтует с уже
+существующими строками (те же id), при необходимости чистить таблицы вручную.
+
+### Проверить, что бэкапы идут
+```bash
+crontab -l | grep gastrozony
+tail -5 /root/backups/gastrozony/full/backup.log
+tail -5 /root/backups/gastrozony/applications/backup.log
+ls -lh /root/backups/gastrozony/*/
+```
 
 ## Как работает автодеплой
 

@@ -1,7 +1,15 @@
 /**
- * GA4 s Consent Mode v2 (základní režim) — jen v prohlížeči.
- * Výchozí stav: vše `denied`, gtag.js se nenačítá → bez souhlasu žádný požadavek na Google.
- * Po souhlasu: `consent update` → granted a teprve pak se načte gtag.js. Reklamní signály zůstávají denied.
+ * Google Tag Manager (nebo přímo GA4) s Consent Mode v2 — jen v prohlížeči.
+ *
+ * Základní režim: bez souhlasu se nenačte vůbec nic, takže na Google nejde jediný požadavek.
+ * Po souhlasu: `consent default` (vše denied) → `consent update` na analytics_storage → teprve pak skript.
+ * Reklamní signály zůstávají denied vždy.
+ *
+ * Priorita: `NEXT_PUBLIC_GTM_ID` (GTM-…) → kontejner GTM, uvnitř kterého si zákazník spravuje značky včetně GA4.
+ * Když GTM není, ale je `NEXT_PUBLIC_GA_ID` (G-…), načte se gtag.js přímo.
+ *
+ * Značka `<noscript><iframe …>` z návodu Google tu schválně není: bez JavaScriptu se nedá zjistit souhlas
+ * (a ani ho udělit — lišta je klientská), takže by se načítala i bez něj.
  */
 
 declare global {
@@ -11,7 +19,14 @@ declare global {
   }
 }
 
-const SCRIPT_ID = 'gz-gtag';
+const SCRIPT_ID = 'gz-tag';
+
+export type AnalyticsIds = {
+  /** GTM-XXXXXXX */
+  gtmId?: string | null;
+  /** G-XXXXXXXXXX */
+  gaId?: string | null;
+};
 
 function ensureGtag(): (...args: unknown[]) => void {
   if (!window.gtag) {
@@ -31,21 +46,34 @@ function ensureGtag(): (...args: unknown[]) => void {
   return window.gtag;
 }
 
-export function enableAnalytics(gaId: string) {
+const addScript = (src: string) => {
+  const script = document.createElement('script');
+  script.id = SCRIPT_ID;
+  script.async = true;
+  script.src = src;
+  document.head.appendChild(script);
+};
+
+export function enableAnalytics({ gtmId, gaId }: AnalyticsIds) {
   const gtag = ensureGtag();
   gtag('consent', 'update', { analytics_storage: 'granted' });
   if (document.getElementById(SCRIPT_ID)) return;
 
-  const script = document.createElement('script');
-  script.id = SCRIPT_ID;
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
-  document.head.appendChild(script);
-  gtag('js', new Date());
-  gtag('config', gaId);
+  if (gtmId) {
+    // ekvivalent oficiálního snippetu GTM, jen spuštěný až po souhlasu
+    window.dataLayer?.push({ 'gtm.start': Date.now(), event: 'gtm.js' });
+    addScript(`https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(gtmId)}`);
+    return;
+  }
+
+  if (gaId) {
+    addScript(`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`);
+    gtag('js', new Date());
+    gtag('config', gaId);
+  }
 }
 
-/** Odvolání souhlasu: GA přestane ukládat a smažou se jeho cookies (_ga, _ga_*). */
+/** Odvolání souhlasu: měření se zastaví a smažou se cookies GA (_ga, _ga_*). */
 export function disableAnalytics() {
   window.gtag?.('consent', 'update', { analytics_storage: 'denied' });
 
