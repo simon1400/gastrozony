@@ -1,0 +1,48 @@
+name: Deploy client
+
+# Монорепо: client и strapi деплоятся отдельно, но из одного чекаута /opt/gastrozony,
+# поэтому у обоих workflow одна concurrency-группа — параллельный git reset исключён.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'client/**'
+      - 'deploy/ecosystem.config.js'
+      - '.github/workflows/deploy-client.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy client to server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          command_timeout: 20m
+          script: |
+            set -e
+            export PATH=/opt/node-v22/bin:/usr/local/bin:/usr/bin:/bin
+
+            cd /opt/gastrozony
+            git fetch origin main
+            git reset --hard origin/main
+
+            cd /opt/gastrozony/client
+            # NODE_ENV не выставляем: для `next build` нужны devDependencies
+            npm ci
+            npm run build
+
+            pm2 restart gastrozony-client --update-env \
+              || pm2 start /opt/gastrozony/deploy/ecosystem.config.js --only gastrozony-client
+            pm2 save
+            echo "✅ client nasazen"
