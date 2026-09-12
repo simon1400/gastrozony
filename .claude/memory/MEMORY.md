@@ -82,6 +82,31 @@ D:\gastrozony
 - **Аналитика — Google Tag Manager**, контейнер `GTM-K6H6424Z` (`NEXT_PUBLIC_GTM_ID`), GA4 настраивается внутри GTM.
   `NEXT_PUBLIC_GA_ID` остался как запасной вариант (грузит gtag.js напрямую, если GTM не задан).
 
+## Чешская админка (12.09.2026, локаль + подписи полей)
+- Задача заказчика: в админке всё по-чешски, **ключи полей не менять** (на них держится фронт).
+- Подписи полей живут не в схеме, а в конфигурации Content Manager
+  (`strapi_core_store_settings`, ключи `plugin_content_manager_configuration_*`). Strapi на старте
+  синхронизирует её так, что **значения из БД имеют приоритет** над `config.metadatas` из `schema.json`,
+  поэтому на существующей базе одних схем недостаточно — нужен прогон по БД.
+- Механика (подробно в `docs/dev.md` → «Чешские подписи полей в админке»):
+  словарь `scripts/cs-labels.mjs` → `gen-strapi-model.mjs` (в схемы, для чистой БД)
+  + `apply-cs-labels.mjs` (в БД, на каждом окружении). Оба идемпотентны, есть `--dry`.
+  Прогнано на локале и проде 12.09.2026: 49 типов/компонентов, ~200 полей.
+- Локаль: `set-default-locale-cs.mjs` переименовал единственную локаль `en` → `cs` (Čeština)
+  и `plugin_i18n_default_locale` → `"cs"`. Контент-типы не локализованы, у записей `locale = null`,
+  поэтому контент не задет (проверено до прогона: ни одной строки с `locale <> null`, ни одного
+  permission с `"en"`). Удалять локаль не пришлось — переименование безопаснее (delete локали
+  в Strapi 5 сносит контент локализованных типов).
+- Язык интерфейса админки: `strapi/src/admin/app.tsx` (`locales: ['cs']` + bootstrap кладёт
+  `localStorage['strapi-admin-language'] = 'cs'`, иначе Strapi откатывается на `en`).
+  Требует пересборки админки — деплой её делает сам. Чешский перевод Strapi **неполный**:
+  `Content Manager`, `Collection/Single Types`, вкладки `Draft`/`Published` и Media Library остаются
+  английскими — это учтено в `docs/admin-guide.md`.
+- Переименованы два английских раздела: `Global` → «Globální nastavení», `Homepage` → «Domovská stránka»
+  (это `info.displayName`, API-имена не меняются).
+- `docs/admin-guide.md` переписан под новые подписи: раньше он ссылался на английские ключи
+  (`applicationRecipients`, `Global → defaultSeo`…), которых заказчик в админке больше не увидит.
+
 ## Ключевые ссылки
 - XD макет: https://xd.adobe.com/view/3c6d2321-bb64-4f48-bbdd-dedf589c9998-693e/ (specs: `/specs`)
 - Референс формы: https://burgerstreetfestival.cz/registrace · код: `D:\burger`
@@ -103,7 +128,8 @@ D:\gastrozony
 
 ## Стек (утверждён 2026-09-04)
 - **client:** Next.js 15 App Router + React 19 + TS + Tailwind 4, react-hook-form + zod
-- **strapi:** Strapi 5, REST, без i18n; **БД:** PostgreSQL; **язык:** только `cs`
+- **strapi:** Strapi 5, REST, контент-типы без i18n; **БД:** PostgreSQL;
+  **язык:** единственная локаль `cs`, интерфейс админки чешский (с 12.09.2026)
 - **домен:** https://gastrozony.cz/ · **деплой:** pm2 + nginx, сервер BSF (порты: BSF=3006, craftwork=3010)
 - **Resend + Ecomail:** в самом конце; стабы `lib/mailer.ts`, `/api/newsletter` уже есть.
 - **Медиа:** ImageKit (с 2026-09-11) — файлы Strapi хранятся там; на фронте картинки из CMS только через `CmsImage`.

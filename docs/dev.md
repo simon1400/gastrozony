@@ -36,6 +36,33 @@ Content-types: single — global, navigation, homepage, newsletter, application-
 contact-page, blog-page; collection — event, page, article, form (key: prodejce/poradatel), application,
 team-member, client-logo, newsletter-subscriber.
 
+### Чешские подписи полей в админке
+Ключи полей английские (на них держится фронт), а заказчик видит чешские подписи.
+Словарь подписей — `scripts/cs-labels.mjs` (единственный источник правды), оттуда они идут двумя путями:
+
+| Куда | Чем | Когда нужно |
+|---|---|---|
+| `config.metadatas` в `schema.json` / компонентах | `node scripts/gen-strapi-model.mjs` | чистая БД: Strapi берёт подписи из схемы при первой генерации конфигурации |
+| таблица `strapi_core_store_settings` (конфигурация Content Manager) | `node scripts/apply-cs-labels.mjs` | существующая БД (dev, прод): при синхронизации на старте значения из БД имеют приоритет над схемой |
+
+Оба скрипта идемпотентны; у `apply-cs-labels.mjs` есть `--dry`. После правки словаря нужно прогнать **оба**
+(генератор + скрипт БД на каждом окружении) и перезапустить Strapi.
+Если заказчик переименует поле прямо в админке (Content Manager → Configure the view), следующий прогон
+`apply-cs-labels.mjs` его правку затрёт — переименование вносить в словарь.
+
+Названия значений enum (`prodejce`, `nova`, `white`…) остаются как есть: это данные, их читает фронт.
+
+### Язык: чешский по умолчанию
+- **Контент:** единственная локаль Strapi — `cs` (Čeština). Контент-типы не локализованы
+  (`pluginOptions.i18n` не включён), у записей `locale = null`, поэтому переключение локали контент не задевает.
+  Ставится скриптом `node scripts/set-default-locale-cs.mjs` (идемпотентно, есть `--dry`):
+  `i18n_locale.code` → `cs` и `plugin_i18n_default_locale` → `"cs"`.
+- **Интерфейс админки:** `strapi/src/admin/app.tsx` — `locales: ['cs']` плюс bootstrap, который выставляет
+  `localStorage['strapi-admin-language'] = 'cs'`, если язык ещё не выбран (иначе Strapi откатывается на `en`).
+  Требует пересборки админки (`npm run build`); на проде это делает деплой. Английский остаётся в списке —
+  переключается в *Profil → Jazyk rozhraní*.
+- **Сайт:** `lang="cs"`, `og:locale = cs_CZ`, форматирование дат `cs-CZ` — было так с самого начала.
+
 ### API-токен и seed-контент
 ```bash
 node scripts/create-api-token.mjs   # full-access токен → client/.env.local (STRAPI_API_TOKEN); идемпотентно
