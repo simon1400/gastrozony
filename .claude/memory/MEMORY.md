@@ -86,6 +86,20 @@ D:\gastrozony
 - XD макет: https://xd.adobe.com/view/3c6d2321-bb64-4f48-bbdd-dedf589c9998-693e/ (specs: `/specs`)
 - Референс формы: https://burgerstreetfestival.cz/registrace · код: `D:\burger`
 - Ecomail рабочий пример: `D:\bombastica-ecomail\src\index.ts`
+- **Артефакт-инструкция для заказчика** (HTML-версия `docs/admin-guide.md`):
+  https://claude.ai/code/artifact/0f780597-4f4e-4cf2-9551-ae8f4cd8cd81 — обновлён 12.09.2026 (v2: тексты письма,
+  Ecomail, GTM, тестовые адреса). Исходник — `admin-guide.html` в scratchpad сессии; **источник правды — `docs/admin-guide.md`**.
+  ⚠ Артефакт расшарен по ссылке, зрители видят версию, закреплённую share-пином: после публикации новой версии
+  пользователь должен передвинуть пин в меню «Поделиться», иначе заказчик продолжит видеть старую.
+  **При изменении админки/полей — обновлять и md, и артефакт.**
+
+## Правила работы с git в этом репозитории
+- **Никогда `git add -A` / `git add .`** — 12.09.2026 так в мой коммит (`69c0b6b`) уехали 53 чужих файла
+  (чешские подписи админки: `scripts/cs-labels.mjs`, `apply-cs-labels.mjs`, `set-default-locale-cs.mjs`,
+  `strapi/src/admin/app.tsx`, правки всех `schema.json`) — пользователь вёл эту работу параллельно.
+  Коммитить только явно перечисленные пути своих изменений и сверяться с `git status` перед коммитом.
+- Пуш в `main` запускает деплой по фильтру путей: `client/**` → Deploy client, `strapi/**` → Deploy Strapi.
+  То есть случайно захваченный чужой файл в `strapi/` немедленно уедет на тестовый сервер.
 
 ## Стек (утверждён 2026-09-04)
 - **client:** Next.js 15 App Router + React 19 + TS + Tailwind 4, react-hook-form + zod
