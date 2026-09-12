@@ -32,6 +32,15 @@ D:\gastrozony
 └── .claude/memory/  — MEMORY.md, brief.md (ТЗ), reference-burger.md (что берём из BSF)
 ```
 
+## Git (2026-09-12)
+- **Монорепо в корне `D:\gastrozony`** (`main`, первый коммит `03072bb`, 238 файлов). **Remote пока нет.**
+- Репозиторий-скаффолд `client/.git` (один коммит create-next-app, без remote) убран, чтобы не было вложенного репо;
+  бэкап — в scratchpad сессии (после закрытия сессии исчезнет, ценности не имеет).
+- `design/` (66 МБ исходников XD) **вне репозитория** по решению пользователя — только на локальном диске,
+  при переносе на другую машину копировать вручную. Также вне: `node_modules`, `.next`, `dist`, `.env*` (кроме
+  `.env.example`), `*.log`, `strapi/public/uploads` (медиа в ImageKit).
+- В `client/.gitignore` добавлено `!.env.example` — иначе правило `.env*` из скаффолда глушило и образец.
+
 ## Ключевые ссылки
 - XD макет: https://xd.adobe.com/view/3c6d2321-bb64-4f48-bbdd-dedf589c9998-693e/ (specs: `/specs`)
 - Референс формы: https://burgerstreetfestival.cz/registrace · код: `D:\burger`
