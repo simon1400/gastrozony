@@ -6,7 +6,7 @@
 ---
 
 Продолжаем реализацию сайта **Gastrozony** (Next 15 App Router + Tailwind 4 / Strapi 5 + PostgreSQL, только чешский).
-**Статус: шаги 1–12 выполнены (шаг 12 — 2026-09-12: код Resend + Ecomail готов, ждём ключи заказчика для проверки реальной отправки). Начинаем с шага 13 (деплой). Публичные страницы — в `src/app/(site)/`. `RichText` / `RichInline`, `PageIntro`, `GreyClosingSection`, `Blocks` / `SectionGroups`, `EventGrid` / `ArticleGrid`, `Pagination`, `lib/seo.ts`, `DynamicForm` уже есть — переиспользовать.**
+**Статус: шаги 1–13 выполнены (2026-09-12). Сайт живёт на тестовых доменах https://gastrozony.hardart.cz и https://strapi-gastrozony.hardart.cz, автодеплой через GitHub Actions работает. Следующая сессия — правки по итогам тестирования пользователем (он приносит список) и оставшиеся пункты перед боевым запуском, см. «Осталось» ниже. Публичные страницы — в `src/app/(site)/`. `RichText` / `RichInline`, `PageIntro`, `GreyClosingSection`, `Blocks` / `SectionGroups`, `EventGrid` / `ArticleGrid`, `Pagination`, `lib/seo.ts`, `DynamicForm` уже есть — переиспользовать.**
 **ImageKit включён** (2026-09-11): медиа Strapi хранятся в ImageKit, на фронте картинки из CMS — только через `CmsImage`
 (см. `docs/dev.md` «Картинки и ImageKit»). Новые медиа в seed/компонентах — тоже через `CmsImage`.
 Работаем **строго внутри `D:\gastrozony`**. Общение по-русски, весь контент/UI-строки/названия сущностей — по-чешски.
@@ -170,4 +170,14 @@
 
 ---
 
-Начни с шага 0 (чтение + запуск серверов), затем коротко скажи, что видишь, и переходи к первому невыполненному шагу (сейчас — шаг 13). Не пропускай критерии «готово».
+Начни с шага 0 (чтение + запуск серверов), затем коротко скажи, что видишь, и берись за список правок от пользователя.
+
+## Осталось перед боевым запуском (после шага 13)
+1. **Ключи заказчика:** `RESEND_API_KEY` (+ DKIM/SPF на gastrozony.cz в Resend) и `ECOMAIL_API_KEY` + номер списка →
+   в `client/.env.local` на сервере, пересобрать клиент, проверить реальную отправку письма и подписки.
+2. **Убрать публичный `create`** на `application` и `newsletter-subscriber` в `strapi/src/index.ts` (bootstrap) —
+   писать должен только серверный токен.
+3. **Прод-токен Strapi custom** (только нужные права) вместо перенесённого из dev full-access.
+4. **Переезд на gastrozony.cz:** A-записи → 157.90.169.205, `certbot --nginx`, поменять `NEXT_PUBLIC_SITE_URL`
+   и `STRAPI_ADMIN_URL`, **пересобрать клиент**, убрать `X-Robots-Tag: noindex` из nginx-конфига клиента.
+   Подробности — `docs/deploy.md` «Домены». Не пропускай критерии «готово».

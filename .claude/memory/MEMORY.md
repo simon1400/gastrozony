@@ -26,7 +26,10 @@ D:\gastrozony
 │   └── parse-xd-agc.mjs     — парсер XD AGC JSON → слои с координатами
 ├── docs/
 │   ├── brainstorm.md       — архитектура, контент-модель, решения, вопросы
-│   ├── dev.md              — как поднять локально
+│   ├── dev.md              — как поднять локально (+ ImageKit, Resend/Ecomail, GTM)
+│   ├── deploy.md           — сервер, автодеплой, бэкапы, чек-лист безопасности
+│   ├── local-testing.md    — инструкция пользователю: запустить локально и что проверить
+│   ├── admin-guide.md      — návod для заказчика (čeština)
 │   ├── assets-checklist.md
 │   └── next-session-prompt.md — ПОШАГОВЫЙ ПЛАН РЕАЛИЗАЦИИ (промпт следующей сессии)
 └── .claude/memory/  — MEMORY.md, brief.md (ТЗ), reference-burger.md (что берём из BSF)
@@ -61,7 +64,8 @@ D:\gastrozony
 - **Прод поднят 2026-09-12:** `/opt/gastrozony`, БД `gastrozony_db`, контент перенесён дампом dev-базы,
   pm2 `gastrozony-strapi` (1343) + `gastrozony-client` (3012) online, nginx + HTTPS.
   **Живо: https://gastrozony.hardart.cz и https://strapi-gastrozony.hardart.cz** (Let's Encrypt, http→https 301).
-  Тестовые заявки и подписчики удалены. Ждёт: секреты GitHub, ключи Resend/Ecomail/GA, бэкап-cron.
+  Тестовые заявки и подписчики удалены. Секреты GitHub пользователь поставил — автодеплой проверен, прогон зелёный.
+  Бэкапы настроены и проверены. GTM прописан. **Ждёт только ключей Resend/Ecomail.**
 - certbot после создания A-записей упал с NXDOMAIN — публичные резолверы держали отрицательный кеш от запросов,
   сделанных до создания записей. Лечится ожиданием; у Let's Encrypt лимит 5 неудачных проверок на домен в час.
 - Грабли переноса: дамп pg_dump 17 не заходит в PostgreSQL 16 сервера (`SET transaction_timeout = 0;` — удалить);
@@ -147,7 +151,25 @@ D:\gastrozony
   `syncedToEcomail` остаются `false`, в логе честная строка. С неверными ключами проверены реальные 401 от обоих API.
   Модель: `application-page.mailSubject/mailIntro/mailNote`, `newsletter.ecomailListId/ecomailTags/doubleOptIn`.
   tsc + eslint чистые. Осталось от заказчика: `RESEND_API_KEY` + DKIM/SPF на gastrozony.cz, `ECOMAIL_API_KEY` + listId.
-- [ ] Шаг 13 — деплой (далее по `docs/next-session-prompt.md`)
+- [x] **Шаг 13** (2026-09-12): деплой на тестовые домены — **сделано**. Монорепо на GitHub, автодеплой через
+  GitHub Actions (прогон зелёный), сервер поднят, контент перенесён дампом, HTTPS, бэкапы, GTM.
+  Подробности — «Git», «Сервер и деплой», «Решения пользователя» выше и `docs/deploy.md`.
+  **Осталось до боевого запуска:** ключи Resend/Ecomail; убрать публичный `create` в bootstrap Strapi;
+  прод-токен Strapi с ограниченными правами вместо перенесённого full-access; переезд на `gastrozony.cz`
+  (DNS → certbot → сменить NEXT_PUBLIC_SITE_URL/STRAPI_ADMIN_URL + пересборка → убрать `X-Robots-Tag`).
+- [ ] Правки по итогам тестирования пользователем (список приносит в новую сессию, формат — `docs/local-testing.md` §7)
+
+## Факты сессии 2026-09-12 (шаг 13 — деплой, GTM)
+- **Аналитика переведена на GTM** (`lib/analytics.ts`): `NEXT_PUBLIC_GTM_ID` → `gtm.js`, `NEXT_PUBLIC_GA_ID` остался
+  запасным путём на gtag.js. Consent Mode сохранён (без согласия 0 запросов к Google). `<noscript><iframe>` из
+  снippета Google **намеренно не ставим** — без JS согласие не спросить и не учесть. Проверено в браузере на локали
+  и на тестовом домене: после «Přijmout vše» грузится `gtm.js?id=GTM-K6H6424Z`.
+- **Битый `.next` после жёсткого убийства dev-сервера**: HTML ссылается на `/_next/static/css/app/layout.css`,
+  файл отдаёт 404 → сайт без стилей. Лечение: остановить dev, удалить `client/.next`, запустить заново.
+  Останавливать dev только `Ctrl+C`. Записано в `docs/local-testing.md` «Частые заминки».
+- Деплой-workflow разделены по путям: `client/**` → Deploy client, `strapi/**` → Deploy Strapi,
+  правки только в `docs/` и `.claude/` деплой не запускают (проверено).
+- Тестовая и локальная базы **независимы**: правки в локальной админке на тестовый сайт не попадают и наоборот.
 
 ## Факты сессии 2026-09-12 (шаг 12 — Resend + Ecomail)
 - **`MailResult` теперь `{ok:true, sent:boolean}`**: `sent:false` = отправлять было нечего или нет ключа.
