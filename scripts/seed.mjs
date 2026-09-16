@@ -1,5 +1,5 @@
 /**
- * Seed-контент Gastrozony (REST Strapi 5 + full-access STRAPI_API_TOKEN из client/.env.local).
+ * Seed-контент Gastrozony (REST Strapi 5 + full-access STRAPI_API_TOKEN из client/.env).
  * Запуск: node scripts/seed.mjs   (Strapi должен работать на STRAPI_URL)
  *
  * Идемпотентен: коллекции — upsert по slug / key / name, single types — PUT,
@@ -17,7 +17,7 @@ const ASSETS = join(ROOT, 'design', 'assets');
 /* ------------------------------------------------------------------ env */
 
 const env = {};
-const envFile = join(ROOT, 'client', '.env.local');
+const envFile = join(ROOT, 'client', '.env');
 if (existsSync(envFile)) {
   for (const raw of readFileSync(envFile, 'utf8').split(/\r?\n/)) {
     const m = raw.match(/^([A-Z0-9_]+)=(.*)$/);
@@ -27,7 +27,7 @@ if (existsSync(envFile)) {
 const STRAPI_URL = process.env.STRAPI_URL ?? env.STRAPI_URL ?? 'http://127.0.0.1:1337';
 const TOKEN = process.env.STRAPI_API_TOKEN ?? env.STRAPI_API_TOKEN;
 if (!TOKEN) {
-  console.error('Chybí STRAPI_API_TOKEN (client/.env.local) — spusťte nejdřív node scripts/create-api-token.mjs');
+  console.error('Chybí STRAPI_API_TOKEN (client/.env) — spusťte nejdřív node scripts/create-api-token.mjs');
   process.exit(1);
 }
 const AUTH = { Authorization: `Bearer ${TOKEN}` };

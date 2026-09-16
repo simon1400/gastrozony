@@ -1,9 +1,9 @@
 /**
  * Создаёт full-access API-токен Strapi для seed-скрипта и серверных API routes Next
- * и записывает его в client/.env.local (STRAPI_API_TOKEN).
+ * и записывает его в client/.env (STRAPI_API_TOKEN).
  * Запуск: node scripts/create-api-token.mjs   (из корня проекта; Strapi может работать параллельно)
  *
- * Идемпотентен: если в client/.env.local токен уже есть — ничего не делает.
+ * Идемпотентен: если в client/.env токен уже есть — ничего не делает.
  * Если токен с таким именем есть в Strapi, а в env его нет — пересоздаёт (plaintext не восстановить).
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
@@ -13,12 +13,12 @@ import { createRequire } from 'node:module';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const STRAPI_DIR = join(ROOT, 'strapi');
-const CLIENT_ENV = join(ROOT, 'client', '.env.local');
+const CLIENT_ENV = join(ROOT, 'client', '.env');
 const TOKEN_NAME = 'gastrozony-server';
 
 const envText = existsSync(CLIENT_ENV) ? readFileSync(CLIENT_ENV, 'utf8') : '';
 if (/^STRAPI_API_TOKEN=\S+/m.test(envText)) {
-  console.log('STRAPI_API_TOKEN už je v client/.env.local — nic nedělám.');
+  console.log('STRAPI_API_TOKEN už je v client/.env — nic nedělám.');
   process.exit(0);
 }
 
@@ -52,7 +52,7 @@ try {
     ? envText.replace(/^#?\s*STRAPI_API_TOKEN=.*$/m, line)
     : `${envText.trimEnd()}\n${line}\n`;
   writeFileSync(CLIENT_ENV, next, 'utf8');
-  console.log(`Token „${TOKEN_NAME}“ vytvořen a zapsán do client/.env.local`);
+  console.log(`Token „${TOKEN_NAME}“ vytvořen a zapsán do client/.env`);
 } finally {
   await app.destroy();
 }

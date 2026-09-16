@@ -21,7 +21,7 @@ D:\gastrozony
 │   └── tokens.md      — цвета, типографика, размеры компонентов, сетка
 ├── scripts/
 │   ├── gen-strapi-model.mjs — source of truth контент-модели
-│   ├── create-api-token.mjs — full-access токен Strapi → client/.env.local
+│   ├── create-api-token.mjs — full-access токен Strapi → client/.env
 │   ├── seed.mjs             — идемпотентный seed всего контента
 │   └── parse-xd-agc.mjs     — парсер XD AGC JSON → слои с координатами
 ├── docs/
@@ -46,6 +46,11 @@ D:\gastrozony
 - В `client/.gitignore` добавлено `!.env.example` — иначе правило `.env*` из скаффолда глушило и образец.
 
 ## Сервер и деплой (изучено 2026-09-12)
+- **Env-файлы: только `.env`, никаких `.env.local`** (16.09.2026). Сервером управляет внешняя панель,
+  которая читает `/opt/<проект>/{client,strapi}/.env`; `.env.local` она не показывает — из-за этого
+  прод-переменные клиента выглядели «отсутствующими». Next.js даёт `.env.local` приоритет над `.env`,
+  поэтому два файла рядом держать нельзя. Локальный `client/.env.local` переименован в `client/.env`,
+  `scripts/create-api-token.mjs` и `scripts/seed.mjs` пишут/читают `client/.env`. В `.gitignore` правило `.env*` — не коммитится.
 - Сервер BSF = хост **`het`** в `~/.ssh/config` → `157.90.169.205`, `dimi-strapi-server`, root. (Второй хост `wedos`
   не нужен и сейчас ругается на смену host key.) Полное описание — `docs/deploy.md`.
 - Конвенции: `/opt/<проект>/{client,strapi}` (свой git-клон), pm2 `<проект>-client/-strapi` + `ecosystem.config.js`
@@ -342,7 +347,7 @@ D:\gastrozony
 - `src/middleware.ts`: Basic Auth на `/sprava/*` (ADMIN_USER / ADMIN_PASS, сравнение за постоянное время); без env → 503.
   Блокировка перебора: 10 ошибок / 15 мин на IP → 429 **до** проверки пароля (`createRateLimiter(..., { peek: true })`),
   иначе заблокированный атакующий узнал бы верный пароль по 200. Всегда `X-Robots-Tag: noindex` + `no-store`.
-- Dev-доступ: `ADMIN_USER=gastrozony`, `ADMIN_PASS` — случайный, в `client/.env.local` (в чат не выводился).
+- Dev-доступ: `ADMIN_USER=gastrozony`, `ADMIN_PASS` — случайный, в `client/.env` (в чат не выводился).
   **TODO(deploy):** свой ADMIN_PASS в прод-env; `STRAPI_ADMIN_URL` = публичный адрес Strapi (ссылки «Otevřít ve Strapi»).
 - Колонки таблицы/CSV = поля формы `prodejce` (без upload — они в «Přílohy»; без контактных полей — свои колонки
   Jméno/E-mail; `contactFieldNames()` в form-schema.ts), удалённые из формы ключи — в конце.
@@ -358,9 +363,9 @@ D:\gastrozony
 - Выбор читается на клиенте (чтение cookie в root layout сделало бы все страницы динамическими → без ISR).
 - **Фикс горизонтального скролла HP на 400 (2 px, был со шага 3):** `overflow-x: clip` только на body переносится
   на viewport (→ hidden, скроллится скриптом/на iOS). Теперь clip и на `html`; sticky шапка работает.
-- Тест GA вёлся с фейковым `G-TEST000000` в `.env.local` — убран. **TODO(deploy):** настоящий `NEXT_PUBLIC_GA_ID`
+- Тест GA вёлся с фейковым `G-TEST000000` в `.env` — убран. **TODO(deploy):** настоящий `NEXT_PUBLIC_GA_ID`
   в прод-env клиента (ID даст заказчик).
-- `.env.local` в PowerShell 5.1 не писать через `Set-Content -Encoding utf8` (BOM) — только .NET без BOM.
+- `.env` в PowerShell 5.1 не писать через `Set-Content -Encoding utf8` (BOM) — только .NET без BOM.
 
 ## Факты сессии 2026-09-11 (шаг 7 — blog)
 - **Lifecycle `strapi/src/api/article/content-types/article/lifecycles.ts`**: пустой `date` → сегодня (Praha).
@@ -443,7 +448,7 @@ D:\gastrozony
 
 ## Факты сессии 2026-09-11 (шаги 1–2)
 - Админ Strapi создан пользователем (локальный). API-токен `gastrozony-server` (full-access) создаёт
-  `node scripts/create-api-token.mjs` → пишет `STRAPI_API_TOKEN` в `client/.env.local` (в strapi/.env не кладём).
+  `node scripts/create-api-token.mjs` → пишет `STRAPI_API_TOKEN` в `client/.env` (в strapi/.env не кладём).
 - **Решение: логотип и favicon НЕ редактируются через Strapi** — только статика `client/public/logo.svg`
   (поля `global.logo/logoLight/favicon` удалены из модели). К тому же Strapi 5.52 блокирует SVG-upload.
 - Seed-данные — черновики (не подтверждены заказчиком): даты/места HHŽ (Bratislava 17.10., Košice 24.10.),

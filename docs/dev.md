@@ -65,7 +65,7 @@ team-member, client-logo, newsletter-subscriber.
 
 ### API-токен и seed-контент
 ```bash
-node scripts/create-api-token.mjs   # full-access токен → client/.env.local (STRAPI_API_TOKEN); идемпотентно
+node scripts/create-api-token.mjs   # full-access токен → client/.env (STRAPI_API_TOKEN); идемпотентно
 node scripts/seed.mjs               # весь демо-контент (Strapi должен работать); повторный запуск не дублирует
 ```
 - Seed: upsert по slug / key / name, single types — PUT, медиа переиспользуются по имени (`gz-*`).
@@ -80,12 +80,12 @@ npm run dev         # http://localhost:3000
 ```
 - Next **15.5** App Router + React 19 + TS + Tailwind **4** (create-next-app поставил
   Next 16 — принудительно снижен до 15 по утверждённому стеку).
-- `.env.local`: `STRAPI_URL=http://127.0.0.1:1337`.
+- `.env`: `STRAPI_URL=http://127.0.0.1:1337`.
 - `ADMIN_USER` / `ADMIN_PASS` — přihlášení do `/sprava/prihlasky` (Basic Auth). Bez nich je správa zavřená (503).
   `STRAPI_ADMIN_URL` (volitelné) — veřejná adresa Strapi pro odkazy „Otevřít ve Strapi“ (jinak `STRAPI_URL`).
 - `NEXT_PUBLIC_SITE_URL` (volitelné) — veřejná adresa webu pro canonical, sitemap a JSON-LD; výchozí `https://gastrozony.cz`.
 - `NEXT_PUBLIC_GA_ID` (volitelné) — GA4 Measurement ID `G-…`. Prázdné / chybí → analytika se nenačte ani po souhlasu.
-  Pro test lišty stačí libovolné `G-TEST…` (next dev změnu `.env.local` načte sám); nezapomeňte ho pak odebrat.
+  Pro test lišty stačí libovolné `G-TEST…` (next dev změnu `.env` načte sám); nezapomeňte ho pak odebrat.
 - Шрифт: Plus Jakarta Sans 400/800 через `next/font` (latin + latin-ext).
 - Дизайн-токены: `src/app/globals.css` (`@theme`) — значения из `design/tokens.md`.
 - Всё, что тянет Strapi (Header/Footer/Newsletter), имеет чешские фолбэки из макета —
@@ -158,7 +158,7 @@ npm run dev         # http://localhost:3000
 - Включено 2026-09-11 (аккаунт `ev2rmbc0ca`), seed-медиа перезалиты.
 - **Включение (когда будут ключи):**
   1. `strapi/.env`: `IMAGEKIT_PUBLIC_KEY`, `IMAGEKIT_PRIVATE_KEY`, `IMAGEKIT_URL_ENDPOINT` (+ `IMAGEKIT_UPLOAD_FOLDER`).
-  2. `client/.env.local`: `NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT` (тот же endpoint), перезапустить `next dev`.
+  2. `client/.env`: `NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT` (тот же endpoint), перезапустить `next dev`.
   3. Перезапустить Strapi (`npm run develop` — пересоберёт админку с плагином).
   4. `node scripts/seed.mjs --reupload-local` — удалит локальные seed-медиа (provider=local) и зальёт их в ImageKit.
      Иначе плагин перепишет старые `/uploads/...` на `ik.imagekit.io/<id>/uploads/...`, а до localhost ImageKit не достучится.
@@ -182,7 +182,10 @@ npm run dev         # http://localhost:3000
 `client/src/lib/ecomail.ts` (Ecomail API v2). Вызовы — только из `app/api/application/route.ts`
 и `app/api/newsletter/route.ts`, ключи читаются на сервере и в бандл не попадают.
 
-**Переменные (`client/.env.local`, образец — `client/.env.example`):**
+**Переменные (`client/.env`, образец — `client/.env.example`):**
+
+> Файл именно `.env` (не `.env.local`) — и локально, и на сервере: серверная панель управления
+> читает только `.env`. Если рядом окажется `.env.local`, Next.js предпочтёт его — держим один файл.
 
 | Переменная | Зачем |
 |---|---|

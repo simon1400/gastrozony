@@ -49,7 +49,7 @@ npm run dev
 |---|---|---|
 | Сайт | http://localhost:3000 | — |
 | Админка CMS | http://localhost:1337/admin | ваш админ Strapi |
-| Таблица заявок | http://localhost:3000/sprava/prihlasky | логин/пароль из `client\.env.local` (`ADMIN_USER`, `ADMIN_PASS`) |
+| Таблица заявок | http://localhost:3000/sprava/prihlasky | логин/пароль из `client\.env` (`ADMIN_USER`, `ADMIN_PASS`) |
 
 ---
 
@@ -112,7 +112,7 @@ npm run dev
 | Страницы висят или 500 после долгой работы | `Ctrl+C` в окне Next и заново `npm run dev` (известная болячка dev-режима) |
 | **Сайт без стилей**, всё «поехало» | Битый кеш сборки — обычно после того, как окно Next закрыли не через `Ctrl+C`. Лечится: остановить сервер, удалить папку `client.next`, запустить `npm run dev` заново, обновить страницу через `Ctrl+F5`. Проверить можно так: в консоли браузера (F12 → Network) файл `layout.css` отдаёт 404 |
 | `next dev` ругается на порт 3000 | Сервер уже запущен в другом окне |
-| Картинки не грузятся | Проверьте, что в `client\.env.local` есть `NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT` |
+| Картинки не грузятся | Проверьте, что в `client\.env` есть `NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT` |
 | Пусто вместо контента, в консоли ошибки Strapi | Не запущен Strapi (окно 1) или он ещё собирается |
 | Нужно вернуть демо-контент | `node scripts\seed.mjs` из `D:\gastrozony` — перезапишет тексты на исходные |
 

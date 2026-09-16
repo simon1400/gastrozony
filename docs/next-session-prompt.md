@@ -22,7 +22,7 @@
 
 Затем поднять оба сервера (`strapi: npm run develop`, `client: npm run dev`) и убедиться, что всё стартует
 (если порты 1337/3000 заняты — серверы уже запущены, не дублировать).
-Админ Strapi уже создан пользователем; `STRAPI_API_TOKEN` уже в `client/.env.local`; seed-контент в БД
+Админ Strapi уже создан пользователем; `STRAPI_API_TOKEN` уже в `client/.env`; seed-контент в БД
 (при необходимости: `node scripts/seed.mjs` — идемпотентен).
 
 ## Принятые решения (не обсуждать заново)
@@ -55,7 +55,7 @@
   из `global` убраны `logo/logoLight/favicon`.
 
 ### ✅ Шаг 2. Seed-контент — ГОТОВО (2026-09-11)
-- `scripts/create-api-token.mjs` (full-access токен `gastrozony-server` → `client/.env.local`),
+- `scripts/create-api-token.mjs` (full-access токен `gastrozony-server` → `client/.env`),
   `scripts/seed.mjs` — идемпотентен (проверено). В БД: все single types, 3 акции (slug: `mint-market-food-festival`,
   `hip-hop-zije-2026-bratislava`, `hip-hop-zije-2026-kosice`), 4 client-logo, 2 team-member, 3 article,
   form `prodejce` (16 полей + consent), 5 page, 2 демо-заявки (`demo.*@example.com`, source=seed).
@@ -155,7 +155,7 @@
 > **Осталось (не проверить без заказчика):** реальная доставка писем.
 - **Нужно от заказчика:** `RESEND_API_KEY` + домен gastrozony.cz с DKIM/SPF в Resend; `ECOMAIL_API_KEY` + `listId`.
   Double opt-in решать отдельно не нужно — переключатель `doubleOptIn` в админке, по умолчанию включён.
-- После получения ключей: положить их в `client/.env.local` (dev) / прод-env, отправить тестовую заявку и подписку,
+- После получения ключей: положить их в `client/.env` (dev) / прод-env, отправить тестовую заявку и подписку,
   убедиться, что письма дошли и `mailSent` / `syncedToEcomail` стали `true`.
 
 ### Шаг 13. Деплой
@@ -174,7 +174,7 @@
 
 ## Осталось перед боевым запуском (после шага 13)
 1. **Ключи заказчика:** `RESEND_API_KEY` (+ DKIM/SPF на gastrozony.cz в Resend) и `ECOMAIL_API_KEY` + номер списка →
-   в `client/.env.local` на сервере, пересобрать клиент, проверить реальную отправку письма и подписки.
+   в `client/.env` на сервере, пересобрать клиент, проверить реальную отправку письма и подписки.
 2. **Убрать публичный `create`** на `application` и `newsletter-subscriber` в `strapi/src/index.ts` (bootstrap) —
    писать должен только серверный токен.
 3. **Прод-токен Strapi custom** (только нужные права) вместо перенесённого из dev full-access.

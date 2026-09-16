@@ -43,7 +43,7 @@
 переключение позже. Что сделать при переезде:
 1. A-записи `gastrozony.cz`, `www.gastrozony.cz`, `strapi.gastrozony.cz` → `157.90.169.205`;
 2. `certbot --nginx -d gastrozony.cz -d www.gastrozony.cz` и `certbot --nginx -d strapi.gastrozony.cz`;
-3. в `client/.env.local` заменить `NEXT_PUBLIC_SITE_URL` и `STRAPI_ADMIN_URL` на прод-домены
+3. в `client/.env` заменить `NEXT_PUBLIC_SITE_URL` и `STRAPI_ADMIN_URL` на прод-домены
    и **пересобрать клиент** — `NEXT_PUBLIC_*` вшивается на этапе сборки (иначе canonical/sitemap/OG
    останутся на тестовом домене);
 4. убрать `X-Robots-Tag` из `gastrozony-client`.
@@ -59,7 +59,7 @@
       конфиг ImageKit из перенесённого дампа стали бы невалидны.
 - [x] Контент перенесён дампом dev-базы (`pg_dump --no-owner --no-privileges`).
       Подводный камень: дамп из PostgreSQL 17 не заходит в 16 — надо удалить строку `SET transaction_timeout = 0;`.
-- [x] `client/.env.local` — с dev, но `STRAPI_URL=http://127.0.0.1:1343`, новый `ADMIN_PASS`,
+- [x] `client/.env` — с dev, но `STRAPI_URL=http://127.0.0.1:1343`, новый `ADMIN_PASS`,
       добавлены `NEXT_PUBLIC_SITE_URL` и `STRAPI_ADMIN_URL`.
       **Оба .env приведены к LF** — в скопированных с Windows файлах был CRLF, из-за `\r` ломались шелл-скрипты.
 - [x] Сборка обеих частей, `pm2 start` + `pm2 save`: `gastrozony-strapi` (1343), `gastrozony-client` (3012).
@@ -77,7 +77,7 @@
 
 - [ ] **Секреты GitHub** (без них workflow падает с `missing server host` — уже проверено):
       команды в шаге 1 ниже.
-- [ ] Ключи Resend / Ecomail в `client/.env.local` на сервере (GTM уже прописан: `NEXT_PUBLIC_GTM_ID=GTM-K6H6424Z`).
+- [ ] Ключи Resend / Ecomail в `client/.env` на сервере (GTM уже прописан: `NEXT_PUBLIC_GTM_ID=GTM-K6H6424Z`).
 - [ ] Чек-лист безопасности внизу (публичный `create`, custom-токен).
 
 ---
@@ -129,7 +129,12 @@ IMAGEKIT_UPLOAD_FOLDER=/gastrozony-prod/
 ```
 Секреты генерировать: `node -e "console.log(require('crypto').randomBytes(16).toString('base64'))"`.
 
-### 5. `client/.env.local` (на сервере)
+### 5. `client/.env` (на сервере)
+
+**Именно `.env`, не `.env.local`** (решение 16.09.2026): сервером управляет внешняя панель,
+которая читает `/opt/<проект>/<часть>/.env` — переменные в `.env.local` она не видит.
+Держать оба файла нельзя: Next.js даёт `.env.local` приоритет над `.env`, и правка через панель
+молча не сработает. У Strapi файл и так `.env` — теперь обе части единообразны.
 ```ini
 STRAPI_URL=http://127.0.0.1:1343
 STRAPI_API_TOKEN=<создать в админке после шага 6 — custom, только нужные права>
@@ -178,7 +183,7 @@ certbot --nginx -d strapi.gastrozony.cz
 
 ### 8. Контент
 ```bash
-cd /opt/gastrozony && node scripts/seed.mjs     # идемпотентен; сначала STRAPI_API_TOKEN в client/.env.local
+cd /opt/gastrozony && node scripts/seed.mjs     # идемпотентен; сначала STRAPI_API_TOKEN в client/.env
 ```
 Либо перенести контент из dev-базы (`pg_dump` → `psql`) — решить перед запуском.
 
@@ -213,7 +218,7 @@ cd /opt/gastrozony && node scripts/seed.mjs     # идемпотентен; сн
 - `applications_<дата>.dump` — таблицы `applications`, `applications_cmps`, `applications_event_lnk`,
   `components_form_result_items`, `files`, `files_related_mph` (формат custom, для `pg_restore`);
 - `prihlasky_<дата>.csv` — тот же CSV, что кнопка «Exportovat CSV» на `/sprava/prihlasky`
-  (скрипт дёргает сам сайт с Basic Auth из `client/.env.local`), можно сразу открыть в Excel или переслать заказчику.
+  (скрипт дёргает сам сайт с Basic Auth из `client/.env`), можно сразу открыть в Excel или переслать заказчику.
 
 ### Восстановление
 
