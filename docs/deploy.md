@@ -63,7 +63,7 @@
       добавлены `NEXT_PUBLIC_SITE_URL` и `STRAPI_ADMIN_URL`.
       **Оба .env приведены к LF** — в скопированных с Windows файлах был CRLF, из-за `\r` ломались шелл-скрипты.
       16.09.2026 файл переименован `.env.local` → `.env` (панель управления сервером читает только `.env`),
-      права 600 сохранены, `pm2 restart gastrozony-client --update-env`. Бэкап `.env.local.bak-20260916` — удалить позже.
+      права 600 сохранены, `pm2 restart gastrozony-client --update-env`. Бэкап удалён после проверки.
 - [x] Сборка обеих частей, `pm2 start` + `pm2 save`: `gastrozony-strapi` (1343), `gastrozony-client` (3012).
 - [x] nginx: `gastrozony-client` (тестовый + прод-домены) и `gastrozony-strapi` в sites-enabled.
 - [x] **HTTPS работает:** сертификаты Let's Encrypt на оба тестовых домена, http → https 301 (certbot --redirect).

@@ -52,7 +52,7 @@ D:\gastrozony
   поэтому два файла рядом держать нельзя. Локальный `client/.env.local` переименован в `client/.env`,
   `scripts/create-api-token.mjs` и `scripts/seed.mjs` пишут/читают `client/.env`. В `.gitignore` правило `.env*` — не коммитится.
   **На сервере выполнено 16.09.2026:** `/opt/gastrozony/client/.env.local` → `.env` (600, LF), `pm2 restart gastrozony-client --update-env`;
-  проверено: `/sprava/prihlasky` 401 без пароля и 200 с паролем, export CSV 200, главная 200. Бэкап `.env.local.bak-20260916` рядом — удалить, когда всё устаканится.
+  проверено: `/sprava/prihlasky` 401 без пароля и 200 с паролем, export CSV 200, главная 200. Бэкап удалён 16.09.2026, пользователь проверил вход и экспорт.
   Прод-`ADMIN_PASS` лежит только в этом файле на сервере (в репозиторий и память не пишем — репо публичный).
 - Сервер BSF = хост **`het`** в `~/.ssh/config` → `157.90.169.205`, `dimi-strapi-server`, root. (Второй хост `wedos`
   не нужен и сейчас ругается на смену host key.) Полное описание — `docs/deploy.md`.
