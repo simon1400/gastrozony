@@ -15,7 +15,7 @@ const variants: Record<EventStatus, string> = {
 export const STATUS_LABELS: Record<EventStatus, string> = {
   aktualni: 'Aktuální',
   pripravujeme: 'Připravujeme',
-  ukonceno: 'Již ukončeno',
+  ukonceno: 'Již proběhlo',
 };
 
 type BadgeProps = {

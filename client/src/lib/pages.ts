@@ -16,7 +16,14 @@ export type CtaBlockData = Block<
   'blocks.cta',
   { title: string | null; text: string | null; cta: Cta | null; background: Background | 'yellow' | null }
 >;
-export type NumberedCard = { id: number; number: string; title: string; text: string | null; image: StrapiMedia | null };
+export type NumberedCard = {
+  id: number;
+  number: string;
+  title: string;
+  text: string | null;
+  image: StrapiMedia | null;
+  cta: Cta | null;
+};
 export type CardsBlockData = Block<
   'blocks.cards',
   { title: string | null; text: string | null; items: NumberedCard[]; background: Background | null }
@@ -78,7 +85,7 @@ const BLOCKS_POPULATE = {
     'blocks.text': { populate: '*' },
     'blocks.gallery': { populate: ['images'] },
     'blocks.cta': { populate: ['cta'] },
-    'blocks.cards': { populate: { items: { populate: ['image'] } } },
+    'blocks.cards': { populate: { items: { populate: '*' } } }, // image + cta; `*` snese i schému bez cta
     'blocks.tags': { populate: ['items'] },
     'blocks.logos': { populate: { cta: true, logos: { populate: ['logo'] } } },
     'blocks.stats': { populate: ['items'] },

@@ -25,6 +25,10 @@
     "address": {
       "type": "text"
     },
+    "companyName": {
+      "type": "string",
+      "default": "BEDY Group s.r.o."
+    },
     "ico": {
       "type": "string"
     },
@@ -132,6 +136,14 @@
         },
         "list": {
           "label": "Adresa"
+        }
+      },
+      "companyName": {
+        "edit": {
+          "label": "Název firmy (patička)"
+        },
+        "list": {
+          "label": "Název firmy (patička)"
         }
       },
       "ico": {

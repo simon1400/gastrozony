@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from '@/lib/seo';
 import './globals.css';
@@ -31,9 +31,12 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image', images: [DEFAULT_OG_IMAGE] },
 };
 
+// barva lišty prohlížeče (Android Chrome, Safari) — žlutá značky
+export const viewport: Viewport = { themeColor: '#ffd100' };
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="cs" className={jakarta.variable}>
+    <html lang="cs" className={jakarta.variable} data-scroll-behavior="smooth">
       <body>{children}</body>
     </html>
   );

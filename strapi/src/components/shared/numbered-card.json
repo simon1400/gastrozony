@@ -25,6 +25,11 @@
       "allowedTypes": [
         "images"
       ]
+    },
+    "cta": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.cta"
     }
   },
   "config": {
@@ -59,6 +64,14 @@
         },
         "list": {
           "label": "Obrázek"
+        }
+      },
+      "cta": {
+        "edit": {
+          "label": "Tlačítko (nepovinné)"
+        },
+        "list": {
+          "label": "Tlačítko (nepovinné)"
         }
       }
     }

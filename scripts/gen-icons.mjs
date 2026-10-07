@@ -1,10 +1,11 @@
 /**
- * Ikony a výchozí OG obrázek ze statického logotypu (client/public/logo.svg) — logo se v CMS nemění.
- * Zdroj pravdy: tento skript. Spuštění: node scripts/gen-icons.mjs (z kořene projektu).
+ * Ikony a výchozí OG obrázek — statika, v CMS se nemění. Spuštění: node scripts/gen-icons.mjs (z kořene projektu).
  *
- *   client/src/app/icon.svg        — favicon (vektor): žlutý znak na černém kruhu
- *   client/src/app/favicon.ico     — 16/32/48 px pro staré prohlížeče a /favicon.ico
- *   client/src/app/apple-icon.png  — 180 px (iOS si rohy zakulatí sám → čtverec)
+ * Zdroj faviconu: client/src/app/icon.svg (vidlička v žlutém kruhu od grafika, design/new/favicon-gastro.svg,
+ * zbavená vnějších transformací). Ze znaku loga (client/public/logo.svg) se dělá jen logo pro JSON-LD a OG.
+ *
+ *   client/src/app/favicon.ico     — 16/32/48 px z icon.svg pro staré prohlížeče a /favicon.ico
+ *   client/src/app/apple-icon.png  — 180 px: icon.svg na žlutém čtverci (iOS si rohy zakulatí sám)
  *   client/public/icon-512.png     — logo pro JSON-LD Organization
  *   client/public/og-default.png   — 1200×630, výchozí sdílecí obrázek
  */
@@ -54,14 +55,18 @@ function ico(images) {
   return Buffer.concat([header, ...images.map((i) => i.data)]);
 }
 
-const iconSvg = markSvg({ size: 132, round: true, scale: 0.8 });
-writeFileSync(join(CLIENT, 'src', 'app', 'icon.svg'), `${iconSvg}\n`);
+const iconSvg = readFileSync(join(CLIENT, 'src', 'app', 'icon.svg'), 'utf8');
 
 const icoImages = [];
 for (const size of [16, 32, 48]) icoImages.push({ size, data: await png(iconSvg, size) });
 writeFileSync(join(CLIENT, 'src', 'app', 'favicon.ico'), ico(icoImages));
 
-writeFileSync(join(CLIENT, 'src', 'app', 'apple-icon.png'), await png(markSvg({ size: 180, round: false, scale: 0.72 }), 180));
+// kruh na 88 % plochy, aby po zakulacení rohů na iOS zůstal celý
+const appleIcon = await sharp({ create: { width: 180, height: 180, channels: 4, background: YELLOW } })
+  .composite([{ input: await png(iconSvg, 158), left: 11, top: 11 }])
+  .png()
+  .toBuffer();
+writeFileSync(join(CLIENT, 'src', 'app', 'apple-icon.png'), appleIcon);
 writeFileSync(join(CLIENT, 'public', 'icon-512.png'), await png(markSvg({ size: 512, round: false, scale: 0.78 }), 512));
 
 // OG: černé pozadí, celé logo uprostřed, žlutý pruh dole
@@ -76,4 +81,4 @@ const og = await sharp({ create: { width: 1200, height: 630, channels: 4, backgr
   .toBuffer();
 writeFileSync(join(CLIENT, 'public', 'og-default.png'), og);
 
-console.log('icon.svg, favicon.ico (16/32/48), apple-icon.png (180), icon-512.png, og-default.png (1200×630) ✔');
+console.log('favicon.ico (16/32/48), apple-icon.png (180), icon-512.png, og-default.png (1200×630) ✔');

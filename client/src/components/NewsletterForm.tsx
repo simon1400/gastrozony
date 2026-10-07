@@ -25,7 +25,11 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-/** Белая карта 680×243 из макета: паддинг 38/40/38/30, input 460×66 r4, кнопка 142×66, чекбокс 26. */
+/**
+ * Белая карта 680×243 из макета: паддинг 38/40/38/30, input 460×66 r4, кнопка 142×66, чекбокс 26.
+ * На мобиле (< md) поле и кнопка 50 высотой, как остальные кнопки (Button.tsx); текст поля 16px —
+ * при меньшем iOS Safari зумит страницу на фокусе.
+ */
 const CARD = 'bg-white px-5 py-7 sm:pb-[38px] sm:pl-[30px] sm:pr-[40px] sm:pt-[38px]';
 
 export const NewsletterForm = ({ texts }: { texts: NewsletterTexts }) => {
@@ -63,10 +67,10 @@ export const NewsletterForm = ({ texts }: { texts: NewsletterTexts }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className={`${CARD} w-full max-w-[680px]`}>
-      <label htmlFor="newsletter-email" className="block text-[20px] font-extrabold leading-[26px]">
+      <label htmlFor="newsletter-email" className="block text-[17px] font-extrabold leading-[22px] md:text-[20px] md:leading-[26px]">
         {texts.emailLabel}
       </label>
-      <div className="mt-[19px] flex flex-col gap-2 sm:flex-row">
+      <div className="mt-3 flex flex-col gap-2 sm:flex-row md:mt-[19px]">
         <input
           id="newsletter-email"
           type="email"
@@ -74,7 +78,7 @@ export const NewsletterForm = ({ texts }: { texts: NewsletterTexts }) => {
           placeholder={texts.placeholder}
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? 'newsletter-email-error' : undefined}
-          className="h-[66px] w-full min-w-0 rounded border-[1.5px] border-grey-line/35 pl-[27px] pr-4 text-[20px] outline-none transition-colors placeholder:text-ink/60 focus:border-ink sm:flex-1"
+          className="h-[50px] w-full min-w-0 rounded border-[1.5px] border-grey-line/35 px-4 text-[16px] outline-none transition-colors placeholder:text-ink/60 focus:border-ink sm:flex-1 md:h-[66px] md:pl-[27px] md:text-[20px]"
           {...register('email')}
         />
         <Button type="submit" variant="dark" disabled={isSubmitting}>

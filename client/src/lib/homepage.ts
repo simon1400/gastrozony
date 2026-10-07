@@ -11,7 +11,7 @@ export type Homepage = {
   hero: { title: string; perex: string | null; ctas: Cta[] };
   stats: { value: string; label: string }[];
   intro: { title: string; text: string | null };
-  cards: { number: string; title: string; text: string | null }[];
+  cards: { number: string; title: string; text: string | null; cta?: Cta | null }[];
   tagsTitle: string;
   tags: { label: string }[];
   clients: { title: string; text: string | null; moreLabel: string | null; cta: Cta | null; logos: ClientLogo[] };
@@ -75,7 +75,8 @@ export async function getHomepage(): Promise<Homepage> {
           hero: { populate: ['ctas'] },
           stats: true,
           intro: true,
-          cards: true,
+          // `*` a ne ['cta']: se starší schémou Strapi (bez cta) by výčet polí skončil 400 a HP by spadla do fallbacku
+          cards: { populate: '*' },
           tags: true,
           clients: { populate: { cta: true, logos: { populate: ['logo'] } } },
           events: { populate: ['cta'] },

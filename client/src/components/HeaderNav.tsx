@@ -38,7 +38,7 @@ export const HeaderNav = ({ items, cta }: HeaderNavProps) => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // закрыть мобильное меню при переходе
+  // закрыть мобильное меню при переходе (ссылки-якоря на той же странице закрывают его сами, onClick)
   useEffect(() => setOpen(false), [pathname]);
 
   // Esc закрывает меню, фон не скроллится
@@ -108,6 +108,7 @@ export const HeaderNav = ({ items, cta }: HeaderNavProps) => {
               <li key={item.url}>
                 <Link
                   href={item.url}
+                  onClick={() => setOpen(false)}
                   aria-current={isActive(item.url) ? 'page' : undefined}
                   className={`block py-2 text-[26px] font-extrabold hover:text-yellow ${
                     isActive(item.url) ? 'text-yellow' : ''
@@ -120,7 +121,8 @@ export const HeaderNav = ({ items, cta }: HeaderNavProps) => {
             <li className="pt-6">
               <Link
                 href={cta.url}
-                className="inline-flex h-[66px] items-center bg-yellow px-[29px] text-[19px] font-extrabold text-ink"
+                onClick={() => setOpen(false)}
+                className="inline-flex h-[50px] items-center bg-yellow px-5 text-[15px] font-extrabold text-ink"
               >
                 {cta.label}
               </Link>

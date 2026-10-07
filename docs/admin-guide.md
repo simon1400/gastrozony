@@ -185,7 +185,7 @@ zůstane vypnuté — kontakt najdete v tabulce přihlášek.
 | **Hero (úvodní sekce)** | Hlavní nadpis, perex, tlačítka. |
 | **Statistiky** | Čísla pod úvodem (např. „120+ / Odbavených akcí“). |
 | **Intro (dva sloupce)** | Nadpis šedé sekce a text vpravo. **Odstavce oddělte prázdným řádkem.** |
-| **Číslované karty** | Karty 01 / 02 / 03. |
+| **Číslované karty** | Karty 01 / 02 / 03. Každá může mít **Tlačítko (nepovinné)** — text tlačítka a odkaz; prázdné = karta bez tlačítka. |
 | **Titulek sekce se štítky**, **Štítky** | „Stavíme pro:“ a štítky. |
 | **Blok klientů** | Nadpis, text, tlačítko, text „a další…“ a výběr log (**Loga klientů**). |
 | **Blok akcí** | Nadpis, text, **Počet akcí**, tlačítko. |
@@ -213,7 +213,7 @@ a pod ním **Bloky obsahu**, které libovolně skládáte a řadíte:
 | Blok | Na webu |
 |---|---|
 | **Text** | Nadpis + formátovaný text. |
-| **Karty 01/02/03** | Nadpis, text a číslované karty (jako na úvodní stránce). |
+| **Karty 01/02/03** | Nadpis, text a číslované karty (jako na úvodní stránce, i s nepovinným tlačítkem). |
 | **Štítky** | „Stavíme pro:“ se štítky. |
 | **Logotypy klientů** | Nadpis, text, tlačítko a loga. |
 | **Statistiky** | Čísla s popiskem. |
@@ -257,6 +257,7 @@ Pod kontakty můžete přidat stejné **bloky** jako u obecných stránek.
 - **Právní odkazy v patičce** — odkazy dole (Ochrana osobních údajů, Cookies). Odkaz „Nastavení cookies“ se přidává automaticky.
 
 Odkazy na vlastní stránky pište s lomítkem na začátku (`/akce`, `/kontakt`), externí celou adresou (`https://…`).
+Odkaz `#newsletter` (v menu i v libovolném tlačítku) plynule posune stránku na blok newsletteru — ten je na každé stránce.
 
 ---
 
@@ -269,7 +270,8 @@ Odkazy na vlastní stránky pište s lomítkem na začátku (`/akce`, `/kontakt`
   potvrzovací e-mail a odběratel se přidá až po kliknutí (doporučeno kvůli GDPR). U odběratele ukazuje
   **Přeneseno do Ecomailu**, jestli se do Ecomailu opravdu dostal; když ne, zůstává uložený tady a dá se doplnit ručně.
 - **Cookies lišta:** všechny texty lišty a nastavení cookies. Analytika (Google Analytics) se spustí jen se souhlasem návštěvníka.
-- **Globální nastavení:** kontakty (patička, Kontakt), **Sociální sítě**, **Příjemci přihlášek (e-maily)**,
+- **Globální nastavení:** kontakty (patička, Kontakt), **Název firmy (patička)** + **IČO** + **DIČ** (řádek
+  „BEDY Group s.r.o., IČO: …, DIČ: …“ úplně dole v patičce), **Sociální sítě**, **Příjemci přihlášek (e-maily)**,
   **Výchozí SEO** celého webu a texty stránky **404** („stránka nenalezena“).
 
 ---

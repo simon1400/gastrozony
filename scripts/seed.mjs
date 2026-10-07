@@ -283,6 +283,9 @@ console.log('Single types…');
 await single('global', {
   siteName: 'Gastrozóny',
   email: 'info@gastrozony.cz',
+  companyName: 'BEDY Group s.r.o.',
+  ico: '06304273',
+  dic: 'CZ06304273',
   applicationRecipients: 'info@gastrozony.cz',
   notFoundTitle: 'Tahle stránka **neexistuje**',
   notFoundText: 'Odkaz je možná starý nebo v něm je překlep. Zkuste to z úvodní stránky — nebo se rovnou podívejte, na jaké akce hledáme prodejce.',

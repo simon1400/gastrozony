@@ -39,7 +39,7 @@ export default async function EventsPage() {
     count: groups[status].length,
     panel:
       groups[status].length > 0 ? (
-        <EventGrid events={groups[status]} showMeta />
+        <EventGrid events={groups[status]} />
       ) : (
         <p className="max-w-[680px] text-lead">{page.emptyText}</p>
       ),

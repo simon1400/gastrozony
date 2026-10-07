@@ -11,6 +11,9 @@ import { NewsletterForm, type NewsletterTexts } from './NewsletterForm';
  * Декор (≥ xl — ниже ему не хватает места над патичкой): пицца слева обрезана нижней волной,
  * бургер 582 справа висит между секциями и заходит на патичку (z-20). Координаты от краёв контейнера, как в XD.
  *
+ * Якорь `#newsletter` (ссылка «/#newsletter» или «#newsletter» из меню/кнопок CMS): блок есть на каждой
+ * странице, scroll-mt = высота ужатой шапки (она sticky и иначе накрыла бы начало блока).
+ *
  * Нижняя кромка заливается цветом патички, а не белым: жёлтое переходит прямо в тёмное,
  * без белой полосы между ними. Заливка идёт поверх пиццы — потому кривая её и обрезает.
  */
@@ -59,8 +62,9 @@ export const Newsletter = async () => {
 
   return (
     <section
+      id="newsletter"
       aria-labelledby="newsletter-title"
-      className="relative z-20 overflow-x-clip"
+      className="relative z-20 scroll-mt-14 overflow-x-clip xl:scroll-mt-[68px]"
       style={{ '--nl-band': edgeHeight('darkBottom') } as CSSProperties}
     >
       <SectionEdge edge="darkBottom" fill="var(--color-yellow)" />

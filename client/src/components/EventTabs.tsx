@@ -58,12 +58,12 @@ export const EventTabs = ({ tabs, initialId, label }: { tabs: EventTab[]; initia
               tabIndex={selected ? 0 : -1}
               onClick={() => select(i)}
               onKeyDown={(e) => onKeyDown(e, i)}
-              className={`inline-flex h-[52px] items-center gap-3 border border-yellow px-5 text-[17px] font-extrabold leading-[24px] text-ink shadow-btn transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink sm:h-[66px] sm:px-[27.5px] sm:text-[19px] ${
+              className={`inline-flex h-[50px] items-center gap-3 border border-yellow px-5 text-[15px] font-extrabold leading-[20px] text-ink shadow-btn transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink md:h-[66px] md:px-[27.5px] md:text-[19px] md:leading-[24px] ${
                 selected ? 'bg-yellow' : 'bg-white hover:bg-[#fffbe6]'
               }`}
             >
               {t.label}
-              <span className={`text-[15px] ${selected ? '' : 'text-grey-line'}`}>{t.count}</span>
+              <span className={`text-[13px] md:text-[15px] ${selected ? '' : 'text-grey-line'}`}>{t.count}</span>
             </button>
           );
         })}

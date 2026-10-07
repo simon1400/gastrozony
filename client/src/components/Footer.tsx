@@ -8,7 +8,7 @@ import { Logo } from './Logo';
  * Патичка. В макете отсутствует (подтверждено письмом) — «pár sloupců a odkazy,
  * sociální sítě atd». Тёмная, начинается сразу под жёлтой секцией newsletteru: волну
  * рисует её нижняя кромка, поэтому своей у патички нет.
- * Данные из `navigation` (колонки, правовые ссылки) + `global` (контакты, соцсети),
+ * Данные из `navigation` (колонки, правовые ссылки) + `global` (контакты, соцсети, údaje firmy),
  * с фолбэком, пока CMS пустая.
  */
 
@@ -37,6 +37,9 @@ const FALLBACK_LEGAL: FooterLink[] = [
   { label: 'Cookies', url: '/cookies' },
 ];
 
+/** Řádek s údaji provozovatele (místo «© rok Gastrozóny» — přání zákazníka 10/2026). */
+const FALLBACK_COMPANY = { name: 'BEDY Group s.r.o.', ico: '06304273', dic: 'CZ06304273' };
+
 const SOCIAL_LABELS: Record<string, string> = {
   facebook: 'Facebook',
   instagram: 'Instagram',
@@ -53,7 +56,15 @@ type FooterData = {
   phone: string | null;
   email: string | null;
   socials: Social[];
+  company: string;
 };
+
+const companyLine = (name?: string | null, ico?: string | null, dic?: string | null) =>
+  [
+    name || FALLBACK_COMPANY.name,
+    `IČO: ${ico || FALLBACK_COMPANY.ico}`,
+    `DIČ: ${dic || FALLBACK_COMPANY.dic}`,
+  ].join(', ');
 
 async function getFooterData(): Promise<FooterData> {
   try {
@@ -66,7 +77,14 @@ async function getFooterData(): Promise<FooterData> {
         query: { populate: ['footerColumns', 'footerColumns.links', 'footerLegal'] },
         revalidate: 300,
       }),
-      strapiFetch<{ phone?: string | null; email?: string | null; socials?: Social[] }>('/global', {
+      strapiFetch<{
+        phone?: string | null;
+        email?: string | null;
+        socials?: Social[];
+        companyName?: string | null;
+        ico?: string | null;
+        dic?: string | null;
+      }>('/global', {
         query: { populate: ['socials'] },
         revalidate: 300,
       }),
@@ -82,15 +100,26 @@ async function getFooterData(): Promise<FooterData> {
       phone: global.data?.phone ?? null,
       email: global.data?.email ?? null,
       socials: global.data?.socials ?? [],
+      company: companyLine(global.data?.companyName, global.data?.ico, global.data?.dic),
     };
   } catch {
-    return { columns: FALLBACK_COLUMNS, note: null, legal: FALLBACK_LEGAL, phone: null, email: null, socials: [] };
+    return {
+      columns: FALLBACK_COLUMNS,
+      note: null,
+      legal: FALLBACK_LEGAL,
+      phone: null,
+      email: null,
+      socials: [],
+      company: companyLine(),
+    };
   }
 }
 
 export const Footer = async () => {
-  const [{ columns, note, legal, phone, email, socials }, cookieTexts] = await Promise.all([getFooterData(), getCookieTexts()]);
-  const year = new Date().getFullYear();
+  const [{ columns, note, legal, phone, email, socials, company }, cookieTexts] = await Promise.all([
+    getFooterData(),
+    getCookieTexts(),
+  ]);
 
   return (
     <footer className="bg-ink text-white">
@@ -156,7 +185,7 @@ export const Footer = async () => {
 
         <div className="border-t border-white/10">
           <div className="container flex flex-col items-start justify-between gap-3 py-6 text-[14px] text-white/60 sm:flex-row sm:items-center">
-            <p>© {year} Gastrozóny</p>
+            <p>{company}</p>
             <ul className="flex flex-wrap gap-5">
               {legal.map((l) => (
                 <li key={l.url}>

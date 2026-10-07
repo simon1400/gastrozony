@@ -3,6 +3,7 @@ import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 
 /**
  * Кнопка из макета: высота 66, прямые углы, текст 19/24 ExtraBold, паддинг-х 29.
+ * На мобиле (< md) — 50 / 15px / паддинг 20: примерно на четверть меньше (просьба заказчика).
  * primary — жёлтая с тенью 0 3px 6px rgba(0,0,0,.161)
  * outline — белая с рамкой 1px #FFD100
  * dark    — чёрная с жёлтым текстом («Odebírat» в newsletteru)
@@ -11,7 +12,8 @@ import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 export type ButtonVariant = 'primary' | 'outline' | 'dark';
 
 const base =
-  'inline-flex h-[66px] items-center justify-center px-[27.5px] text-[19px] font-extrabold leading-[24px] ' +
+  'inline-flex h-[50px] items-center justify-center px-5 text-[15px] font-extrabold leading-[20px] ' +
+  'md:h-[66px] md:px-[27.5px] md:text-[19px] md:leading-[24px] ' +
   'whitespace-nowrap transition-[transform,background-color,filter] duration-150 hover:-translate-y-0.5 ' +
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink ' +
   'disabled:pointer-events-none disabled:opacity-50';

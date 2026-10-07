@@ -46,6 +46,24 @@
     interpolate-size: allow-keywords;
   }
 
+  /*
+   * Плавный переход к якорям (#newsletter). data-scroll-behavior="smooth" на <html> (layout.tsx) —
+   * чтобы Next на смене страницы прыгал наверх мгновенно, а не прокручивал всю страницу.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* Мобила (< md): běžné texty (text-body, text-lead — včetně RichText) 15px, просьба заказчика. */
+  @media (max-width: 47.99rem) {
+    :root {
+      --text-body: 0.9375rem;
+      --text-lead: 0.9375rem;
+    }
+  }
+
   body {
     @apply bg-white font-sans text-ink antialiased;
     overflow-x: clip;

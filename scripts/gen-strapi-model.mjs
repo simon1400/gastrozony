@@ -101,6 +101,8 @@ const components = {
       title: str({ required: true }),
       text: txt(),
       image: media(),
+      // volitelné tlačítko pod textem karty (přání zákazníka 10/2026)
+      cta: comp('shared.cta'),
     },
   },
   'shared/tag': {
@@ -306,6 +308,8 @@ const contentTypes = {
       phone: str(),
       email: str(),
       address: txt(),
+      // patička: «companyName, IČO: …, DIČ: …»
+      companyName: str({ default: 'BEDY Group s.r.o.' }),
       ico: str(),
       dic: str(),
       socials: comp('shared.social-link', true),

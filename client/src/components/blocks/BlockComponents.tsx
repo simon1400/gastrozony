@@ -184,7 +184,7 @@ export const EventsBlock = ({ block, events }: { block: EventsBlockData; events:
   return (
     <div>
       <SplitIntro title={block.title} text={block.text} />
-      {list.length > 0 && <EventGrid events={list} showMeta className="mt-16 xl:mt-[90px]" />}
+      {list.length > 0 && <EventGrid events={list} className="mt-16 xl:mt-[90px]" />}
       {block.cta && (
         <div className="mt-12 xl:mt-[73px]">
           <CtaButton cta={block.cta} />

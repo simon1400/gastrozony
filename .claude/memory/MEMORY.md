@@ -207,6 +207,23 @@ D:\gastrozony
   (DNS → certbot → сменить NEXT_PUBLIC_SITE_URL/STRAPI_ADMIN_URL + пересборка → убрать `X-Robots-Tag`).
 - [x] **Анимации декора + правки UI** (2026-09-12): пятна, еда, логотипы, статистика, шапка, аккордеон,
   стрелка селекта, стык жёлтой секции с патичкой. Подробности — «Факты сессии … (анимации декора + правки UI)».
+- [x] **Правки заказчика 07.10.2026** (закоммичено и задеплоено 07.10.2026): favicon — вилка в жёлтом круге
+  (`app/icon.svg` теперь исходник, `gen-icons.mjs` делает из него ico/apple-icon на жёлтом), `pizza-small.png` → маргарита,
+  `hranolky.png` → картошка в кульке (тот же бокс hero, влезает целиком до волны); дата·место на карточках акций везде
+  (проп `showMeta` удалён); на мобиле (< md) text-body/lead 15px, кнопки/теги/табы 50px·15px, newsletter поле+кнопка 50px
+  (поле 16px — иначе iOS зумит); `theme-color #ffd100`; бейдж «Již proběhlo»; патичка «BEDY Group s.r.o., IČO, DIČ» из
+  `global.companyName/ico/dic` (новое поле `companyName`); якорь `#newsletter` (scroll-mt + smooth, меню закрывается по клику);
+  `shared.numbered-card.cta` (необязательная кнопка). Populate карточек — `'*'`, а не `['cta']`: старый Strapi без поля
+  ответил бы 400 и HP упала бы в фолбэк. **После деплоя Strapi:** `node scripts/apply-cs-labels.mjs` на сервере (подписи
+  новых полей).
+- [ ] **Emailing přihlášek (задача заказчика, 07.10.2026) — ждёт DNS Resend.** «Příjemci přihlášek» в Globální
+  nastavení = `info@gastrozony.cz, vladek@bedy.cz, supkova@bedy.cz` (копия команде; подтверждение заявителю уходит
+  отдельно). Код готов, менять не нужно. Проверено 07.10.2026: у `gastrozony.cz` записей Resend нет (нет
+  `resend._domainkey`, нет `send` MX/SPF; корневой SPF — itbrno + smartemailing, его не трогать). Шаги: домен в Resend +
+  DNS → `RESEND_API_KEY` и `MAIL_FROM` в `/opt/gastrozony/client/.env` + `pm2 restart gastrozony-client --update-env` →
+  вписать получателей в админке (запись в БД тестового сервера — только с подтверждения пользователя, пока не вписаны).
+- Машина сменилась на Mac (`/Users/dpech/Desktop/proj/gastrozony`), локального Postgres нет — клиент проверялся
+  против тестового Strapi: `STRAPI_URL=https://strapi-gastrozony.hardart.cz npx next dev -p 3100` (только чтение).
 - [ ] Правки по итогам тестирования пользователем (список приносит в новую сессию, формат — `docs/local-testing.md` §7)
 
 ## Факты сессии 2026-09-12 (анимации декора + правки UI)

@@ -30,6 +30,7 @@ export const CONTENT_TYPE_LABELS = {
     phone: 'Telefon',
     email: 'E-mail',
     address: 'Adresa',
+    companyName: 'Název firmy (patička)',
     ico: 'IČO',
     dic: 'DIČ',
     socials: 'Sociální sítě',
@@ -270,6 +271,7 @@ export const COMPONENT_LABELS = {
     title: 'Titulek',
     text: 'Text',
     image: 'Obrázek',
+    cta: 'Tlačítko (nepovinné)',
   },
   'shared.tag': {
     label: 'Text štítku',
