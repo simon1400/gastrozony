@@ -214,8 +214,17 @@ D:\gastrozony
   (поле 16px — иначе iOS зумит); `theme-color #ffd100`; бейдж «Již proběhlo»; патичка «BEDY Group s.r.o., IČO, DIČ» из
   `global.companyName/ico/dic` (новое поле `companyName`); якорь `#newsletter` (scroll-mt + smooth, меню закрывается по клику);
   `shared.numbered-card.cta` (необязательная кнопка). Populate карточек — `'*'`, а не `['cta']`: старый Strapi без поля
-  ответил бы 400 и HP упала бы в фолбэк. **После деплоя Strapi:** `node scripts/apply-cs-labels.mjs` на сервере (подписи
-  новых полей).
+  ответил бы 400 и HP упала бы в фолбэк. Подписи новых полей Strapi взял из схем сам (apply-cs-labels не понадобился).
+- **Авария 07.10.2026 после этого деплоя:** Strapi в цикле рестартов (pm2 stopped, 100 restarts, 502) —
+  `alter table globals add column company_name - must be owner of table globals`. Причина: дамп при переносе
+  восстановлен от `postgres`, все 120 таблиц + 120 sequences принадлежали ему. Бэкап
+  `/root/backups/gastrozony_before_owner_fix_20261007_1725.sql.gz`, владение передано `gastrozony_user`, Strapi поднят,
+  контент не пострадал. Сайт во время аварии жил на кеше/фолбэках. Подробно — `docs/deploy.md`.
+  **После деплоя с изменением схемы проверять `curl https://strapi-gastrozony.hardart.cz/api/global` и pm2 status.**
+- SSH на сервер: `ssh het` работает; в auto-mode классификатор блокирует часть ssh-команд — пользователь
+  переключает режим на manual (как в соседнем `server-monitor`, где есть allow-правило `Bash(ssh root@157.90.169.205:*)`).
+  Монитор: `/opt/server-monitor`, API `127.0.0.1:4400/api/monitor` (логин по `AUTH_PASSWORD` из его .env);
+  домен процесса берётся по порту из nginx — у упавшего процесса может показать чужой домен (`strapi.gastrozony.cz`).
 - [ ] **Emailing přihlášek (задача заказчика, 07.10.2026) — ждёт DNS Resend.** «Příjemci přihlášek» в Globální
   nastavení = `info@gastrozony.cz, vladek@bedy.cz, supkova@bedy.cz` (копия команде; подтверждение заявителю уходит
   отдельно). Код готов, менять не нужно. Проверено 07.10.2026: у `gastrozony.cz` записей Resend нет (нет

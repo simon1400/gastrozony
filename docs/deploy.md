@@ -58,6 +58,11 @@
       Секреты (`API_TOKEN_SALT`, `ENCRYPTION_KEY`, …) намеренно те же: иначе API-токены и зашифрованный
       конфиг ImageKit из перенесённого дампа стали бы невалидны.
 - [x] Контент перенесён дампом dev-базы (`pg_dump --no-owner --no-privileges`).
+  ⚠ Дамп восстанавливали от `postgres` → все таблицы и последовательности оказались во владении `postgres`, и Strapi
+  (`gastrozony_user`) не мог менять схему: первое же новое поле (07.10.2026) уронило его в цикл рестартов
+  (`must be owner of table globals`). Владение передано `gastrozony_user` 07.10.2026.
+  **При любом восстановлении дампа** — восстанавливать от `gastrozony_user` (`psql -U gastrozony_user -h 127.0.0.1`)
+  или после восстановления передать владение (ALTER TABLE/SEQUENCE … OWNER TO gastrozony_user по `pg_class`).
       Подводный камень: дамп из PostgreSQL 17 не заходит в 16 — надо удалить строку `SET transaction_timeout = 0;`.
 - [x] `client/.env` — с dev, но `STRAPI_URL=http://127.0.0.1:1343`, новый `ADMIN_PASS`,
       добавлены `NEXT_PUBLIC_SITE_URL` и `STRAPI_ADMIN_URL`.
