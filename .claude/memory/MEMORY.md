@@ -215,6 +215,9 @@ D:\gastrozony
   `global.companyName/ico/dic` (новое поле `companyName`); якорь `#newsletter` (scroll-mt + smooth, меню закрывается по клику);
   `shared.numbered-card.cta` (необязательная кнопка). Populate карточек — `'*'`, а не `['cta']`: старый Strapi без поля
   ответил бы 400 и HP упала бы в фолбэк. Подписи новых полей Strapi взял из схем сам (apply-cs-labels не понадобился).
+- Доп. правки 07.10.2026 (`f01771f`): форма přihlášky на мобиле — поля 50px/16px, подписи 15px (FIELD_BASE без высоты
+  и правого паддинга, иначе md: ломает textarea/select). **Картинки при замене — новое имя файла**: заказчик видел старые
+  из кеша (`pizza-small`→`pizza-margherita`, `hranolky`→`hranolky-kornout`).
 - **Авария 07.10.2026 после этого деплоя:** Strapi в цикле рестартов (pm2 stopped, 100 restarts, 502) —
   `alter table globals add column company_name - must be owner of table globals`. Причина: дамп при переносе
   восстановлен от `postgres`, все 120 таблиц + 120 sequences принадлежали ему. Бэкап
