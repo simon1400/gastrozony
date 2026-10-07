@@ -283,7 +283,7 @@ export const DynamicForm = ({ form, events, initialEvent = '', texts, richLabels
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className={CARD} aria-busy={isSubmitting}>
-      <div className="grid gap-x-[30px] gap-y-8 sm:grid-cols-2">
+      <div className="grid gap-x-[30px] gap-y-6 sm:grid-cols-2 md:gap-y-8">
         {events.length > 0 && (
           <FieldShell
             id={eventId}

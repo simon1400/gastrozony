@@ -50,9 +50,9 @@ const ROT_BURGER: Matrix = [0.9781, 0.2079, -0.2079, 0.9781]; // +12°
 
 /** Порядок = порядок слоёв в XD (снизу вверх). */
 const FOOD: Food[] = [
-  { src: '/food/hranolky.png', x: 1253, y: 853.4, w: 271.6, h: 363.4, m: ROT_FRIES, shadow: false, sizes: '(min-width: 1024px) 280px, 30vw', anim: { x: '0.7%', y: '2.6%', r: '0.9deg', dur: '6.5s', delay: '-1.2s', in: '0.3s' }, depth: '5' },
+  { src: '/food/hranolky-kornout.png', x: 1253, y: 853.4, w: 271.6, h: 363.4, m: ROT_FRIES, shadow: false, sizes: '(min-width: 1024px) 280px, 30vw', anim: { x: '0.7%', y: '2.6%', r: '0.9deg', dur: '6.5s', delay: '-1.2s', in: '0.3s' }, depth: '5' },
   { src: '/food/pizza-big.png', x: 1421.7, y: 830.8, w: 400.8, h: 410, m: ROT_PIZZA, shadow: true, sizes: '(min-width: 1024px) 410px, 42vw', priority: true, anim: { x: '0.4%', y: '1.7%', r: '0.5deg', dur: '7.5s', delay: '-3s', in: '0.1s' }, depth: '19' },
-  { src: '/food/pizza-small.png', x: 909, y: 440.8, w: 199.8, h: 205, m: ROT_PIZZA, shadow: true, sizes: '(min-width: 1024px) 210px, 22vw', anim: { x: '1%', y: '3.4%', r: '1.2deg', dur: '5.5s', delay: '-2s', in: '0.25s' }, depth: '9' },
+  { src: '/food/pizza-margherita.png', x: 909, y: 440.8, w: 199.8, h: 205, m: ROT_PIZZA, shadow: true, sizes: '(min-width: 1024px) 210px, 22vw', anim: { x: '1%', y: '3.4%', r: '1.2deg', dur: '5.5s', delay: '-2s', in: '0.25s' }, depth: '9' },
   { src: '/food/burger-small.png', x: 1100.3, y: 606.6, w: 232.5, h: 225.7, m: ROT_FRIES, shadow: true, sizes: '(min-width: 1024px) 240px, 25vw', anim: { x: '0.9%', y: '3%', r: '1.1deg', dur: '6s', delay: '-4s', in: '0.2s' }, depth: '14' },
   { src: '/food/burger-big.png', x: 1231.7, y: 182.7, w: 379.9, h: 379.9, m: ROT_BURGER, shadow: true, sizes: '(min-width: 1024px) 380px, 40vw', priority: true, anim: { x: '0.5%', y: '1.9%', r: '0.6deg', dur: '8s', delay: '-0.5s', in: '0s' }, depth: '24' },
 ];

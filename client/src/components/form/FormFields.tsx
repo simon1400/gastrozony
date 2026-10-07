@@ -7,22 +7,33 @@ import { FORM_MESSAGES, itemValue, type FieldValue, type SelectItem } from '@/li
 /**
  * Prezentační části dynamického formuláře ve stylu webu:
  * input 66 px, r 4, rámeček 1.5 px #707070/35 (jako newsletter), volby jako štítky «Stavíme pro», upload s drag & drop.
+ * Na mobilu (< md) menší jako tlačítka a newsletter: pole 50 px, popisky 15 px. Text v poli 16 px — při menším
+ * iOS Safari na fokusu zvětšuje stránku.
+ *
+ * Výška a pravý padding nejsou v FIELD_BASE: textarea a select je mají jiné a md: varianta společného
+ * základu by je na desktopu přebila (pořadí md: pravidel neurčuje pořadí tříd).
  */
 
-export const INPUT_CLASS =
-  'mt-3 block h-[66px] w-full min-w-0 rounded border-[1.5px] border-grey-line/35 bg-white px-[22px] text-[18px] ' +
-  'outline-none transition-colors placeholder:text-ink/50 focus:border-ink aria-[invalid=true]:border-red-700';
+const FIELD_BASE =
+  'mt-2 block w-full min-w-0 rounded border-[1.5px] border-grey-line/35 bg-white pl-4 text-[16px] ' +
+  'outline-none transition-colors placeholder:text-ink/50 focus:border-ink aria-[invalid=true]:border-red-700 ' +
+  'md:mt-3 md:pl-[22px] md:text-[18px]';
 
-export const TEXTAREA_CLASS = `${INPUT_CLASS} h-auto min-h-[180px] resize-y py-[18px] leading-[28px]`;
+export const INPUT_CLASS = `${FIELD_BASE} h-[50px] pr-4 md:h-[66px] md:pr-[22px]`;
+
+export const TEXTAREA_CLASS =
+  `${FIELD_BASE} min-h-[140px] resize-y py-3 pr-4 leading-[24px] ` +
+  'md:min-h-[180px] md:py-[18px] md:pr-[22px] md:leading-[28px]';
 
 /** Nativní select s vlastní šipkou — sama šipka je v .gz-select (globals.css). */
-export const SELECT_CLASS = `${INPUT_CLASS} gz-select cursor-pointer appearance-none pr-14`;
+export const SELECT_CLASS = `${FIELD_BASE} gz-select h-[50px] cursor-pointer appearance-none pr-12 md:h-[66px] md:pr-14`;
 
-const LABEL_CLASS = 'block text-[18px] font-extrabold leading-[24px]';
+const LABEL_CLASS = 'block text-[15px] font-extrabold leading-[20px] md:text-[18px] md:leading-[24px]';
 
 const CHIP_CLASS =
-  'inline-flex min-h-[66px] cursor-pointer items-center border-[1.5px] border-grey-line/35 bg-white px-[24px] py-3 ' +
-  'text-[17px] font-extrabold leading-[22px] transition-colors hover:border-ink ' +
+  'inline-flex min-h-[50px] cursor-pointer items-center border-[1.5px] border-grey-line/35 bg-white px-4 py-2 ' +
+  'text-[15px] font-extrabold leading-[20px] md:min-h-[66px] md:px-[24px] md:py-3 md:text-[17px] md:leading-[22px] ' +
+  'transition-colors hover:border-ink ' +
   'peer-checked:border-yellow peer-checked:bg-yellow peer-checked:shadow-btn ' +
   'peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ink ' +
   'peer-disabled:cursor-not-allowed peer-disabled:opacity-40';
