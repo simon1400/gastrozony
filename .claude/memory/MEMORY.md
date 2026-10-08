@@ -220,16 +220,6 @@ D:\gastrozony
 - Доп. правки 07.10.2026 (`f01771f`): форма přihlášky на мобиле — поля 50px/16px, подписи 15px (FIELD_BASE без высоты
   и правого паддинга, иначе md: ломает textarea/select). **Картинки при замене — новое имя файла**: заказчик видел старые
   из кеша (`pizza-small`→`pizza-margherita`, `hranolky`→`hranolky-kornout`).
-- **Авария 07.10.2026 после этого деплоя:** Strapi в цикле рестартов (pm2 stopped, 100 restarts, 502) —
-  `alter table globals add column company_name - must be owner of table globals`. Причина: дамп при переносе
-  восстановлен от `postgres`, все 120 таблиц + 120 sequences принадлежали ему. Бэкап
-  `/root/backups/gastrozony_before_owner_fix_20261007_1725.sql.gz`, владение передано `gastrozony_user`, Strapi поднят,
-  контент не пострадал. Сайт во время аварии жил на кеше/фолбэках. Подробно — `docs/deploy.md`.
-  **После деплоя с изменением схемы проверять `curl https://strapi.gastrozony.cz/api/global` и pm2 status.**
-- SSH на сервер: `ssh het` работает; в auto-mode классификатор блокирует часть ssh-команд — пользователь
-  переключает режим на manual (как в соседнем `server-monitor`, где есть allow-правило `Bash(ssh root@157.90.169.205:*)`).
-  Монитор: `/opt/server-monitor`, API `127.0.0.1:4400/api/monitor` (логин по `AUTH_PASSWORD` из его .env);
-  домен процесса берётся по порту из nginx — у упавшего процесса может показать чужой домен (`strapi.gastrozony.cz`).
 - [x] **Emailing přihlášek — работает с 08.10.2026.** Домен `gastrozony.cz` подтверждён в Resend (DKIM
   `resend._domainkey`, `send` MX/SPF; корневой SPF не трогали). `RESEND_API_KEY` вписан в `/opt/gastrozony/client/.env`
   (в репо/память не пишем), `MAIL_FROM` не задан → дефолт `Gastrozóny <info@gastrozony.cz>`. Тестовое письмо
