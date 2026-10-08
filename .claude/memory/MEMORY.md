@@ -246,12 +246,6 @@ D:\gastrozony
   переключает режим на manual (как в соседнем `server-monitor`, где есть allow-правило `Bash(ssh root@157.90.169.205:*)`).
   Монитор: `/opt/server-monitor`, API `127.0.0.1:4400/api/monitor` (логин по `AUTH_PASSWORD` из его .env);
   домен процесса берётся по порту из nginx — у упавшего процесса может показать чужой домен (`strapi.gastrozony.cz`).
-- [ ] **Emailing přihlášek (задача заказчика, 07.10.2026) — ждёт DNS Resend.** «Příjemci přihlášek» в Globální
-  nastavení = `info@gastrozony.cz, vladek@bedy.cz, supkova@bedy.cz` (копия команде; подтверждение заявителю уходит
-  отдельно). Код готов, менять не нужно. Проверено 07.10.2026: у `gastrozony.cz` записей Resend нет (нет
-  `resend._domainkey`, нет `send` MX/SPF; корневой SPF — itbrno + smartemailing, его не трогать). Шаги: домен в Resend +
-  DNS → `RESEND_API_KEY` и `MAIL_FROM` в `/opt/gastrozony/client/.env` + `pm2 restart gastrozony-client --update-env` →
-  вписать получателей в админке (запись в БД тестового сервера — только с подтверждения пользователя, пока не вписаны).
 - Машина сменилась на Mac (`/Users/dpech/Desktop/proj/gastrozony`), локального Postgres нет — клиент проверялся
   против тестового Strapi: `STRAPI_URL=https://strapi-gastrozony.hardart.cz npx next dev -p 3100` (только чтение).
 - [ ] Правки по итогам тестирования пользователем (список приносит в новую сессию, формат — `docs/local-testing.md` §7)
