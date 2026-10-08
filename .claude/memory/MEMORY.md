@@ -63,10 +63,12 @@ D:\gastrozony
   Ключ `github-actions-deploy` уже в `authorized_keys` сервера и локально в `~/.ssh/github_deploy_key` — новый не нужен.
 - Наши порты: **client 3012, Strapi 1343** (3011 из старого плана занят tulsio; заняты 1333–1342, 1346, 1350).
 - **Репозиторий:** `git@github.com:simon1400/gastrozony.git`, ветка `main`, **публичный**. Монорепо целиком.
-- **Домены:** пока тестовые `gastrozony.hardart.cz` и `strapi-gastrozony.hardart.cz` (решение 12.09.2026).
-  `hardart.cz` — служебный домен на Wedos, wildcard нет, каждому поддомену нужна своя A-запись на 157.90.169.205.
-  У тестового клиента в nginx `X-Robots-Tag: noindex` — при переезде на `gastrozony.cz` убрать, заменить
-  `NEXT_PUBLIC_SITE_URL`/`STRAPI_ADMIN_URL` и **пересобрать клиент** (NEXT_PUBLIC_* вшивается при сборке).
+- **Домены — ПРОД с 08.10.2026:** https://gastrozony.cz и https://strapi.gastrozony.cz (DNS у Websupport).
+  `www` и тестовый `gastrozony.hardart.cz` → 301 на `https://gastrozony.cz`; `strapi-gastrozony.hardart.cz` работает как раньше.
+  `X-Robots-Tag` убран, `.env` клиента на прод-домены, клиент пересобран. Сертификаты — certbot **webroot**
+  (`--cert-name gastrozony.cz` / `strapi.gastrozony.cz`), nginx-конфиги ручные. **Висит:** у `www` старая AAAA
+  `2a02:2b88:1:4::10e` (старый хостинг) → сертификат на www не выпустить; пользователь должен удалить её в Websupport,
+  потом `--expand` (команда в `docs/deploy.md` «Домены»).
 - `gh` CLI локально авторизован как `simon1400`. `gh secret set` с приватным ключом и правку crontab
   классификатор auto-mode блокирует — эти два шага делает пользователь (команды в `docs/deploy.md`).
 - **Прод поднят 2026-09-12:** `/opt/gastrozony`, БД `gastrozony_db`, контент перенесён дампом dev-базы,
@@ -203,8 +205,8 @@ D:\gastrozony
   GitHub Actions (прогон зелёный), сервер поднят, контент перенесён дампом, HTTPS, бэкапы, GTM.
   Подробности — «Git», «Сервер и деплой», «Решения пользователя» выше и `docs/deploy.md`.
   **Осталось до боевого запуска:** ключи Resend/Ecomail; убрать публичный `create` в bootstrap Strapi;
-  прод-токен Strapi с ограниченными правами вместо перенесённого full-access; переезд на `gastrozony.cz`
-  (DNS → certbot → сменить NEXT_PUBLIC_SITE_URL/STRAPI_ADMIN_URL + пересборка → убрать `X-Robots-Tag`).
+  прод-токен Strapi с ограниченными правами вместо перенесённого full-access. ~~Переезд на `gastrozony.cz`~~ —
+  сделано 08.10.2026 (кроме сертификата `www`, см. «Домены»).
 - [x] **Анимации декора + правки UI** (2026-09-12): пятна, еда, логотипы, статистика, шапка, аккордеон,
   стрелка селекта, стык жёлтой секции с патичкой. Подробности — «Факты сессии … (анимации декора + правки UI)».
 - [x] **Правки заказчика 07.10.2026** (закоммичено и задеплоено 07.10.2026): favicon — вилка в жёлтом круге
@@ -223,7 +225,23 @@ D:\gastrozony
   восстановлен от `postgres`, все 120 таблиц + 120 sequences принадлежали ему. Бэкап
   `/root/backups/gastrozony_before_owner_fix_20261007_1725.sql.gz`, владение передано `gastrozony_user`, Strapi поднят,
   контент не пострадал. Сайт во время аварии жил на кеше/фолбэках. Подробно — `docs/deploy.md`.
-  **После деплоя с изменением схемы проверять `curl https://strapi-gastrozony.hardart.cz/api/global` и pm2 status.**
+  **После деплоя с изменением схемы проверять `curl https://strapi.gastrozony.cz/api/global` и pm2 status.**
+- SSH на сервер: `ssh het` работает; в auto-mode классификатор блокирует часть ssh-команд — пользователь
+  переключает режим на manual (как в соседнем `server-monitor`, где есть allow-правило `Bash(ssh root@157.90.169.205:*)`).
+  Монитор: `/opt/server-monitor`, API `127.0.0.1:4400/api/monitor` (логин по `AUTH_PASSWORD` из его .env);
+  домен процесса берётся по порту из nginx — у упавшего процесса может показать чужой домен (`strapi.gastrozony.cz`).
+- [x] **Emailing přihlášek — работает с 08.10.2026.** Домен `gastrozony.cz` подтверждён в Resend (DKIM
+  `resend._domainkey`, `send` MX/SPF; корневой SPF не трогали). `RESEND_API_KEY` вписан в `/opt/gastrozony/client/.env`
+  (в репо/память не пишем), `MAIL_FROM` не задан → дефолт `Gastrozóny <info@gastrozony.cz>`. Тестовое письмо
+  на pechunka11@gmail.com — `delivered`. Получатели копий (заказчик вписал сам): `info@gastrozony.cz, vladek@bedy.cz,
+  supkova@bedy.cz`. Полную цепочку (заявка → подтверждение + копия) тестовой заявкой не гоняли — копия ушла бы BEDY.
+  Ключ был прислан в чат — при желании перевыпустить в Resend. Осталось: Ecomail (ключ + listId).
+- **Авария 07.10.2026 после этого деплоя:** Strapi в цикле рестартов (pm2 stopped, 100 restarts, 502) —
+  `alter table globals add column company_name - must be owner of table globals`. Причина: дамп при переносе
+  восстановлен от `postgres`, все 120 таблиц + 120 sequences принадлежали ему. Бэкап
+  `/root/backups/gastrozony_before_owner_fix_20261007_1725.sql.gz`, владение передано `gastrozony_user`, Strapi поднят,
+  контент не пострадал. Сайт во время аварии жил на кеше/фолбэках. Подробно — `docs/deploy.md`.
+  **После деплоя с изменением схемы проверять `curl https://strapi.gastrozony.cz/api/global` и pm2 status.**
 - SSH на сервер: `ssh het` работает; в auto-mode классификатор блокирует часть ssh-команд — пользователь
   переключает режим на manual (как в соседнем `server-monitor`, где есть allow-правило `Bash(ssh root@157.90.169.205:*)`).
   Монитор: `/opt/server-monitor`, API `127.0.0.1:4400/api/monitor` (логин по `AUTH_PASSWORD` из его .env);
