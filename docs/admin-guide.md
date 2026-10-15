@@ -52,7 +52,7 @@ Když změnu nevidíte, počkejte a obnovte stránku (F5).
 | **Název akce** | Název akce (karta, detail, přihláška). |
 | **URL adresa (slug)** | Adresa stránky: `gastrozony.cz/akce/<slug>`. Vyplní se sama z názvu. **Po zveřejnění ji neměňte** — rozbily by se odkazy. |
 | **Perex** | Krátký popis na kartě (max. ~5 řádků) a v úvodu detailu. |
-| **Obsah** | Hlavní text detailu (formátování viz [Markdown](#13-tahák-formátování-markdown)). |
+| **Obsah** | Hlavní text detailu (vizuální editor, viz [Formátování textu](#13-formátování-textu)). |
 | **Místo** | Místo, např. „Wannieck Gallery, Brno“. |
 | **Datum od / Datum do** | Termín. U jednodenní akce stačí **Datum od**. |
 | **Hlavní obrázek** | Obálka (karta i detail). Poměr **4 : 3**, šířka alespoň 1300 px. |
@@ -67,13 +67,12 @@ Když změnu nevidíte, počkejte a obnovte stránku (F5).
 
 ### Stav akce se počítá sám
 Podle data (pražský čas):
-- **Připravujeme** — akce ještě nezačala (šedý štítek),
-- **Aktuální** — akce právě probíhá (žlutý štítek),
+- **Aktuální** — akce ještě neskončila, tj. připravovaná i právě probíhající (žlutý štítek),
 - **Proběhlé** — po skončení (karta černobílá, akce je v záložce „Proběhlé“ na /akce, přihlásit se na ni nelze).
 
 Pole **Stav akce (ruční nastavení)** stav přebije — použijte ho jen výjimečně (např. akce zrušená před termínem → „ukonceno“).
 
-Na úvodní stránce se zobrazují nejbližší akce: nejdřív aktuální, pak připravované.
+Na úvodní stránce se zobrazují nejbližší aktuální akce podle data začátku.
 
 ### Uzavření přihlášek
 Vypněte **Přihlášky otevřené** a publikujte. Tlačítko přihlášky zmizí a akce se přestane nabízet ve formuláři.
@@ -90,7 +89,7 @@ Pokud nemá žádná akce otevřené přihlášky, formulář se skryje a místo
 - **Datum** — datum na kartě; články se řadí od nejnovějšího. **Když ho necháte prázdné, doplní se dnešní datum.**
 - **Perex** — krátký text na kartě a pod nadpisem.
 - **Hlavní obrázek** — obálka, poměr **4 : 3** (na detailu se zobrazí širší výřez — hlavní motiv dejte doprostřed).
-- **Obsah** — text článku ([Markdown](#13-tahák-formátování-markdown)).
+- **Obsah** — text článku ([vizuální editor](#13-formátování-textu)).
 
 Výpis na **/novinky** má 9 článků na stránku; pod každým článkem se nabízejí 3 další.
 Úvodní texty výpisu (nadpis, perex, popisky tlačítek) jsou v **Single types → Blog**.
@@ -164,7 +163,7 @@ Texty potvrzovacího e-mailu upravíte v **Single types → Stránka přihlášk
 
 | Pole | Co je to |
 |---|---|
-| **Potvrzovací e-mail — předmět** | Předmět e-mailu (název akce se k němu připojí sám) |
+| **Potvrzovací e-mail — předmět** | Předmět e-mailu (název akce se k němu připojí sám; v textu e-mailu je pod názvem akce i její termín) |
 | **Potvrzovací e-mail — úvod** | Úvodní odstavec pod oslovením „Dobrý den,“ |
 | **Potvrzovací e-mail — poznámka** | Drobný text pod výpisem odpovědí (např. „na tuto zprávu neodpovídejte“) |
 
@@ -186,7 +185,7 @@ zůstane vypnuté — kontakt najdete v tabulce přihlášek.
 | **Statistiky** | Čísla pod úvodem (např. „120+ / Odbavených akcí“). |
 | **Intro (dva sloupce)** | Nadpis šedé sekce a text vpravo. **Odstavce oddělte prázdným řádkem.** |
 | **Číslované karty** | Karty 01 / 02 / 03. Každá může mít **Tlačítko (nepovinné)** — text tlačítka a odkaz; prázdné = karta bez tlačítka. |
-| **Titulek sekce se štítky**, **Štítky** | „Stavíme pro:“ a štítky. |
+| **Titulek sekce se štítky**, **Štítky** | „Stavíme pro:“ a štítky. Štítek s vyplněným **Odkazem** je klikací (viz [Štítky s odkazem](#7-obecné-stránky-a-bloky)). |
 | **Blok klientů** | Nadpis, text, tlačítko, text „a další…“ a výběr log (**Loga klientů**). |
 | **Blok akcí** | Nadpis, text, **Počet akcí**, tlačítko. |
 
@@ -208,13 +207,14 @@ Stránky jako *Jak to funguje*, *Pro prodejce*, *Pro pořadatele*, *Ochrana osob
 **Content Manager → Stránka**. Adresa je `gastrozony.cz/<slug>`.
 
 Stránka má úvod (**Titulek**, **Perex**, volitelně **Tlačítko (CTA)** a **Hlavní obrázek** — poměr 1440 × 560)
-a pod ním **Bloky obsahu**, které libovolně skládáte a řadíte:
+a pod ním **Bloky obsahu**, které libovolně skládáte a řadíte. Vpravo od úvodu je na počítači vždy burger, pizza
+a žluté skvrny (jako na úvodní stránce) — nic se nenastavuje.
 
 | Blok | Na webu |
 |---|---|
 | **Text** | Nadpis + formátovaný text. |
 | **Karty 01/02/03** | Nadpis, text a číslované karty (jako na úvodní stránce, i s nepovinným tlačítkem). |
-| **Štítky** | „Stavíme pro:“ se štítky. |
+| **Štítky** | „Stavíme pro:“ / „Kde nás najdete?“ se štítky. |
 | **Logotypy klientů** | Nadpis, text, tlačítko a loga. |
 | **Statistiky** | Čísla s popiskem. |
 | **Obrázek + text** | Fotka vlevo nebo vpravo (**Pozice obrázku**) a text. |
@@ -227,6 +227,11 @@ a pod ním **Bloky obsahu**, které libovolně skládáte a řadíte:
 pozadím web spojí do jedné sekce s vlnkami. Loga a FAQ jsou vždy na bílém, výpis akcí na černém; štítky, statistiky,
 galerie a CTA převezmou pozadí bloku nad sebou. U **CTA bloku** určuje **Pozadí** barvu karty (výchozí žlutá).
 
+**Štítky s odkazem:** každý štítek má pole **Odkaz (nepovinné)**. Vyplňte adresu článku nebo stránky,
+např. `/novinky/festivaly` (článek z Novinek) nebo `/pro-prodejce`, případně celý externí odkaz `https://…`
+(otevře se v nové záložce). Štítek pak dostane šipku → a jde na něj kliknout. Prázdné pole = obyčejný štítek.
+Článek, na který odkazujete, nejdřív vytvořte a publikujte v **Content Manager → Články**.
+
 Nová stránka se v menu neobjeví sama — přidejte ji do [Navigace](#9-hlavička-a-patička-navigace).
 
 ---
@@ -236,9 +241,9 @@ Nová stránka se v menu neobjeví sama — přidejte ji do [Navigace](#9-hlavi�
 **Single types → Kontakt:** **Titulek**, **Perex**, **Obsah**, **E-mail**, **Telefon**, **Adresa**.
 Prázdné kontakty se doplní z *Globálního nastavení*.
 
-**Mapa:** v Google Mapách najděte místo → **Sdílet → Vložit mapu** → zkopírujte jen adresu z `src="…"` (začíná
-`https://www.google.com/maps/embed?…`) do **Odkaz na Google Maps**. Mapa se pak zobrazí přímo na stránce.
-Běžný odkaz na Google Mapy se zobrazí jen jako tlačítko; je-li vyplněná **Adresa**, mapa se vykreslí podle ní.
+Vpravo od kontaktů je burger, pizza a žluté skvrny (mapa se na stránce už nezobrazuje).
+Vyplníte-li **Odkaz na Google Maps** běžným odkazem na místo v Google Mapách, zobrazí se pod textem tlačítko
+„Zobrazit na mapě“.
 
 **Tým:** členové v **Content Manager → Člen týmu** (**Jméno a příjmení**, **Pozice**, **Fotografie**, **E-mail**,
 **Telefon**, **Pořadí**). Na stránce Kontakt je vyberte v poli **Členové týmu**. Bez fotky se zobrazí iniciály
@@ -309,9 +314,22 @@ Výchozí hodnoty pro celý web jsou v **Globální nastavení → Výchozí SEO
 
 ---
 
-## 13. Tahák formátování (Markdown)
+## 13. Formátování textu
 
-Pole **Obsah**, **Text**, **Odpověď** a popisky souhlasů používají jednoduché formátování:
+Pole **Obsah**, **Text**, **Odpověď** (FAQ) a **Text nad / pod formulářem** (Stránka přihlášky) mají **vizuální editor**
+(CKEditor): text píšete jako ve Wordu a formátujete tlačítky v liště — tučně, kurzíva, nadpisy, odrážky,
+číslovaný seznam, odkaz, citace, tabulka. Ikonou vpravo nahoře editor zvětšíte na celou obrazovku.
+
+- **Odkaz:** označte text → ikona řetízku → vložte adresu (`/prihlaska`, `https://…` nebo `mailto:info@gastrozony.cz`).
+- **Nový odstavec** = Enter, **nový řádek ve stejném odstavci** = Shift + Enter.
+- Text zkopírovaný z Wordu nebo e-mailu si po vložení zkontrolujte — barvy a písma se nepřenesou (je to záměr,
+  web má jednotný vzhled).
+- Pokud ve starším textu vidíte hvězdičky (např. `** 5. prosince**`), jde o tučné písmo zapsané s mezerou za `**`
+  — hvězdičky smažte, text označte a klikněte na **B**.
+
+### Tahák pro jednoduchá textová pole (Markdown)
+
+Krátká textová pole bez lišty (např. popisky souhlasů ve formuláři) používají zápis Markdown:
 
 | Napíšete | Na webu |
 |---|---|

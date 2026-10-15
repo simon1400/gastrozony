@@ -238,6 +238,26 @@ D:\gastrozony
   домен процесса берётся по порту из nginx — у упавшего процесса может показать чужой домен (`strapi.gastrozony.cz`).
 - Машина сменилась на Mac (`/Users/dpech/Desktop/proj/gastrozony`), локального Postgres нет — клиент проверялся
   против тестового Strapi: `STRAPI_URL=https://strapi-gastrozony.hardart.cz npx next dev -p 3100` (только чтение).
+- [x] **Правки заказчика 15.10.2026** (код готов, tsc/eslint чистые, проверено в браузере против прод-Strapi; **не закоммичено/не задеплоено**):
+  1) Kontakt — карта (iframe) убрана, справа декор; кнопка «Zobrazit na mapě» осталась только для НЕ-embed ссылки.
+  2) Статус/таб «Připravujeme» удалён: будущие акции = `aktualni`; из схемы убраны `events-page.tabUpcomingLabel`
+     и значение enum `statusOverride: pripravujeme` (на проде ни у одной акции его не было — проверено API).
+     `resolveEventStatus` принимает override строкой и игнорирует неизвестные значения.
+  3) **Редактор rich text → CKEditor 5**, плагин `@_sh/strapi-plugin-ckeditor@8.0.0` (community, MIT, self-hosted,
+     licenseKey `GPL` уже в дефолтных пресетах, без CDN и лимитов). Официальный `@ckeditor/strapi-plugin-ckeditor`
+     **отвергнут**: грузит редактор с CDN и требует платный/лимитный ключ (free = 1000 загрузок/мес).
+     Пресет **`defaultMarkdown`** — редактор визуальный, в БД по-прежнему markdown → ни миграции, ни изменений
+     фронта (`RichText`/react-markdown). В генераторе `rich()` = customField `plugin::ckeditor5.CKEditor`;
+     тип колонки остаётся richtext/text. Сборка админки проверена локально.
+  4) Письмо-подтверждение: под «Akce: …» строка «Termín: …» (`formatEventDate`), и в копии для команды.
+  5) Декор úvodu: `components/IntroFood.tsx` (burger-big + pizza-big + 3 кляксы, своя система 700×600) на основе
+     вынесенного из HeroFood `FoodScene`; `PageIntro decor` — на всех общих страницах `[slug]` (решение пользователя:
+     включая Cookies/GDPR) и на Kontakt. Только ≥ lg; обёртка `overflow-x-clip` от горизонтального скролла.
+  6) `shared.tag.url` (необязательный) — štítek становится ссылкой со стрелкой → (внешний URL — новая вкладка).
+     Работает и в блоке Štítky, и на HP «Stavíme pro». Статьи «Festivaly/Firemní akce/Konference» заказчик создаёт сам.
+  `docs/admin-guide.md` обновлён (§2 stav, §5 e-mail, §7 štítky+decor, §8 kontakt, §13 Formátování textu).
+  **После деплоя Strapi** (схема меняется: drop колонки, новая колонка у components_shared_tags) — проверить
+  `curl https://strapi.gastrozony.cz/api/global` и pm2 status. Порт 3100 локально бывает занят чужим next — брать 3101.
 - [ ] Правки по итогам тестирования пользователем (список приносит в новую сессию, формат — `docs/local-testing.md` §7)
 
 ## Факты сессии 2026-09-12 (анимации декора + правки UI)
