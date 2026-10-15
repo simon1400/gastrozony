@@ -16,6 +16,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@_sh/strapi-plugin-ckeditor": "8.0.0",
     "@strapi/database": "5.52.3",
     "@strapi/plugin-cloud": "5.52.3",
     "@strapi/plugin-users-permissions": "5.52.3",

@@ -97,7 +97,6 @@ export const CONTENT_TYPE_LABELS = {
     perex: 'Perex',
     emptyText: 'Text, když nejsou žádné akce',
     tabCurrentLabel: 'Záložka — aktuální',
-    tabUpcomingLabel: 'Záložka — připravujeme',
     tabPastLabel: 'Záložka — ukončené',
     applyLabel: 'Text tlačítka pro přihlášení',
     applicationClosedText: 'Text, když jsou přihlášky uzavřené',
@@ -275,6 +274,7 @@ export const COMPONENT_LABELS = {
   },
   'shared.tag': {
     label: 'Text štítku',
+    url: 'Odkaz (nepovinné, např. /novinky/festivaly)',
   },
 
   /* ------------------------------------------------------ navigation */

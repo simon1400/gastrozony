@@ -20,10 +20,18 @@
       "type": "text"
     },
     "contentBefore": {
-      "type": "richtext"
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "options": {
+        "preset": "defaultMarkdown"
+      }
     },
     "contentAfter": {
-      "type": "richtext"
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "options": {
+        "preset": "defaultMarkdown"
+      }
     },
     "eventSelectLabel": {
       "type": "string",

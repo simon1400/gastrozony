@@ -25,7 +25,11 @@
       "type": "text"
     },
     "content": {
-      "type": "richtext"
+      "type": "customField",
+      "customField": "plugin::ckeditor5.CKEditor",
+      "options": {
+        "preset": "defaultMarkdown"
+      }
     },
     "place": {
       "type": "string"
@@ -55,7 +59,6 @@
     "statusOverride": {
       "type": "enumeration",
       "enum": [
-        "pripravujeme",
         "aktualni",
         "ukonceno"
       ]

@@ -47,7 +47,13 @@ const labelConfig = (uid, attributes) => {
 
 const str = (o = {}) => ({ type: 'string', ...o });
 const txt = (o = {}) => ({ type: 'text', ...o });
-const rich = (o = {}) => ({ type: 'richtext', ...o });
+/**
+ * Rich text = CKEditor 5 (@_sh/strapi-plugin-ckeditor, self-hosted, licence GPL) s presetem Markdown:
+ * redaktor je vizuální, ale do DB ukládá dál markdown — frontend (RichText / react-markdown) beze změny.
+ */
+const rich = (o = {}) => ({
+  type: 'customField', customField: 'plugin::ckeditor5.CKEditor', options: { preset: 'defaultMarkdown' }, ...o,
+});
 const bool = (o = {}) => ({ type: 'boolean', ...o });
 const int = (o = {}) => ({ type: 'integer', ...o });
 const date = (o = {}) => ({ type: 'date', ...o });
@@ -107,7 +113,7 @@ const components = {
   },
   'shared/tag': {
     displayName: 'Štítek', icon: 'priceTag',
-    attributes: { label: str({ required: true }) },
+    attributes: { label: str({ required: true }), url: str() },
   },
 
   /* --- навигация --- */
@@ -398,7 +404,6 @@ const contentTypes = {
       perex: txt(),
       emptyText: str({ default: 'Momentálně tu nic není.' }),
       tabCurrentLabel: str({ default: 'Aktuální' }),
-      tabUpcomingLabel: str({ default: 'Připravujeme' }),
       tabPastLabel: str({ default: 'Proběhlé' }),
       applyLabel: str({ default: 'Přihlásit se na tuto akci' }),
       applicationClosedText: str({ default: 'Přihlášky na tuto akci jsou uzavřené.' }),
@@ -490,7 +495,7 @@ const contentTypes = {
       dateTo: date(),
       cover: media(),
       gallery: media(true),
-      statusOverride: enu(['pripravujeme', 'aktualni', 'ukonceno']),
+      statusOverride: enu(['aktualni', 'ukonceno']),
       applicationOpen: bool({ default: true }),
       capacityState: enu(['volno', 'posledni-mista', 'obsazeno', 'nahradnik']),
       googleMapsUrl: str(),

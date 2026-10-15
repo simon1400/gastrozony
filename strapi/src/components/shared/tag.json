@@ -10,6 +10,9 @@
     "label": {
       "type": "string",
       "required": true
+    },
+    "url": {
+      "type": "string"
     }
   },
   "config": {
@@ -20,6 +23,14 @@
         },
         "list": {
           "label": "Text štítku"
+        }
+      },
+      "url": {
+        "edit": {
+          "label": "Odkaz (nepovinné, např. /novinky/festivaly)"
+        },
+        "list": {
+          "label": "Odkaz (nepovinné, např. /novinky/festivaly)"
         }
       }
     }

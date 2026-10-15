@@ -443,7 +443,6 @@ await single('events-page', {
   perex: 'Festivaly a akce, na které hledáme prodejce jídla a nápojů. Vyberte si termín, přihlaste se a my se ozveme s podmínkami i rozvržením zóny.',
   emptyText: 'V této kategorii teď žádné akce nemáme. Přihlaste se k odběru novinek a dáme vám vědět.',
   tabCurrentLabel: 'Aktuální',
-  tabUpcomingLabel: 'Připravujeme',
   tabPastLabel: 'Proběhlé',
   applyLabel: 'Přihlásit se na tuto akci',
   applicationClosedText: 'Přihlášky na tuto akci jsou uzavřené.',

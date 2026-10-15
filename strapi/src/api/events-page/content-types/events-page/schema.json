@@ -27,10 +27,6 @@
       "type": "string",
       "default": "Aktuální"
     },
-    "tabUpcomingLabel": {
-      "type": "string",
-      "default": "Připravujeme"
-    },
     "tabPastLabel": {
       "type": "string",
       "default": "Proběhlé"
@@ -145,14 +141,6 @@
         },
         "list": {
           "label": "Záložka — aktuální"
-        }
-      },
-      "tabUpcomingLabel": {
-        "edit": {
-          "label": "Záložka — připravujeme"
-        },
-        "list": {
-          "label": "Záložka — připravujeme"
         }
       },
       "tabPastLabel": {
