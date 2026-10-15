@@ -32,7 +32,7 @@ export const IntroSection = ({ intro, cards, tagsTitle, tags }: Pick<Homepage, '
             <ul className="mt-8 flex flex-wrap gap-5 xl:mt-[44px]">
               {tags.map((t) => (
                 <li key={t.label}>
-                  <Tag>{t.label}</Tag>
+                  <Tag href={t.url}>{t.label}</Tag>
                 </li>
               ))}
             </ul>

@@ -28,7 +28,7 @@ export type CardsBlockData = Block<
   'blocks.cards',
   { title: string | null; text: string | null; items: NumberedCard[]; background: Background | null }
 >;
-export type TagsBlockData = Block<'blocks.tags', { title: string | null; items: { id: number; label: string }[] }>;
+export type TagsBlockData = Block<'blocks.tags', { title: string | null; items: { id: number; label: string; url?: string | null }[] }>;
 export type LogosBlockData = Block<
   'blocks.logos',
   { title: string | null; text: string | null; cta: Cta | null; moreLabel: string | null; logos: ClientLogo[] }

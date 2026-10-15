@@ -6,7 +6,8 @@ import { strapiFetch, type StrapiMedia } from './strapi';
  * Используется на HP (блок «Aktuální akce»), на /akce и /akce/[slug].
  */
 
-export type EventStatus = 'aktualni' | 'pripravujeme' | 'ukonceno';
+/** Статус «Připravujeme» убран 15.10.2026 по просьбе заказчика — будущие акции считаются aktuální. */
+export type EventStatus = 'aktualni' | 'ukonceno';
 export type CapacityState = 'volno' | 'posledni-mista' | 'obsazeno' | 'nahradnik';
 
 /** Подписи значений enum `capacityState` (как STATUS_LABELS у бейджа). */
@@ -39,7 +40,7 @@ export type EventDetail = EventSummary & {
   seo: Seo | null;
 };
 
-type StatusFields = { dateFrom: string | null; dateTo: string | null; statusOverride: EventStatus | null };
+type StatusFields = { dateFrom: string | null; dateTo: string | null; statusOverride: string | null };
 type EventApi = Omit<EventSummary, 'status'> & StatusFields;
 type EventDetailApi = Omit<EventDetail, 'status' | 'gallery'> & StatusFields & { gallery: StrapiMedia[] | null };
 
@@ -47,18 +48,15 @@ type EventDetailApi = Omit<EventDetail, 'status' | 'gallery'> & StatusFields & {
 const todayPrague = (): string =>
   new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Prague' }).format(new Date());
 
-/** Статус акции по датам; override из админки важнее. */
+/** Статус акции по датам; override из админки важнее (неизвестное значение — игнорируем). */
 export const resolveEventStatus = (
   dateFrom: string | null,
   dateTo: string | null,
-  override?: EventStatus | null,
+  override?: string | null,
 ): EventStatus => {
-  if (override) return override;
-  const today = todayPrague();
+  if (override === 'aktualni' || override === 'ukonceno') return override;
   const to = dateTo ?? dateFrom;
-  if (to && to < today) return 'ukonceno';
-  if (dateFrom && dateFrom <= today) return 'aktualni';
-  return 'pripravujeme';
+  return to && to < todayPrague() ? 'ukonceno' : 'aktualni';
 };
 
 function withStatus<T extends StatusFields>(e: T): Omit<T, 'statusOverride'> & { status: EventStatus } {
@@ -130,20 +128,18 @@ export async function getOpenEvents(): Promise<OpenEvent[]> {
 const byDateFrom = (a: EventSummary, b: EventSummary) =>
   (a.dateFrom ?? '9999').localeCompare(b.dateFrom ?? '9999');
 
-/** Акции по статусам: aktuální и připravujeme — по дате начала, proběhlé — последние сверху. */
+/** Акции по статусам: aktuální — по дате начала, proběhlé — последние сверху. */
 export const groupByStatus = (events: EventSummary[]): Record<EventStatus, EventSummary[]> => {
-  const groups: Record<EventStatus, EventSummary[]> = { aktualni: [], pripravujeme: [], ukonceno: [] };
+  const groups: Record<EventStatus, EventSummary[]> = { aktualni: [], ukonceno: [] };
   for (const e of events) groups[e.status].push(e);
   groups.aktualni.sort(byDateFrom);
-  groups.pripravujeme.sort(byDateFrom);
   groups.ukonceno.sort((a, b) => byDateFrom(b, a));
   return groups;
 };
 
-/** Ближайшие акции: сначала aktuální, потом připravujeme, внутри — по дате начала. */
+/** Ближайшие акции (aktuální) по дате начала. */
 export async function getUpcomingEvents(limit: number): Promise<EventSummary[]> {
-  const { aktualni, pripravujeme } = groupByStatus(await getEvents());
-  return [...aktualni, ...pripravujeme].slice(0, limit);
+  return groupByStatus(await getEvents()).aktualni.slice(0, limit);
 }
 
 /**
@@ -167,7 +163,6 @@ export type EventsPageTexts = {
   perex: string;
   emptyText: string;
   tabCurrentLabel: string;
-  tabUpcomingLabel: string;
   tabPastLabel: string;
   applyLabel: string;
   applicationClosedText: string;
@@ -187,7 +182,6 @@ const PAGE_FALLBACK: EventsPageTexts = {
     'Festivaly a akce, na které hledáme prodejce jídla a nápojů. Vyberte si termín, přihlaste se a my se ozveme s podmínkami i rozvržením zóny.',
   emptyText: 'V této kategorii teď žádné akce nemáme. Přihlaste se k odběru novinek a dáme vám vědět.',
   tabCurrentLabel: 'Aktuální',
-  tabUpcomingLabel: 'Připravujeme',
   tabPastLabel: 'Proběhlé',
   applyLabel: 'Přihlásit se na tuto akci',
   applicationClosedText: 'Přihlášky na tuto akci jsou uzavřené.',

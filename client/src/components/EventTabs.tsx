@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 
 export type EventTab = { id: string; label: string; count: number; panel: ReactNode };
 
 /**
- * Záložky /akce (Aktuální / Připravujeme / Proběhlé). Panely renderuje server — všechny jsou v HTML,
+ * Záložky /akce (Aktuální / Proběhlé). Panely renderuje server — všechny jsou v HTML,
  * klient jen přepíná `hidden`. Aktivní záložka je v hash (#probehle), odkaz lze sdílet.
  * Styl záložky = tag «Stavíme pro» (66 px, žlutý rámeček), aktivní — žlutá výplň.
  */

@@ -14,8 +14,9 @@ import type { CSSProperties } from 'react';
  */
 
 type Matrix = readonly [number, number, number, number];
+type Box = readonly [number, number, number, number];
 
-type Food = {
+export type Food = {
   src: string;
   x: number;
   y: number;
@@ -49,7 +50,7 @@ const ROT_PIZZA: Matrix = [0.342, -0.9397, 0.9397, 0.342]; // −70°
 const ROT_BURGER: Matrix = [0.9781, 0.2079, -0.2079, 0.9781]; // +12°
 
 /** Порядок = порядок слоёв в XD (снизу вверх). */
-const FOOD: Food[] = [
+export const FOOD: Food[] = [
   { src: '/food/hranolky-kornout.png', x: 1253, y: 853.4, w: 271.6, h: 363.4, m: ROT_FRIES, shadow: false, sizes: '(min-width: 1024px) 280px, 30vw', anim: { x: '0.7%', y: '2.6%', r: '0.9deg', dur: '6.5s', delay: '-1.2s', in: '0.3s' }, depth: '5' },
   { src: '/food/pizza-big.png', x: 1421.7, y: 830.8, w: 400.8, h: 410, m: ROT_PIZZA, shadow: true, sizes: '(min-width: 1024px) 410px, 42vw', priority: true, anim: { x: '0.4%', y: '1.7%', r: '0.5deg', dur: '7.5s', delay: '-3s', in: '0.1s' }, depth: '19' },
   { src: '/food/pizza-margherita.png', x: 909, y: 440.8, w: 199.8, h: 205, m: ROT_PIZZA, shadow: true, sizes: '(min-width: 1024px) 210px, 22vw', anim: { x: '1%', y: '3.4%', r: '1.2deg', dur: '5.5s', delay: '-2s', in: '0.25s' }, depth: '9' },
@@ -61,13 +62,13 @@ const FOOD: Food[] = [
 const BLOB_A =
   'M1134.842,263.335c-30.377-22.514-48.009-10-69.527,22.5s.931,80.943-16.7,116.9-17.663,64.015-2.3,91.923c5.345,9.712,27.978,25.452,27.978,25.452s11.6,11.916,37.8,2.607c14.227-5.054,19.425,3.376,37.461-32.7s31.61-71.183,34.684-111.613c.8-10.514,6.046-35.439-6.3-64.207S1160.116,282.066,1134.842,263.335Z';
 
-type Blob = {
+export type Blob = {
   d: string;
   /** Матрица из XD — кладёт контур в координаты артборда. */
   m: string;
   blur: 16 | 46 | 50;
   /** Габарит кляксы в координатах артборда (посчитан по контуру + матрице). */
-  box: readonly [number, number, number, number];
+  box: Box;
   /**
    * Дрейф: амплитуды сдвига в % от самой кляксы (подобраны под её габарит, чтобы путь
    * был сопоставим у крупных и мелких), масштаб, поворот, период и маршрут (a или b).
@@ -83,7 +84,7 @@ type Blob = {
   };
 };
 
-const BLOBS: Blob[] = [
+export const BLOBS: Blob[] = [
   {
     d: 'M1407.958,280.8c-113.54-56.981-179.443-25.3-259.869,56.956s3.48,204.86-62.407,295.874-66.02,162.018-8.615,232.651,95.646,107.151,245.866,71.016,251.874-206.855,269.654-365.252S1521.5,337.786,1407.958,280.8Z',
     m: '-0.2588 0.9659 -0.9659 -0.2588 2541.8 -193.31',
@@ -183,17 +184,15 @@ const place = (x: number, y: number, w: number, h: number): CSSProperties => ({
   height: `calc(${h} / var(--fh) * 100%)`,
 });
 
-export const HeroFood = () => (
-  <div
-    aria-hidden
-    className={
-      'pointer-events-none relative mx-auto mt-10 w-full max-w-[520px] ' +
-      '[--fx:880] [--fy:150] [--fw:970] [--fh:1080] ' +
-      'lg:absolute lg:inset-x-0 lg:top-0 lg:mt-0 lg:max-w-none lg:[--fx:-5] lg:[--fy:102] lg:[--fw:1828] lg:[--fh:1400] ' +
-      'xl:[--fx:240] xl:[--fw:1440] xl:[--fh:1100]'
-    }
-    style={{ aspectRatio: 'var(--fw) / var(--fh)' }}
-  >
+/** Клякса на сцене; `at` — куда её поставить (по умолчанию — её же габарит на артборде HP). */
+export type PlacedBlob = { blob: Blob; at?: Box };
+
+/**
+ * Сцена с кляксами и едой. Координаты — в системе `--fx/--fy/--fw/--fh`, которую задаёт `className`
+ * (HP — окно в артборд, подстраницы — своя маленькая система, см. IntroFood).
+ */
+export const FoodScene = ({ foods, blobs, className }: { foods: Food[]; blobs: PlacedBlob[]; className: string }) => (
+  <div aria-hidden className={`pointer-events-none ${className}`} style={{ aspectRatio: 'var(--fw) / var(--fh)' }}>
     {/* Фильтры размытия — общие на все кляксы (каждая клякса в своём <svg> ради отдельного слоя). */}
     <svg width="0" height="0" className="absolute" aria-hidden>
       <defs>
@@ -205,13 +204,13 @@ export const HeroFood = () => (
       </defs>
     </svg>
 
-    {BLOBS.map((b, i) => (
+    {blobs.map(({ blob: b, at }, i) => (
       <div
         key={i}
         className={`gz-blob gz-blob--${b.anim.path} absolute`}
         style={
           {
-            ...place(...b.box),
+            ...place(...(at ?? b.box)),
             '--blob-x': b.anim.x,
             '--blob-y': b.anim.y,
             '--blob-s': b.anim.s,
@@ -227,7 +226,7 @@ export const HeroFood = () => (
       </div>
     ))}
 
-    {FOOD.map((f) => (
+    {foods.map((f) => (
       <div key={f.src} className="gz-parallax absolute" style={{ ...place(f.x, f.y, f.w, f.h), '--depth': f.depth } as CSSProperties}>
         <div
           className="gz-food gz-float absolute inset-0 origin-top-left"
@@ -251,4 +250,17 @@ export const HeroFood = () => (
       </div>
     ))}
   </div>
+);
+
+export const HeroFood = () => (
+  <FoodScene
+    foods={FOOD}
+    blobs={BLOBS.map((blob) => ({ blob }))}
+    className={
+      'relative mx-auto mt-10 w-full max-w-[520px] ' +
+      '[--fx:880] [--fy:150] [--fw:970] [--fh:1080] ' +
+      'lg:absolute lg:inset-x-0 lg:top-0 lg:mt-0 lg:max-w-none lg:[--fx:-5] lg:[--fy:102] lg:[--fw:1828] lg:[--fh:1400] ' +
+      'xl:[--fx:240] xl:[--fw:1440] xl:[--fh:1100]'
+    }
+  />
 );

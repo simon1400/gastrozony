@@ -9,7 +9,7 @@ import { seoMetadata } from '@/lib/seo';
 import { mediaUrl } from '@/lib/strapi';
 
 /**
- * Obecná šablona (collection `page`): úvod (titulek, perex, CTA, obálka) + bloky z dynamic zone.
+ * Obecná šablona (collection `page`): úvod (titulek, perex, CTA, jídlo vpravo, obálka) + bloky z dynamic zone.
  * Statické routy (/akce, /kontakt, /prihlaska…) mají přednost před tímto slugem.
  */
 
@@ -37,7 +37,7 @@ export default async function CmsPage({ params }: Props) {
 
   return (
     <>
-      <PageIntro title={page.title} perex={page.perex}>
+      <PageIntro title={page.title} perex={page.perex} decor>
         {page.cta && (
           <Button href={page.cta.url} variant={page.cta.variant ?? 'primary'} newTab={Boolean(page.cta.newTab)}>
             {page.cta.label}

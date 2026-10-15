@@ -101,6 +101,7 @@ export type ApplicationMailTexts = {
   greeting: string;
   intro: string;
   eventLabel: string;
+  dateLabel: string;
   fieldsTitle: string;
   note: string;
 };
@@ -111,6 +112,7 @@ const MAIL_FALLBACK: ApplicationMailTexts = {
   greeting: 'Dobrý den',
   intro: 'děkujeme za přihlášku. Prošli jsme ji a ozveme se vám s podmínkami i rozvržením zóny. Níže posíláme přehled toho, co jste vyplnili.',
   eventLabel: 'Akce',
+  dateLabel: 'Termín',
   fieldsTitle: 'Vaše odpovědi',
   note: 'Na tuto zprávu prosím neodpovídejte — je odeslána automaticky. S dotazy nám napište na info@gastrozony.cz.',
 };

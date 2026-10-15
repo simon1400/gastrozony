@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getOpenEvents, type OpenEvent } from '@/lib/events';
+import { formatEventDate, getOpenEvents, type OpenEvent } from '@/lib/events';
 import { detectFileType } from '@/lib/files';
 import {
   acceptedTypes,
@@ -184,6 +184,7 @@ export async function POST(request: Request) {
     applicantName: saved.contact.name,
     fields: saved.result,
     eventTitles: event ? [event.title] : [],
+    eventDate: event ? formatEventDate(event.dateFrom, event.dateTo) : null,
     teamRecipients: await getTeamRecipients(),
   }).catch((e: unknown): MailResult => ({ ok: false, error: String(e) }));
 

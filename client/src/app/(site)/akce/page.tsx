@@ -14,10 +14,10 @@ import { seoMetadata } from '@/lib/seo';
 
 export const revalidate = 60;
 
-const STATUSES: EventStatus[] = ['aktualni', 'pripravujeme', 'ukonceno'];
+const STATUSES: EventStatus[] = ['aktualni', 'ukonceno'];
 
 /** Kotvy záložek (/akce#probehle). */
-const TAB_IDS: Record<EventStatus, string> = { aktualni: 'aktualni', pripravujeme: 'pripravujeme', ukonceno: 'probehle' };
+const TAB_IDS: Record<EventStatus, string> = { aktualni: 'aktualni', ukonceno: 'probehle' };
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getEventsPage();
@@ -29,7 +29,6 @@ export default async function EventsPage() {
   const groups = groupByStatus(events);
   const labels: Record<EventStatus, string> = {
     aktualni: page.tabCurrentLabel,
-    pripravujeme: page.tabUpcomingLabel,
     ukonceno: page.tabPastLabel,
   };
 

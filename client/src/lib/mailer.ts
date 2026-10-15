@@ -27,6 +27,8 @@ export type ApplicationMailPayload = {
   /** key/label/value — to, co se uložilo do Strapi `application.result` */
   fields: { key: string; label?: string; value: string }[];
   eventTitles?: string[];
+  /** Termín akce, už zformátovaný (`formatEventDate`) — v e-mailu pod názvem akce. */
+  eventDate?: string | null;
   /** Kopie týmu — z `global.applicationRecipients` v administraci */
   teamRecipients: string[];
 };
@@ -99,6 +101,7 @@ export async function sendApplicationMail(payload: ApplicationMailPayload): Prom
       `${texts.greeting},`,
       texts.intro,
       ...(eventTitle ? [`${texts.eventLabel}: ${eventTitle}`] : []),
+      ...(eventTitle && payload.eventDate ? [`${texts.dateLabel}: ${payload.eventDate}`] : []),
     ];
     const { html, text } = renderMail({
       preheader: texts.intro,
@@ -122,6 +125,7 @@ export async function sendApplicationMail(payload: ApplicationMailPayload): Prom
     const heading = eventTitle ? `Nová přihláška — ${eventTitle}` : 'Nová přihláška';
     const intro = [
       `Formulář: ${payload.formKey}`,
+      ...(eventTitle && payload.eventDate ? [`Termín: ${payload.eventDate}`] : []),
       ...(payload.applicantName ? [`Odesílatel: ${payload.applicantName}`] : []),
       ...(payload.applicantEmail ? [`E-mail: ${payload.applicantEmail}`] : []),
     ];

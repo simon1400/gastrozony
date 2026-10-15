@@ -8,8 +8,9 @@ import { getContactPage } from '@/lib/pages';
 import { seoMetadata } from '@/lib/seo';
 
 /**
- * /kontakt — single type `contact-page`: kontakty (prázdná doplní `global`), text, mapa, tým, bloky.
- * Mapa: odkaz „Vložit mapu“ (…/maps/embed…) jako iframe; jinak podle adresy; jiný odkaz = tlačítko.
+ * /kontakt — single type `contact-page`: kontakty (prázdná doplní `global`), text, tým, bloky.
+ * Vpravo místo mapy jídlo z hero (zákazník 15.10.2026). Odkaz na Google Maps = tlačítko
+ * (embed-odkaz „Vložit mapu“ se jako tlačítko nehodí, ten se nezobrazí).
  */
 
 export const revalidate = 60;
@@ -21,13 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 type Fact = { label: string; value: string; href?: string };
 
-const isEmbed = (url: string | null): url is string => Boolean(url && /google\.[a-z.]+\/maps\/embed/.test(url));
-
-const mapEmbedUrl = (url: string | null, address: string | null): string | null => {
-  if (isEmbed(url)) return url;
-  if (address) return `https://maps.google.com/maps?q=${encodeURIComponent(address.replace(/\s+/g, ' '))}&z=15&output=embed`;
-  return null;
-};
+const isEmbed = (url: string) => /google\.[a-z.]+\/maps\/embed/.test(url);
 
 const linkClass = 'font-extrabold underline decoration-yellow decoration-[3px] underline-offset-4 hover:decoration-ink';
 
@@ -39,7 +34,6 @@ export default async function ContactPage() {
   if (page.phone) facts.push({ label: page.phoneLabel, value: page.phone, href: `tel:${page.phone.replace(/\s/g, '')}` });
   if (page.address) facts.push({ label: page.addressLabel, value: page.address });
 
-  const embed = mapEmbedUrl(page.googleMapsUrl, page.address);
   const mapLink = page.googleMapsUrl && !isEmbed(page.googleMapsUrl) ? page.googleMapsUrl : null;
 
   const leading: SectionEntry[] =
@@ -49,10 +43,8 @@ export default async function ContactPage() {
 
   return (
     <>
-      <PageIntro title={page.title} perex={page.perex} />
-
-      <div className={`container grid items-start gap-12 pb-16 xl:pb-[110px] ${embed ? 'lg:grid-cols-2 lg:gap-x-20' : ''}`}>
-        <div>
+      <PageIntro title={page.title} perex={page.perex} decor>
+        <div className="pb-6 xl:pb-[50px]">
           {facts.length > 0 && (
             <dl className="grid gap-x-10 gap-y-3 border-t border-grey-muted pt-8 sm:grid-cols-[auto_1fr] sm:gap-y-4">
               {facts.map((f) => (
@@ -80,17 +72,7 @@ export default async function ContactPage() {
             </div>
           )}
         </div>
-
-        {embed && (
-          <iframe
-            src={embed}
-            title={page.address ? `${page.addressLabel}: ${page.address}` : page.mapLabel}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="aspect-[4/3] w-full border-0 bg-grey-muted"
-          />
-        )}
-      </div>
+      </PageIntro>
 
       <Blocks blocks={page.blocks} leading={leading} />
     </>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { ReactNode } from 'react';
 import type { Cta } from '@/lib/homepage';
 import { mediaUrl, type StrapiMedia } from '@/lib/strapi';
@@ -77,8 +78,22 @@ export { Stat } from './Stat';
  * Паддинг 27.5 (в XD 29): браузер рисует текст на ~3px шире XD — так ширины тегов совпадают с макетом.
  * На мобиле уменьшен вместе с кнопками (Button.tsx).
  */
-export const Tag = ({ children }: { children: ReactNode }) => (
-  <span className="inline-flex h-[50px] items-center border border-yellow bg-white px-5 text-[15px] font-extrabold leading-[20px] text-ink shadow-btn md:h-[66px] md:px-[27.5px] md:text-[19px] md:leading-[24px]">
-    {children}
-  </span>
-);
+const TAG_CLASS =
+  'inline-flex h-[50px] items-center border border-yellow bg-white px-5 text-[15px] font-extrabold leading-[20px] text-ink shadow-btn md:h-[66px] md:px-[27.5px] md:text-[19px] md:leading-[24px]';
+
+/** Тег; с `href` — ссылка (напр. на статью): hover как у outline-кнопки, внешний URL — в новой вкладке. */
+export const Tag = ({ children, href }: { children: ReactNode; href?: string | null }) =>
+  href ? (
+    <Link
+      href={href}
+      className={`${TAG_CLASS} gap-3 transition-[transform,background-color] duration-150 hover:-translate-y-0.5 hover:bg-[#fffbe6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink`}
+      {...(/^https?:\/\//.test(href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+    >
+      {children}
+      <span aria-hidden className="text-[0.9em] leading-none">
+        →
+      </span>
+    </Link>
+  ) : (
+    <span className={TAG_CLASS}>{children}</span>
+  );

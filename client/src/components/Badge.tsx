@@ -3,18 +3,16 @@ import type { EventStatus } from '@/lib/events';
 
 /**
  * Бейдж статуса акции из макета: h 37, r 19, текст 20/23 ExtraBold, паддинг ~13.
- * aktualni — #FFD100, pripravujeme — #CCCCCC, ukonceno — чёрный (карточка ч/б).
+ * aktualni — #FFD100, ukonceno — чёрный (карточка ч/б).
  */
 
 const variants: Record<EventStatus, string> = {
   aktualni: 'bg-yellow text-ink',
-  pripravujeme: 'bg-grey-muted text-ink',
   ukonceno: 'bg-ink text-white',
 };
 
 export const STATUS_LABELS: Record<EventStatus, string> = {
   aktualni: 'Aktuální',
-  pripravujeme: 'Připravujeme',
   ukonceno: 'Již proběhlo',
 };
 

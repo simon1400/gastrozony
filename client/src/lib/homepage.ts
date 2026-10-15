@@ -13,7 +13,7 @@ export type Homepage = {
   intro: { title: string; text: string | null };
   cards: { number: string; title: string; text: string | null; cta?: Cta | null }[];
   tagsTitle: string;
-  tags: { label: string }[];
+  tags: { label: string; url?: string | null }[];
   clients: { title: string; text: string | null; moreLabel: string | null; cta: Cta | null; logos: ClientLogo[] };
   events: { title: string; text: string | null; limit: number; cta: Cta | null };
   seo: { metaTitle: string | null; metaDescription: string | null } | null;

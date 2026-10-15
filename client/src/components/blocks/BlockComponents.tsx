@@ -115,7 +115,7 @@ export const TagsBlock = ({ block }: { block: TagsBlockData }) => (
     <ul className={`flex flex-wrap gap-5 ${block.title ? 'mt-8 xl:mt-[44px]' : ''}`}>
       {block.items.map((t) => (
         <li key={t.id}>
-          <Tag>{t.label}</Tag>
+          <Tag href={t.url}>{t.label}</Tag>
         </li>
       ))}
     </ul>
@@ -177,9 +177,8 @@ export const ImageTextBlock = ({ block }: { block: ImageTextBlockData }) => {
 };
 
 export const EventsBlock = ({ block, events }: { block: EventsBlockData; events: EventSummary[] }) => {
-  const { aktualni, pripravujeme, ukonceno } = groupByStatus(events);
-  const upcoming = [...aktualni, ...pripravujeme];
-  const pool = block.filter === 'past' ? ukonceno : block.filter === 'all' ? [...upcoming, ...ukonceno] : upcoming;
+  const { aktualni, ukonceno } = groupByStatus(events);
+  const pool = block.filter === 'past' ? ukonceno : block.filter === 'all' ? [...aktualni, ...ukonceno] : aktualni;
   const list = pool.slice(0, block.limit ?? 3);
   return (
     <div>
