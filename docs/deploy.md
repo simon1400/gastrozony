@@ -28,25 +28,41 @@
 | Strapi | **1343** | заняты 1333–1342, 1346, 1350 |
 | pm2 | `gastrozony-client`, `gastrozony-strapi` | `deploy/ecosystem.config.js` |
 | БД | `gastrozony_db` / `gastrozony_user` | |
-| Домены (тест) | `gastrozony.hardart.cz`, `strapi-gastrozony.hardart.cz` | |
-| Домены (прод) | `gastrozony.cz`, `www.gastrozony.cz`, `strapi.gastrozony.cz` | позже |
+| Домены (прод) | `gastrozony.cz` (основной), `strapi.gastrozony.cz` | с 08.10.2026 |
+| Редиректы 301 → `https://gastrozony.cz` | `www.gastrozony.cz`, `gastrozony.hardart.cz` (тест) | |
+| Strapi, тестовое имя | `strapi-gastrozony.hardart.cz` — работает как раньше | |
 
 ## Домены
 
-**Сейчас тестовые** (решение 12.09.2026): `gastrozony.hardart.cz` и `strapi-gastrozony.hardart.cz`.
-`hardart.cz` — служебный домен на Wedos, там уже живут `burger-strapi.hardart.cz`, `monitor.hardart.cz` и др.
-**Wildcard нет** — на каждый поддомен нужна своя A-запись на `157.90.169.205`.
-Конфиги nginx уже содержат оба тестовых имени; у клиента добавлен `X-Robots-Tag: noindex, nofollow`,
-чтобы тестовый сайт не попал в выдачу — **при переезде на прод-домен строку убрать**.
+**Прод с 08.10.2026.** DNS `gastrozony.cz` — у Websupport (NS `ns1/ns2.websupport.cz`), A-записи
+`gastrozony.cz`, `www`, `strapi` → `157.90.169.205`. MX (`mail.itbrno.cz`) не трогали.
 
-Прод-домен `gastrozony.cz` в конфиг клиента уже вписан (плюс `www`), но DNS смотрит на 46.28.106.212 —
-переключение позже. Что сделать при переезде:
-1. A-записи `gastrozony.cz`, `www.gastrozony.cz`, `strapi.gastrozony.cz` → `157.90.169.205`;
-2. `certbot --nginx -d gastrozony.cz -d www.gastrozony.cz` и `certbot --nginx -d strapi.gastrozony.cz`;
-3. в `client/.env` заменить `NEXT_PUBLIC_SITE_URL` и `STRAPI_ADMIN_URL` на прод-домены
-   и **пересобрать клиент** — `NEXT_PUBLIC_*` вшивается на этапе сборки (иначе canonical/sitemap/OG
-   останутся на тестовом домене);
-4. убрать `X-Robots-Tag` из `gastrozony-client`.
+| nginx | Имена | Сертификат (`certbot --cert-name`) |
+|---|---|---|
+| `gastrozony-client`, основной блок → :3012 | `gastrozony.cz` | `gastrozony.cz` (SAN: `gastrozony.cz`, `gastrozony.hardart.cz`) |
+| `gastrozony-client`, блок-редирект 301 | `www.gastrozony.cz`, `gastrozony.hardart.cz` | тот же |
+| `gastrozony-strapi` → :1343 | `strapi.gastrozony.cz`, `strapi-gastrozony.hardart.cz` | `strapi.gastrozony.cz` (оба имени) |
+
+Сертификаты выпущены через **webroot** (`/var/www/html`, `--deploy-hook "systemctl reload nginx"`), а не `--nginx`:
+конфиги написаны руками, certbot их не правит. Поэтому `location /.well-known/acme-challenge/` на порту 80
+**удалять нельзя** — через него идёт продление. На 80 всё остальное — 301 на https.
+`X-Robots-Tag: noindex` у клиента убран (остался только на `/sprava` — его ставит само приложение).
+`client/.env`: `NEXT_PUBLIC_SITE_URL=https://gastrozony.cz`, `STRAPI_ADMIN_URL=https://strapi.gastrozony.cz`, клиент пересобран.
+Старые конфиги и `.env` до переезда — `/root/nginx-backup-gastrozony-20261008/`.
+
+### ⚠ www без сертификата — ждёт DNS
+У `www.gastrozony.cz` осталась **AAAA-запись на старый хостинг** `2a02:2b88:1:4::10e`. Let's Encrypt проверяет
+по IPv6 в первую очередь и попадает на старый сервер (там 404) → сертификат на `www` не выпустить.
+Сейчас `http://www…` редиректит нормально, а `https://www…` показывает ошибку сертификата; посетители с IPv6
+вообще уходят на старый хостинг. Что сделать:
+1. в Websupport **удалить AAAA у `www`** (AAAA на `2a01:4f8:1c1c:b8cb::1` можно поставить вместо неё — у сервера есть IPv6,
+   nginx слушает `[::]`);
+2. дождаться, пока `dig +short AAAA www.gastrozony.cz @1.1.1.1` перестанет отдавать старый адрес;
+3. дописать `www` в существующий сертификат — nginx править не нужно, путь сертификата тот же:
+   ```bash
+   certbot certonly --webroot -w /var/www/html --expand --deploy-hook "systemctl reload nginx" \
+     --cert-name gastrozony.cz -d gastrozony.cz -d gastrozony.hardart.cz -d www.gastrozony.cz
+   ```
 
 ---
 
