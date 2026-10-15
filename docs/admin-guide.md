@@ -125,7 +125,9 @@ Je to interní klíč pole. Pod ním se ukládají odpovědi a podle něj vznika
 - **U existujícího pole klíč neměňte.** Staré přihlášky zůstanou pod starým klíčem a v tabulce se objeví jako samostatný sloupec na konci.
 
 Pořadí polí na webu = pořadí v adminu (přetažením za úchyt vlevo).
-**Vyžaduje výběr akce** = výběr akce je povinný. Souhlas se zpracováním údajů je v sekci **Souhlas (GDPR)**
+**Vyžaduje výběr akce** = musí být zaškrtnutá aspoň jedna akce. Akce se ve formuláři vybírají zaškrtávátky —
+prodejce se může jednou přihláškou přihlásit na víc akcí (nahoře je „Vybrat všechny“, u každé akce stav **Kapacita**).
+Nabízí se akce se zapnutým **Přihlášky otevřené**, které ještě neskončily. Souhlas se zpracováním údajů je v sekci **Souhlas (GDPR)**
 (text může obsahovat odkaz).
 
 Po úpravě formuláře klikněte na **Publikovat**.
@@ -139,7 +141,8 @@ Odkaz s předvybranou akcí: `gastrozony.cz/prihlaska?akce=<slug-akce>` (tlačí
 
 ### Přehled a export — /sprava/prihlasky
 1. Otevřete `https://gastrozony.cz/sprava/prihlasky` a přihlaste se (jméno a heslo pro správu).
-2. Nahoře můžete filtrovat podle **akce** a **stavu** → **Filtrovat**.
+2. Nahoře můžete filtrovat podle **akce** a **stavu** → **Filtrovat**. Přihláška na víc akcí se zobrazí u každé z nich
+   (ve sloupci **Akce** jsou všechny pod sebou).
 3. **Exportovat CSV** stáhne všechny přihlášky odpovídající filtru. Soubor se otevře přímo v Excelu (české znaky, sloupce podle polí formuláře, odkazy na přílohy).
 
 > Telefonní čísla začínající „+“ mají v CSV na začátku apostrof (`'+420…`) — ochrana proti tomu, aby je Excel spustil jako vzorec. Je to v pořádku.
@@ -163,7 +166,7 @@ Texty potvrzovacího e-mailu upravíte v **Single types → Stránka přihlášk
 
 | Pole | Co je to |
 |---|---|
-| **Potvrzovací e-mail — předmět** | Předmět e-mailu (název akce se k němu připojí sám; v textu e-mailu je pod názvem akce i její termín) |
+| **Potvrzovací e-mail — předmět** | Předmět e-mailu (připojí se k němu sám název akce, u více akcí jejich počet, např. „— 3 akce“). V přehledu odpovědí je jako první řádek **Akce** — každá vybraná akce s termínem a místem |
 | **Potvrzovací e-mail — úvod** | Úvodní odstavec pod oslovením „Dobrý den,“ |
 | **Potvrzovací e-mail — poznámka** | Drobný text pod výpisem odpovědí (např. „na tuto zprávu neodpovídejte“) |
 

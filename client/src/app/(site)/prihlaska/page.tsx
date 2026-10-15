@@ -1,17 +1,18 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { DynamicForm, type EventOption } from '@/components/form/DynamicForm';
+import { DynamicForm } from '@/components/form/DynamicForm';
+import type { EventChoice } from '@/components/form/FormFields';
 import { GreyClosingSection } from '@/components/GreyClosingSection';
 import { PageIntro } from '@/components/PageIntro';
 import { RichInline, RichText } from '@/components/RichText';
-import { formatEventDate, getOpenEvents, type OpenEvent } from '@/lib/events';
+import { CAPACITY_LABELS, formatEventDate, getOpenEvents } from '@/lib/events';
 import { CONSENT_KEY } from '@/lib/form-schema';
 import { getApplicationPage, getForm } from '@/lib/forms';
 import { seoMetadata } from '@/lib/seo';
 
 /**
  * /prihlaska — přihláška prodejce. Pole z adminu (`form` s klíčem `prodejce`), texty z `application-page`.
- * `?akce=slug` předvybere akci (odkaz z detailu akce). Mřížka 427 + 80 + 933 jako sloupce HP.
+ * `?akce=slug` předvybere akci (odkaz z detailu akce; akcí lze vybrat víc). Mřížka 427 + 80 + 933 jako sloupce HP.
  */
 
 type Props = { searchParams: Promise<{ akce?: string | string[] }> };
@@ -21,8 +22,6 @@ export async function generateMetadata(): Promise<Metadata> {
   return seoMetadata(page.seo, { title: page.title, description: page.perex, path: '/prihlaska' });
 }
 
-const eventLabel = (e: OpenEvent) => [e.title, formatEventDate(e.dateFrom, e.dateTo), e.place].filter(Boolean).join(' · ');
-
 export default async function ApplicationFormPage({ searchParams }: Props) {
   const [{ akce }, page, form, events] = await Promise.all([
     searchParams,
@@ -31,8 +30,16 @@ export default async function ApplicationFormPage({ searchParams }: Props) {
     getOpenEvents().catch(() => null),
   ]);
 
-  const options: EventOption[] = (events ?? []).map((e) => ({ slug: e.slug, label: eventLabel(e) }));
-  const initialEvent = typeof akce === 'string' && options.some((o) => o.slug === akce) ? akce : '';
+  const options: EventChoice[] = (events ?? []).map((e) => ({
+    slug: e.slug,
+    title: e.title,
+    date: formatEventDate(e.dateFrom, e.dateTo),
+    place: e.place,
+    capacity: e.capacityState,
+    capacityLabel: e.capacityState ? CAPACITY_LABELS[e.capacityState] : null,
+  }));
+  const requested = typeof akce === 'string' ? [akce] : (akce ?? []);
+  const initialEvents = options.filter((o) => requested.includes(o.slug)).map((o) => o.slug);
   const closed = Boolean(form?.requiresEvent) && options.length === 0;
 
   const richLabels: Record<string, ReactNode> = {};
@@ -58,11 +65,11 @@ export default async function ApplicationFormPage({ searchParams }: Props) {
               <DynamicForm
                 form={form}
                 events={options}
-                initialEvent={initialEvent}
+                initialEvents={initialEvents}
                 richLabels={richLabels}
                 texts={{
                   eventSelectLabel: page.eventSelectLabel,
-                  eventPlaceholder: page.eventPlaceholder,
+                  selectAllLabel: page.selectAllLabel,
                   uploadLabel: page.uploadLabel,
                   submitLabel: page.submitLabel,
                   successTitle: page.successTitle,

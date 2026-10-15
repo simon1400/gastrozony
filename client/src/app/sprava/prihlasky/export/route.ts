@@ -1,6 +1,6 @@
 import {
   APPLICATION_STATUSES,
-  eventLabel,
+  eventsLabel,
   formatDateTime,
   getAllApplications,
   parseFilters,
@@ -38,7 +38,7 @@ export async function GET(request: Request) {
     formatDateTime(row.createdAt),
     row.contactName ?? '',
     row.contactEmail ?? '',
-    eventLabel(row.event),
+    eventsLabel(row.event),
     APPLICATION_STATUSES[row.status] ?? row.status,
     ...columns.map((c) => resultValue(row, c.key)),
     (row.attachments ?? []).flatMap((file) => mediaUrl(file) ?? []).join('\n'),

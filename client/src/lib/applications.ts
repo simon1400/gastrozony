@@ -32,7 +32,8 @@ export type ApplicationRow = {
   status: ApplicationStatus;
   note: string | null;
   mailSent: boolean | null;
-  event: ApplicationEvent | null;
+  /** Akce přihlášky — relace manyToMany (dřív manyToOne, staré přihlášky mají jednu). */
+  event: ApplicationEvent[] | null;
   attachments: StrapiMedia[] | null;
   result: { key: string; label: string | null; value: string | null }[] | null;
 };
@@ -127,6 +128,9 @@ export const resultValue = (row: ApplicationRow, key: string) => row.result?.fin
 /** «HIP HOP ŽIJE! 2026 · 17. 10. 2026 · Bratislava» — titulky akcí se opakují (turné), proto datum i místo. */
 export const eventLabel = (event: ApplicationEvent | null) =>
   event ? [event.title, formatEventDate(event.dateFrom, event.dateTo), event.place].filter(Boolean).join(' · ') : '';
+
+/** Všechny akce přihlášky, každá na vlastním řádku (tabulka: whitespace-pre-line, CSV: řádky v buňce). */
+export const eventsLabel = (events: ApplicationEvent[] | null) => (events ?? []).map(eventLabel).join('\n');
 
 const DATE_TIME = new Intl.DateTimeFormat('cs-CZ', {
   timeZone: 'Europe/Prague',

@@ -99,7 +99,8 @@ export async function getEventBySlug(slug: string): Promise<EventDetail | null> 
   return event ? withStatus({ ...event, gallery: event.gallery ?? [] }) : null;
 }
 
-export type OpenEvent = Pick<EventSummary, 'documentId' | 'title' | 'slug' | 'place' | 'dateFrom' | 'dateTo'>;
+export type OpenEvent = Pick<EventSummary, 'documentId' | 'title' | 'slug' | 'place' | 'dateFrom' | 'dateTo'> &
+  Pick<EventDetail, 'capacityState'>;
 
 /**
  * Akce, na které se dá přihlásit (/prihlaska): `applicationOpen` a neskončila (i podle override).
@@ -108,21 +109,24 @@ export type OpenEvent = Pick<EventSummary, 'documentId' | 'title' | 'slug' | 'pl
 export async function getOpenEvents(): Promise<OpenEvent[]> {
   const { data } = await strapiFetch<(OpenEvent & StatusFields)[]>('/events', {
     query: {
-      fields: ['title', 'slug', 'place', 'dateFrom', 'dateTo', 'statusOverride'],
+      fields: ['title', 'slug', 'place', 'dateFrom', 'dateTo', 'capacityState', 'statusOverride'],
       filters: { applicationOpen: { $eq: true } },
       sort: ['dateFrom:asc', 'order:asc'],
       pagination: { pageSize: 100 },
     },
     tags: ['events'],
   });
-  return data.filter((e) => withStatus(e).status !== 'ukonceno').map(({ documentId, title, slug, place, dateFrom, dateTo }) => ({
-    documentId,
-    title,
-    slug,
-    place,
-    dateFrom,
-    dateTo,
-  }));
+  return data
+    .filter((e) => withStatus(e).status !== 'ukonceno')
+    .map(({ documentId, title, slug, place, dateFrom, dateTo, capacityState }) => ({
+      documentId,
+      title,
+      slug,
+      place,
+      dateFrom,
+      dateTo,
+      capacityState,
+    }));
 }
 
 const byDateFrom = (a: EventSummary, b: EventSummary) =>

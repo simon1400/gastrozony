@@ -23,6 +23,7 @@ import {
   CheckboxInput,
   ChoiceGroup,
   describedBy,
+  EventChecklist,
   FieldShell,
   fieldId,
   GroupShell,
@@ -30,6 +31,7 @@ import {
   SELECT_CLASS,
   TEXTAREA_CLASS,
   UploadInput,
+  type EventChoice,
 } from './FormFields';
 
 /**
@@ -37,11 +39,9 @@ import {
  * (totéž schéma kontroluje /api/application), react-hook-form. Po odeslání success bez reloadu.
  */
 
-export type EventOption = { slug: string; label: string };
-
 export type DynamicFormTexts = {
   eventSelectLabel: string;
-  eventPlaceholder: string;
+  selectAllLabel: string;
   uploadLabel: string;
   submitLabel: string;
   successTitle: string;
@@ -52,8 +52,9 @@ export type DynamicFormTexts = {
 
 type Props = {
   form: FormDefinition;
-  events: EventOption[];
-  initialEvent?: string;
+  events: EventChoice[];
+  /** Předvybrané akce (`?akce=slug` z detailu akce). */
+  initialEvents?: string[];
   texts: DynamicFormTexts;
   /** Popisky checkboxů (souhlas, form.checkbox) vykreslené na serveru z markdownu — kvůli odkazům. */
   richLabels: Record<string, ReactNode>;
@@ -79,7 +80,7 @@ const serverErrors = (body: unknown): Record<string, string> | null => {
   return Object.fromEntries(Object.entries(errors).filter((e): e is [string, string] => typeof e[1] === 'string'));
 };
 
-export const DynamicForm = ({ form, events, initialEvent = '', texts, richLabels }: Props) => {
+export const DynamicForm = ({ form, events, initialEvents = [], texts, richLabels }: Props) => {
   const schema = useMemo(() => buildFormSchema(form, events.map((e) => e.slug)), [form, events]);
   const [state, setState] = useState<'idle' | 'success' | 'error' | 'rate-limit'>('idle');
   const successRef = useRef<HTMLDivElement>(null);
@@ -95,7 +96,7 @@ export const DynamicForm = ({ form, events, initialEvent = '', texts, richLabels
   } = useForm<FormValues>({
     // schéma je dynamické (Record<string, unknown>) — tvar hodnot drží `defaultValues`
     resolver: zodResolver(schema) as Resolver<FormValues>,
-    defaultValues: defaultValues(form, initialEvent),
+    defaultValues: defaultValues(form, initialEvents),
   });
 
   useEffect(() => {
@@ -285,29 +286,30 @@ export const DynamicForm = ({ form, events, initialEvent = '', texts, richLabels
     <form onSubmit={handleSubmit(onSubmit)} noValidate className={CARD} aria-busy={isSubmitting}>
       <div className="grid gap-x-[30px] gap-y-6 sm:grid-cols-2 md:gap-y-8">
         {events.length > 0 && (
-          <FieldShell
+          <GroupShell
             id={eventId}
             label={texts.eventSelectLabel}
             required={form.requiresEvent}
             error={eventError}
             className="sm:col-span-2"
           >
-            <select
-              id={eventId}
-              className={SELECT_CLASS}
-              aria-invalid={Boolean(eventError) || undefined}
-              aria-required={form.requiresEvent || undefined}
-              aria-describedby={describedBy(eventId, null, eventError)}
-              {...register(EVENT_KEY)}
-            >
-              <option value="">{texts.eventPlaceholder}</option>
-              {events.map((e) => (
-                <option key={e.slug} value={e.slug}>
-                  {e.label}
-                </option>
-              ))}
-            </select>
-          </FieldShell>
+            <Controller
+              control={control}
+              name={EVENT_KEY}
+              render={({ field: f }) => (
+                <EventChecklist
+                  name={EVENT_KEY}
+                  events={events}
+                  value={f.value}
+                  onChange={f.onChange}
+                  onBlur={f.onBlur}
+                  invalid={Boolean(eventError)}
+                  selectAllLabel={texts.selectAllLabel}
+                  inputRef={f.ref}
+                />
+              )}
+            />
+          </GroupShell>
         )}
 
         {form.fields.map((field) => (

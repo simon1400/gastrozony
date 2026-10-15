@@ -49,7 +49,7 @@ export type ApplicationPageTexts = {
   contentBefore: string;
   contentAfter: string;
   eventSelectLabel: string;
-  eventPlaceholder: string;
+  selectAllLabel: string;
   noEventsText: string;
   uploadLabel: string;
   submitLabel: string;
@@ -63,11 +63,11 @@ export type ApplicationPage = ApplicationPageTexts & { seo: Seo | null };
 
 const PAGE_FALLBACK: ApplicationPageTexts = {
   title: 'Přihláška pro **prodejce**',
-  perex: 'Vyberte akci, vyplňte údaje o stánku a my se ozveme s podmínkami i rozvržením zóny. Přihláška je nezávazná.',
+  perex: 'Vyberte akce, vyplňte údaje o stánku a my se ozveme s podmínkami i rozvržením zóny. Přihláška je nezávazná.',
   contentBefore: '',
   contentAfter: '',
-  eventSelectLabel: 'Vyberte akci',
-  eventPlaceholder: '— vyberte akci —',
+  eventSelectLabel: 'Vyberte akce',
+  selectAllLabel: 'Vybrat všechny',
   noEventsText:
     'Momentálně nepřijímáme přihlášky na žádnou akci. Přihlaste se k odběru novinek a dáme vám vědět, jakmile otevřeme další.',
   uploadLabel: 'Vybrat soubory',
@@ -101,7 +101,6 @@ export type ApplicationMailTexts = {
   greeting: string;
   intro: string;
   eventLabel: string;
-  dateLabel: string;
   fieldsTitle: string;
   note: string;
 };
@@ -112,7 +111,6 @@ const MAIL_FALLBACK: ApplicationMailTexts = {
   greeting: 'Dobrý den',
   intro: 'děkujeme za přihlášku. Prošli jsme ji a ozveme se vám s podmínkami i rozvržením zóny. Níže posíláme přehled toho, co jste vyplnili.',
   eventLabel: 'Akce',
-  dateLabel: 'Termín',
   fieldsTitle: 'Vaše odpovědi',
   note: 'Na tuto zprávu prosím neodpovídejte — je odeslána automaticky. S dotazy nám napište na info@gastrozony.cz.',
 };

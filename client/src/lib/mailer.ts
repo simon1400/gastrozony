@@ -26,9 +26,8 @@ export type ApplicationMailPayload = {
   applicantName?: string;
   /** key/label/value — to, co se uložilo do Strapi `application.result` */
   fields: { key: string; label?: string; value: string }[];
-  eventTitles?: string[];
-  /** Termín akce, už zformátovaný (`formatEventDate`) — v e-mailu pod názvem akce. */
-  eventDate?: string | null;
+  /** Vybrané akce (může jich být víc); termín už zformátovaný (`formatEventDate`). */
+  events?: { title: string; date: string | null; place?: string | null }[];
   /** Kopie týmu — z `global.applicationRecipients` v administraci */
   teamRecipients: string[];
 };
@@ -75,15 +74,28 @@ async function resendSend(message: Message): Promise<{ ok: true } | { ok: false;
   }
 }
 
-const mailFields = (payload: ApplicationMailPayload): MailField[] =>
-  payload.fields.map((f) => ({ label: f.label || f.key, value: f.value }));
+/** «2 akce», «5 akcí» */
+const eventCount = (n: number) => `${n} ${n >= 2 && n <= 4 ? 'akce' : 'akcí'}`;
+
+/** Do předmětu: jedna akce názvem, víc akcí počtem (názvy jsou ve výpisu). */
+const eventsSubject = (events: NonNullable<ApplicationMailPayload['events']>) =>
+  events.length === 1 ? events[0].title : events.length > 1 ? eventCount(events.length) : '';
+
+/** Výpis polí; akce jako první řádek — každá na vlastním řádku s termínem a místem. */
+const mailFields = (payload: ApplicationMailPayload, eventLabel: string): MailField[] => {
+  const events = payload.events ?? [];
+  const eventRow: MailField[] = events.length
+    ? [{ label: eventLabel, value: events.map((e) => [e.title, e.date, e.place].filter(Boolean).join(' · ')).join('\n') }]
+    : [];
+  return [...eventRow, ...payload.fields.map((f) => ({ label: f.label || f.key, value: f.value }))];
+};
 
 /**
  * Potvrzení odesílateli (texty ze `application-page`) + kopie týmu (`global.applicationRecipients`).
  * Kopie týmu má `reply_to` na přihlašujícího, aby šlo odpovědět přímo z e-mailu.
  */
 export async function sendApplicationMail(payload: ApplicationMailPayload): Promise<MailResult> {
-  const eventTitle = (payload.eventTitles ?? []).filter(Boolean).join(', ');
+  const eventTitle = eventsSubject(payload.events ?? []);
   const [texts, contact] = await Promise.all([getApplicationMailTexts(), getContactInfo()]);
 
   const footer = {
@@ -100,14 +112,12 @@ export async function sendApplicationMail(payload: ApplicationMailPayload): Prom
       // bez jména: čeština by vyžadovala 5. pád („Dobrý den Jane“), skloňovat cizí jméno automaticky nelze
       `${texts.greeting},`,
       texts.intro,
-      ...(eventTitle ? [`${texts.eventLabel}: ${eventTitle}`] : []),
-      ...(eventTitle && payload.eventDate ? [`${texts.dateLabel}: ${payload.eventDate}`] : []),
     ];
     const { html, text } = renderMail({
       preheader: texts.intro,
       heading: texts.subject,
       intro,
-      fields: mailFields(payload),
+      fields: mailFields(payload, texts.eventLabel),
       fieldsTitle: texts.fieldsTitle,
       note: texts.note,
       contact: footer,
@@ -125,7 +135,6 @@ export async function sendApplicationMail(payload: ApplicationMailPayload): Prom
     const heading = eventTitle ? `Nová přihláška — ${eventTitle}` : 'Nová přihláška';
     const intro = [
       `Formulář: ${payload.formKey}`,
-      ...(eventTitle && payload.eventDate ? [`Termín: ${payload.eventDate}`] : []),
       ...(payload.applicantName ? [`Odesílatel: ${payload.applicantName}`] : []),
       ...(payload.applicantEmail ? [`E-mail: ${payload.applicantEmail}`] : []),
     ];
@@ -133,7 +142,7 @@ export async function sendApplicationMail(payload: ApplicationMailPayload): Prom
       preheader: heading,
       heading,
       intro,
-      fields: mailFields(payload),
+      fields: mailFields(payload, texts.eventLabel),
       fieldsTitle: 'Odpovědi z formuláře',
       note: `Přehled všech přihlášek: ${SITE_URL}/sprava/prihlasky`,
       contact: footer,

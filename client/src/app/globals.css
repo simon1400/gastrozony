@@ -350,6 +350,13 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='%230E0E0E' stroke-width='2.4'/%3E%3C/svg%3E");
   }
 
+  /* «Vybrat všechny», když je vybraná jen část akcí */
+  .gz-checkbox:indeterminate {
+    border-color: var(--color-ink);
+    background-color: var(--color-yellow);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8h9' fill='none' stroke='%230E0E0E' stroke-width='2.4'/%3E%3C/svg%3E");
+  }
+
   .gz-checkbox:focus-visible {
     outline: 2px solid var(--color-ink);
     outline-offset: 2px;

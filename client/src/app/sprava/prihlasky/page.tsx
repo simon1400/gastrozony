@@ -4,6 +4,7 @@ import { Pagination } from '@/components/Pagination';
 import {
   APPLICATION_STATUSES,
   eventLabel,
+  eventsLabel,
   filtersQuery,
   formatDateTime,
   getApplications,
@@ -137,7 +138,7 @@ export default async function ApplicationsAdminPage({ searchParams }: Props) {
                       </a>
                     )}
                   </td>
-                  <td className="min-w-[220px] px-3 py-3">{eventLabel(row.event)}</td>
+                  <td className="min-w-[220px] whitespace-pre-line px-3 py-3">{eventsLabel(row.event)}</td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <span className={`inline-block rounded-full px-3 py-0.5 text-[13px] font-extrabold ${STATUS_CLASS[row.status] ?? ''}`}>
                       {APPLICATION_STATUSES[row.status] ?? row.status}

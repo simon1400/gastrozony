@@ -2,6 +2,7 @@
 
 import { useRef, useState, type ReactNode, type Ref } from 'react';
 import { Button } from '@/components/Button';
+import type { CapacityState } from '@/lib/events';
 import { FORM_MESSAGES, itemValue, type FieldValue, type SelectItem } from '@/lib/form-schema';
 
 /**
@@ -143,6 +144,102 @@ export const ChoiceGroup = ({ name, items, multiple, value, onChange, onBlur, in
           </label>
         );
       })}
+    </div>
+  );
+};
+
+export type EventChoice = {
+  slug: string;
+  title: string;
+  date: string | null;
+  place: string | null;
+  capacity: CapacityState | null;
+  /** Popisek kapacity (CAPACITY_LABELS) — z `lib/events` ho bere server, ať se do klienta netáhne Strapi klient. */
+  capacityLabel: string | null;
+};
+
+const CAPACITY_CLASS: Record<CapacityState, string> = {
+  volno: 'border-green-700 text-green-700',
+  'posledni-mista': 'border-yellow bg-yellow text-ink',
+  obsazeno: 'border-ink bg-ink text-white',
+  nahradnik: 'border-grey-line text-grey-line',
+};
+
+type EventChecklistProps = {
+  name: string;
+  events: EventChoice[];
+  value: FieldValue;
+  onChange: (value: string[]) => void;
+  onBlur: () => void;
+  invalid: boolean;
+  selectAllLabel: string;
+  inputRef?: Ref<HTMLInputElement>;
+};
+
+/** Výběr akcí na přihlášce: seznam se zaškrtávátky (víc akcí najednou), nahoře «Vybrat všechny», vpravo stav kapacity. */
+export const EventChecklist = ({ name, events, value, onChange, onBlur, invalid, selectAllLabel, inputRef }: EventChecklistProps) => {
+  const selected = asStrings(value);
+  const all = events.length > 0 && events.every((e) => selected.includes(e.slug));
+  const some = !all && events.some((e) => selected.includes(e.slug));
+  const row = 'flex cursor-pointer gap-[13px] border-b border-grey-muted py-4 md:py-5';
+
+  return (
+    <div className="mt-3 border-t border-grey-muted">
+      {events.length > 1 && (
+        <label className={`${row} items-center text-[15px] font-extrabold leading-[22px] md:text-[17px]`}>
+          <input
+            type="checkbox"
+            className="gz-checkbox"
+            checked={all}
+            ref={(el) => {
+              if (el) el.indeterminate = some;
+            }}
+            onChange={() => onChange(all ? [] : events.map((e) => e.slug))}
+            onBlur={onBlur}
+          />
+          {selectAllLabel}
+        </label>
+      )}
+      <ul>
+        {events.map((e, index) => {
+          const checked = selected.includes(e.slug);
+          return (
+            <li key={e.slug}>
+              <label className={`${row} items-start md:items-center`}>
+                <input
+                  ref={index === 0 ? inputRef : undefined}
+                  type="checkbox"
+                  name={name}
+                  value={e.slug}
+                  className="gz-checkbox"
+                  checked={checked}
+                  onChange={() => onChange(checked ? selected.filter((s) => s !== e.slug) : [...selected, e.slug])}
+                  onBlur={onBlur}
+                  aria-invalid={invalid || undefined}
+                />
+                <span className="flex min-w-0 flex-1 flex-col gap-1 md:flex-row md:items-center md:gap-6">
+                  {e.date && (
+                    <span className="text-[14px] leading-[20px] text-ink/70 md:w-[170px] md:shrink-0 md:text-[16px] md:leading-[24px]">
+                      {e.date}
+                    </span>
+                  )}
+                  <span className="min-w-0">
+                    <span className="block text-[15px] font-extrabold leading-[22px] md:text-[17px] md:leading-[24px]">{e.title}</span>
+                    {e.place && <span className="block text-[14px] leading-[20px] text-ink/70">{e.place}</span>}
+                  </span>
+                </span>
+                {e.capacity && e.capacityLabel && (
+                  <span
+                    className={`inline-flex h-[28px] shrink-0 items-center whitespace-nowrap rounded-full border-[1.5px] px-3 text-[13px] font-extrabold ${CAPACITY_CLASS[e.capacity]}`}
+                  >
+                    {e.capacityLabel}
+                  </span>
+                )}
+              </label>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };

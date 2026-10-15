@@ -91,7 +91,7 @@ function contactOf(form: FormDefinition, values: FormValues) {
 }
 
 /** Upload souborů + záznam přihlášky. Při chybě smaže už nahrané soubory a chybu propustí dál. */
-async function saveApplication(form: FormDefinition, values: FormValues, event: OpenEvent | undefined) {
+async function saveApplication(form: FormDefinition, values: FormValues, events: OpenEvent[]) {
   const uploaded: StrapiMedia[] = [];
   try {
     const fileUrls = new Map<string, string[]>();
@@ -109,7 +109,7 @@ async function saveApplication(form: FormDefinition, values: FormValues, event: 
     const created = await strapiPost<{ documentId: string }>('/applications', {
       formKey: form.key,
       result,
-      ...(event ? { event: event.documentId } : {}),
+      event: events.map((e) => e.documentId),
       contactEmail: contact.email ?? null,
       contactName: contact.name ?? null,
       attachments: uploaded.map((m) => m.id),
@@ -166,11 +166,13 @@ export async function POST(request: Request) {
     }
   }
 
-  const event = events.find((e) => e.slug === values[EVENT_KEY]);
+  // v pořadí podle data (jako v seznamu na webu), ne podle pořadí kliknutí
+  const picked = values[EVENT_KEY] as string[];
+  const chosen = events.filter((e) => picked.includes(e.slug));
 
   let saved: Awaited<ReturnType<typeof saveApplication>>;
   try {
-    saved = await saveApplication(form, values, event);
+    saved = await saveApplication(form, values, chosen);
   } catch (e) {
     console.error('[application] strapi error', e);
     return fail(502, 'server');
@@ -183,8 +185,7 @@ export async function POST(request: Request) {
     applicantEmail: saved.contact.email ?? '',
     applicantName: saved.contact.name,
     fields: saved.result,
-    eventTitles: event ? [event.title] : [],
-    eventDate: event ? formatEventDate(event.dateFrom, event.dateTo) : null,
+    events: chosen.map((e) => ({ title: e.title, date: formatEventDate(e.dateFrom, e.dateTo), place: e.place })),
     teamRecipients: await getTeamRecipients(),
   }).catch((e: unknown): MailResult => ({ ok: false, error: String(e) }));
 

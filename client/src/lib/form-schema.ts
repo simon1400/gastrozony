@@ -63,7 +63,7 @@ export type FieldValue = string | string[] | boolean | File[];
 export type FormValues = Record<string, FieldValue>;
 
 /** Systémová pole mimo `fields` — prefix `gz_`, aby nekolidovala s názvy polí z adminu (ty s `gz_` se zahazují). */
-export const EVENT_KEY = 'gz_event';
+export const EVENT_KEY = 'gz_event'; // pole slugů — akcí na přihlášku může být víc
 export const CONSENT_KEY = 'gz_consent';
 /** Honeypot: lidé ho nevidí, boti ho vyplní. */
 export const HONEYPOT_KEY = 'gz_website';
@@ -93,7 +93,8 @@ export const FORM_MESSAGES = {
   tooLong: 'Text je příliš dlouhý',
   invalidOption: 'Vyberte jednu z nabízených možností',
   selectPlaceholder: '— vyberte —',
-  event: 'Vyberte akci',
+  event: 'Vyberte alespoň jednu akci',
+  invalidEvent: 'Na některou z vybraných akcí se už nelze přihlásit — obnovte stránku',
   consent: 'Potvrďte prosím souhlas',
   fileType: 'Tento typ souboru nelze nahrát — povolené jsou obrázky (JPG, PNG, WebP) a PDF',
   fileSize: `Soubor je větší než ${MAX_FILE_SIZE / 1024 / 1024} MB`,
@@ -193,8 +194,9 @@ export function buildFormSchema(form: FormDefinition, eventSlugs: string[]) {
   for (const field of form.fields) shape[field.name] = fieldSchema(field);
 
   shape[EVENT_KEY] = z
-    .string()
-    .refine((v) => (v === '' ? !form.requiresEvent : eventSlugs.includes(v)), FORM_MESSAGES.event);
+    .array(z.string())
+    .refine((vs) => vs.every((v) => eventSlugs.includes(v)), FORM_MESSAGES.invalidEvent)
+    .refine((vs) => !form.requiresEvent || vs.length > 0, FORM_MESSAGES.event);
 
   const { consent } = form;
   if (consent) {
@@ -216,8 +218,8 @@ const emptyValue = (field: FormField): FieldValue => {
   }
 };
 
-export function defaultValues(form: FormDefinition, event = ''): FormValues {
-  const values: FormValues = { [EVENT_KEY]: event, [CONSENT_KEY]: false, [HONEYPOT_KEY]: '' };
+export function defaultValues(form: FormDefinition, events: string[] = []): FormValues {
+  const values: FormValues = { [EVENT_KEY]: events, [CONSENT_KEY]: false, [HONEYPOT_KEY]: '' };
   for (const field of form.fields) values[field.name] = emptyValue(field);
   return values;
 }
@@ -239,7 +241,8 @@ export function valuesFromFormData(form: FormDefinition, data: FormData): Record
     const v = data.get(key);
     return typeof v === 'string' ? v : '';
   };
-  const values: Record<string, unknown> = { [EVENT_KEY]: text(EVENT_KEY), [CONSENT_KEY]: text(CONSENT_KEY) === 'true' };
+  const strings = (key: string) => data.getAll(key).filter((v): v is string => typeof v === 'string');
+  const values: Record<string, unknown> = { [EVENT_KEY]: [...new Set(strings(EVENT_KEY))], [CONSENT_KEY]: text(CONSENT_KEY) === 'true' };
   for (const field of form.fields) {
     switch (field.__component) {
       case 'form.checkbox':
@@ -249,9 +252,7 @@ export function valuesFromFormData(form: FormDefinition, data: FormData): Record
         values[field.name] = data.getAll(field.name).filter((v): v is File => isFile(v) && v.size > 0);
         break;
       case 'form.select':
-        values[field.name] = field.multiple
-          ? data.getAll(field.name).filter((v): v is string => typeof v === 'string')
-          : text(field.name);
+        values[field.name] = field.multiple ? strings(field.name) : text(field.name);
         break;
       default:
         values[field.name] = text(field.name);
