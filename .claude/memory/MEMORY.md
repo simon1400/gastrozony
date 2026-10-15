@@ -135,6 +135,9 @@ D:\gastrozony
   Коммитить только явно перечисленные пути своих изменений и сверяться с `git status` перед коммитом.
 - Пуш в `main` запускает деплой по фильтру путей: `client/**` → Deploy client, `strapi/**` → Deploy Strapi.
   То есть случайно захваченный чужой файл в `strapi/` немедленно уедет на тестовый сервер.
+- **После пуша деплой НЕ проверять** (просьба пользователя 15.10.2026: не тратить на это токены) — никаких
+  `gh run watch` / `gh run list`, curl-проверок прода и т.п. Запушил → коротко сообщил, что ушло в деплой, и всё.
+  Если менялась схема Strapi, можно одной строкой напомнить пользователю, что проверить, но самому не проверять.
 
 ## Стек (утверждён 2026-09-04)
 - **client:** Next.js 15 App Router + React 19 + TS + Tailwind 4, react-hook-form + zod
@@ -258,6 +261,15 @@ D:\gastrozony
   `docs/admin-guide.md` обновлён (§2 stav, §5 e-mail, §7 štítky+decor, §8 kontakt, §13 Formátování textu).
   **После деплоя Strapi** (схема меняется: drop колонки, новая колонка у components_shared_tags) — проверить
   `curl https://strapi.gastrozony.cz/api/global` и pm2 status. Порт 3100 локально бывает занят чужим next — брать 3101.
+- [x] **Přihláška: несколько акций на заявку** (15.10.2026, заказчик: «jako na naburgeru»; не закоммичено/не задеплоено):
+  select → `EventChecklist` (FormFields.tsx): чекбоксы, «Vybrat všechny» (indeterminate), дата · název · místo,
+  справа пилюля `capacityState`. `gz_event` теперь массив slug'ов (zod: все из открытых + ≥1 при requiresEvent),
+  `?akce=` может повторяться. Strapi: `application.event` manyToOne → **manyToMany, имя `event` оставлено
+  намеренно** — join-таблица `applications_event_lnk` та же, Strapi только добавляет `event_ord`; проверено на
+  временном Postgres в Docker (старая связь сохранилась). `application-page.eventPlaceholder` удалён →
+  `selectAllLabel`. Письмо: akce первой строкой в výpisu (каждая с termínem и místem), в теме 1 название / «N akce|akcí».
+  **На проде после деплоя:** `node scripts/apply-cs-labels.mjs` (подпись нового поля), в админке поменять
+  „Popisek výběru akce“ на «Vyberte akce» (в БД осталось «Vyberte akci»).
 - [ ] Правки по итогам тестирования пользователем (список приносит в новую сессию, формат — `docs/local-testing.md` §7)
 
 ## Факты сессии 2026-09-12 (анимации декора + правки UI)
