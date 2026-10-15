@@ -21,7 +21,14 @@ export interface BlocksAccordionItem extends Struct.ComponentSchema {
     icon: 'chevronDown';
   };
   attributes: {
-    answer: Schema.Attribute.RichText & Schema.Attribute.Required;
+    answer: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'defaultMarkdown';
+        }
+      >;
     question: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -117,7 +124,13 @@ export interface BlocksImageText extends Struct.ComponentSchema {
   attributes: {
     background: Schema.Attribute.Enumeration<['white', 'grey', 'black']> &
       Schema.Attribute.DefaultTo<'white'>;
-    body: Schema.Attribute.RichText;
+    body: Schema.Attribute.RichText &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'defaultMarkdown';
+        }
+      >;
     cta: Schema.Attribute.Component<'shared.cta', false>;
     image: Schema.Attribute.Media<'images', true>;
     imagePosition: Schema.Attribute.Enumeration<['left', 'right']> &
@@ -181,7 +194,14 @@ export interface BlocksText extends Struct.ComponentSchema {
   attributes: {
     background: Schema.Attribute.Enumeration<['white', 'grey', 'black']> &
       Schema.Attribute.DefaultTo<'white'>;
-    body: Schema.Attribute.RichText & Schema.Attribute.Required;
+    body: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'defaultMarkdown';
+        }
+      >;
     title: Schema.Attribute.String;
   };
 }
@@ -445,6 +465,7 @@ export interface SharedNumberedCard extends Struct.ComponentSchema {
     icon: 'grid';
   };
   attributes: {
+    cta: Schema.Attribute.Component<'shared.cta', false>;
     image: Schema.Attribute.Media<'images'>;
     number: Schema.Attribute.String & Schema.Attribute.Required;
     text: Schema.Attribute.Text;
@@ -512,6 +533,7 @@ export interface SharedTag extends Struct.ComponentSchema {
   };
   attributes: {
     label: Schema.Attribute.String & Schema.Attribute.Required;
+    url: Schema.Attribute.String;
   };
 }
 

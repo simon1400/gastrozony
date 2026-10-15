@@ -380,8 +380,9 @@ const contentTypes = {
       perex: txt(),
       contentBefore: rich(),
       contentAfter: rich(),
-      eventSelectLabel: str({ default: 'Vyberte akci' }),
-      eventPlaceholder: str({ default: '— vyberte akci —' }),
+      eventSelectLabel: str({ default: 'Vyberte akce' }),
+      // чекбокс над списком акций (выбор нескольких, 15.10.2026; раньше здесь был плейсхолдер select'а)
+      selectAllLabel: str({ default: 'Vybrat všechny' }),
       // místo formuláře, když není otevřená žádná akce (form.requiresEvent)
       noEventsText: txt(),
       uploadLabel: str({ default: 'Vybrat soubory' }),
@@ -479,7 +480,7 @@ const contentTypes = {
       key: enu(['prodejce', 'poradatel'], { required: true }),
       fields: zone(FORM_FIELDS),
       consent: comp('form.checkbox'),
-      // одна акция на заявку (Q7) — мультивыбора нет
+      // на заявку можно выбрать несколько акций (15.10.2026; раньше одна — Q7)
       requiresEvent: bool({ default: false }),
     },
   },
@@ -523,7 +524,9 @@ const contentTypes = {
     attributes: {
       formKey: enu(['prodejce', 'poradatel'], { required: true }),
       result: comp('form.result-item', true),
-      event: rel('api::event.event', 'manyToOne'),
+      // несколько акций на заявку; имя `event` оставлено, чтобы join-таблица applications_event_lnk
+      // осталась той же (manyToOne → manyToMany без потери данных, Strapi лишь добавит колонку event_ord)
+      event: rel('api::event.event', 'manyToMany'),
       contactEmail: str(),
       contactName: str(),
       status: enu(['nova', 'kontaktovana', 'schvalena', 'zamitnuta'], { default: 'nova' }),

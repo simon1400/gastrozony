@@ -27,7 +27,7 @@
     },
     "event": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::event.event"
     },
     "contactEmail": {

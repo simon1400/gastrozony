@@ -35,11 +35,11 @@
     },
     "eventSelectLabel": {
       "type": "string",
-      "default": "Vyberte akci"
+      "default": "Vyberte akce"
     },
-    "eventPlaceholder": {
+    "selectAllLabel": {
       "type": "string",
-      "default": "— vyberte akci —"
+      "default": "Vybrat všechny"
     },
     "noEventsText": {
       "type": "text"
@@ -163,12 +163,12 @@
           "label": "Popisek výběru akce"
         }
       },
-      "eventPlaceholder": {
+      "selectAllLabel": {
         "edit": {
-          "label": "Placeholder výběru akce"
+          "label": "Text „vybrat všechny“ u výběru akcí"
         },
         "list": {
-          "label": "Placeholder výběru akce"
+          "label": "Text „vybrat všechny“ u výběru akcí"
         }
       },
       "noEventsText": {

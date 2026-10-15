@@ -395,11 +395,11 @@ await single('newsletter', {
 
 await single('application-page', {
   title: 'Přihláška pro **prodejce**',
-  perex: 'Vyberte akci, vyplňte údaje o stánku a my se ozveme s podmínkami i rozvržením zóny. Přihláška je nezávazná.',
+  perex: 'Vyberte akce, vyplňte údaje o stánku a my se ozveme s podmínkami i rozvržením zóny. Přihláška je nezávazná.',
   contentBefore: 'Pole označená hvězdičkou jsou povinná. Fotku stánku nebo menu můžete přiložit rovnou — urychlí to výběr.',
   contentAfter: 'Máte dotaz? Napište nám na [info@gastrozony.cz](mailto:info@gastrozony.cz).',
-  eventSelectLabel: 'Vyberte akci',
-  eventPlaceholder: '— vyberte akci —',
+  eventSelectLabel: 'Vyberte akce',
+  selectAllLabel: 'Vybrat všechny',
   noEventsText: 'Momentálně nepřijímáme přihlášky na žádnou akci. Přihlaste se k odběru novinek a dáme vám vědět, jakmile otevřeme další.',
   uploadLabel: 'Vybrat soubory',
   submitLabel: 'Odeslat přihlášku',

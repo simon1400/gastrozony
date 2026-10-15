@@ -456,16 +456,26 @@ export interface ApiApplicationPageApplicationPage
     draftAndPublish: true;
   };
   attributes: {
-    contentAfter: Schema.Attribute.RichText;
-    contentBefore: Schema.Attribute.RichText;
+    contentAfter: Schema.Attribute.RichText &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'defaultMarkdown';
+        }
+      >;
+    contentBefore: Schema.Attribute.RichText &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'defaultMarkdown';
+        }
+      >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     errorText: Schema.Attribute.Text;
-    eventPlaceholder: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'\u2014 vyberte akci \u2014'>;
     eventSelectLabel: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'Vyberte akci'>;
+      Schema.Attribute.DefaultTo<'Vyberte akce'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -480,6 +490,8 @@ export interface ApiApplicationPageApplicationPage
     perex: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
     rateLimitText: Schema.Attribute.Text;
+    selectAllLabel: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Vybrat v\u0161echny'>;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     submitLabel: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'Odeslat p\u0159ihl\u00E1\u0161ku'>;
@@ -514,7 +526,7 @@ export interface ApiApplicationApplication extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    event: Schema.Attribute.Relation<'manyToOne', 'api::event.event'>;
+    event: Schema.Attribute.Relation<'manyToMany', 'api::event.event'>;
     formKey: Schema.Attribute.Enumeration<['prodejce', 'poradatel']> &
       Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -550,7 +562,13 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    content: Schema.Attribute.RichText;
+    content: Schema.Attribute.RichText &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'defaultMarkdown';
+        }
+      >;
     cover: Schema.Attribute.Media<'images'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -675,7 +693,13 @@ export interface ApiContactPageContactPage extends Struct.SingleTypeSchema {
         'blocks.accordion',
       ]
     >;
-    body: Schema.Attribute.RichText;
+    body: Schema.Attribute.RichText &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'defaultMarkdown';
+        }
+      >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -774,7 +798,13 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     capacityState: Schema.Attribute.Enumeration<
       ['volno', 'posledni-mista', 'obsazeno', 'nahradnik']
     >;
-    content: Schema.Attribute.RichText;
+    content: Schema.Attribute.RichText &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'defaultMarkdown';
+        }
+      >;
     cover: Schema.Attribute.Media<'images'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -793,9 +823,7 @@ export interface ApiEventEvent extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    statusOverride: Schema.Attribute.Enumeration<
-      ['pripravujeme', 'aktualni', 'ukonceno']
-    >;
+    statusOverride: Schema.Attribute.Enumeration<['aktualni', 'ukonceno']>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -849,8 +877,6 @@ export interface ApiEventsPageEventsPage extends Struct.SingleTypeSchema {
       Schema.Attribute.DefaultTo<'Aktu\u00E1ln\u00ED'>;
     tabPastLabel: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'Prob\u011Bhl\u00E9'>;
-    tabUpcomingLabel: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'P\u0159ipravujeme'>;
     title: Schema.Attribute.String & Schema.Attribute.DefaultTo<'Akce'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -901,7 +927,7 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   collectionName: 'globals';
   info: {
     description: 'Kontakty, logo, soci\u00E1ln\u00ED s\u00EDt\u011B, v\u00FDchoz\u00ED SEO';
-    displayName: 'Global';
+    displayName: 'Glob\u00E1ln\u00ED nastaven\u00ED';
     pluralName: 'globals';
     singularName: 'global';
   };
@@ -911,6 +937,8 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   attributes: {
     address: Schema.Attribute.Text;
     applicationRecipients: Schema.Attribute.Text;
+    companyName: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'BEDY Group s.r.o.'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -946,7 +974,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   collectionName: 'homepages';
   info: {
     description: '';
-    displayName: 'Homepage';
+    displayName: 'Domovsk\u00E1 str\u00E1nka';
     pluralName: 'homepages';
     singularName: 'homepage';
   };

@@ -79,7 +79,7 @@ export const CONTENT_TYPE_LABELS = {
     contentBefore: 'Text nad formulářem',
     contentAfter: 'Text pod formulářem',
     eventSelectLabel: 'Popisek výběru akce',
-    eventPlaceholder: 'Placeholder výběru akce',
+    selectAllLabel: 'Text „vybrat všechny“ u výběru akcí',
     noEventsText: 'Text, když nejsou žádné akce',
     uploadLabel: 'Popisek nahrávání souborů',
     submitLabel: 'Text tlačítka pro odeslání',
