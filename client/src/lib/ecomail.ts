@@ -55,8 +55,15 @@ export async function getEcomailConfig(): Promise<EcomailConfig> {
   };
 }
 
+export type SubscribeExtra = {
+  /** Jméno kontaktu (z přihlášky). */
+  name?: string;
+  /** Štítky navíc k těm z administrace, např. `prihlaska-prodejce`. */
+  tags?: string[];
+};
+
 /** Přidá e-mail do seznamu (existujícího odběratele aktualizuje). Chybu nevyhazuje. */
-export async function subscribeToEcomail(email: string): Promise<EcomailResult> {
+export async function subscribeToEcomail(email: string, extra: SubscribeExtra = {}): Promise<EcomailResult> {
   const apiKey = process.env.ECOMAIL_API_KEY;
   const config = await getEcomailConfig();
 
@@ -67,12 +74,18 @@ export async function subscribeToEcomail(email: string): Promise<EcomailResult> 
     return { ok: true, synced: false };
   }
 
+  const tags = [...new Set([...config.tags, ...(extra.tags ?? [])])];
+
   try {
     const res = await fetch(`${API_BASE}/lists/${encodeURIComponent(config.listId)}/subscribe`, {
       method: 'POST',
       headers: { key: apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        subscriber_data: { email, ...(config.tags.length ? { tags: config.tags } : {}) },
+        subscriber_data: {
+          email,
+          ...(extra.name ? { name: extra.name } : {}),
+          ...(tags.length ? { tags } : {}),
+        },
         update_existing: true,
         // double opt-in: Ecomail pošle potvrzovací e-mail a zapíše souhlas
         skip_confirmation: !config.doubleOptIn,

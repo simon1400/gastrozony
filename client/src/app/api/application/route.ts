@@ -17,6 +17,7 @@ import {
   type UploadField,
 } from '@/lib/form-schema';
 import { getForm, getTeamRecipients } from '@/lib/forms';
+import { subscribeToEcomail } from '@/lib/ecomail';
 import { sendApplicationMail, type MailResult } from '@/lib/mailer';
 import { clientIp, createRateLimiter } from '@/lib/rate-limit';
 import { mediaUrl, strapiDeleteFile, strapiPost, strapiPut, strapiUpload, type StrapiMedia } from '@/lib/strapi';
@@ -195,6 +196,16 @@ export async function POST(request: Request) {
     );
   } else if (!mail.ok) {
     console.error('[application] mail failed', mail.error);
+  }
+
+  // kontakt z přihlášky do Ecomailu (stejný seznam jako newsletter, se štítkem podle formuláře);
+  // selhání uživateli nehlásíme, přihláška je uložená ve Strapi
+  if (saved.contact.email) {
+    const ecomail = await subscribeToEcomail(saved.contact.email, {
+      name: saved.contact.name,
+      tags: [`prihlaska-${form.key}`],
+    });
+    if (!ecomail.ok) console.error('[application] ecomail error', ecomail.error);
   }
 
   return NextResponse.json({ ok: true });
