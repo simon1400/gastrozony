@@ -11,12 +11,14 @@ import {
   itemValue,
   MAX_FILE_SIZE,
   MAX_FILES,
+  NEWSLETTER_KEY,
   valuesFromFormData,
   type FormDefinition,
   type FormValues,
   type UploadField,
 } from '@/lib/form-schema';
 import { getForm, getTeamRecipients } from '@/lib/forms';
+import { subscribeToEcomail } from '@/lib/ecomail';
 import { sendApplicationMail, type MailResult } from '@/lib/mailer';
 import { clientIp, createRateLimiter } from '@/lib/rate-limit';
 import { mediaUrl, strapiDeleteFile, strapiPost, strapiPut, strapiUpload, type StrapiMedia } from '@/lib/strapi';
@@ -195,6 +197,16 @@ export async function POST(request: Request) {
     );
   } else if (!mail.ok) {
     console.error('[application] mail failed', mail.error);
+  }
+
+  // kontakt z přihlášky do Ecomailu — JEN se zaškrtnutým souhlasem s newsletterem (GDPR: souhlas s přihláškou nestačí);
+  // stejný seznam jako newsletter, se štítkem podle formuláře. Selhání uživateli nehlásíme, přihláška je uložená ve Strapi.
+  if (form.newsletterConsent && values[NEWSLETTER_KEY] === true && saved.contact.email) {
+    const ecomail = await subscribeToEcomail(saved.contact.email, {
+      name: saved.contact.name,
+      tags: [`prihlaska-${form.key}`],
+    });
+    if (!ecomail.ok) console.error('[application] ecomail error', ecomail.error);
   }
 
   return NextResponse.json({ ok: true });

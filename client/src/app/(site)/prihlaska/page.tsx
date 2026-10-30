@@ -6,7 +6,7 @@ import { GreyClosingSection } from '@/components/GreyClosingSection';
 import { PageIntro } from '@/components/PageIntro';
 import { RichInline, RichText } from '@/components/RichText';
 import { CAPACITY_LABELS, formatEventDate, getOpenEvents } from '@/lib/events';
-import { CONSENT_KEY } from '@/lib/form-schema';
+import { CONSENT_KEY, NEWSLETTER_KEY } from '@/lib/form-schema';
 import { getApplicationPage, getForm } from '@/lib/forms';
 import { seoMetadata } from '@/lib/seo';
 
@@ -44,6 +44,7 @@ export default async function ApplicationFormPage({ searchParams }: Props) {
 
   const richLabels: Record<string, ReactNode> = {};
   if (form?.consent) richLabels[CONSENT_KEY] = <RichInline>{form.consent.label}</RichInline>;
+  if (form?.newsletterConsent) richLabels[NEWSLETTER_KEY] = <RichInline>{form.newsletterConsent.label}</RichInline>;
   for (const field of form?.fields ?? []) {
     if (field.__component === 'form.checkbox') richLabels[field.name] = <RichInline>{field.label}</RichInline>;
   }

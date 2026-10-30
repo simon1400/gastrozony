@@ -18,7 +18,7 @@ export async function getForm(key: FormKey): Promise<FormDefinition | null> {
     const { data } = await strapiFetch<FormApi[]>('/forms', {
       query: {
         filters: { key: { $eq: key } },
-        populate: { fields: { populate: '*' }, consent: true },
+        populate: { fields: { populate: '*' }, consent: true, newsletterConsent: true },
         pagination: { pageSize: 1 },
       },
       tags: ['forms'],
@@ -34,7 +34,10 @@ export async function getForm(key: FormKey): Promise<FormDefinition | null> {
       else console.warn(`[forms] ${key}: pole „${f.name}“ (${f.__component}) přeskočeno — neplatný nebo duplicitní název`);
       return ok;
     });
-    return { key: form.key, name: form.name, requiresEvent: Boolean(form.requiresEvent), fields, consent: form.consent ?? null };
+    return { key: form.key, name: form.name, requiresEvent: Boolean(form.requiresEvent), fields,
+      consent: form.consent ?? null,
+      newsletterConsent: form.newsletterConsent ?? null,
+    };
   } catch (e) {
     console.error('[forms] strapi error', e);
     return null;

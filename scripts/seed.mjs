@@ -522,6 +522,11 @@ await upsert('forms', 'key', 'prodejce', {
     required: true,
     errorMessage: 'Bez souhlasu nemůžeme přihlášku zpracovat',
   },
+  newsletterConsent: {
+    name: 'newsletter',
+    label: 'Chci dostávat novinky o akcích a přihláškách e-mailem. Odhlásit se lze kdykoli.',
+    required: false,
+  },
 });
 
 /* --------------------------------------------------------------- pages */

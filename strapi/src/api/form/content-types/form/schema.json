@@ -39,6 +39,11 @@
       "repeatable": false,
       "component": "form.checkbox"
     },
+    "newsletterConsent": {
+      "type": "component",
+      "repeatable": false,
+      "component": "form.checkbox"
+    },
     "requiresEvent": {
       "type": "boolean",
       "default": false
@@ -116,6 +121,14 @@
         },
         "list": {
           "label": "Souhlas (GDPR)"
+        }
+      },
+      "newsletterConsent": {
+        "edit": {
+          "label": "Souhlas s newsletterem (Ecomail)"
+        },
+        "list": {
+          "label": "Souhlas s newsletterem (Ecomail)"
         }
       },
       "requiresEvent": {
