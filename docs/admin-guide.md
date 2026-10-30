@@ -130,6 +130,11 @@ prodejce se může jednou přihláškou přihlásit na víc akcí (nahoře je �
 Nabízí se akce se zapnutým **Přihlášky otevřené**, které ještě neskončily. Souhlas se zpracováním údajů je v sekci **Souhlas (GDPR)**
 (text může obsahovat odkaz).
 
+**Souhlas s newsletterem (Ecomail)** — nepovinné zaškrtávátko „chci dostávat novinky“. Jen když ho žadatel zaškrtne,
+přidá se jeho e-mail a jméno do Ecomailu (do stejného seznamu jako newsletter, se štítkem `prihlaska-prodejce`).
+Když sekci necháte prázdnou, zaškrtávátko se nezobrazí a z přihlášek se do Ecomailu neposílá nic.
+Pole **Povinné** se tu ignoruje — souhlas s marketingem nesmí být podmínkou přihlášky.
+
 Po úpravě formuláře klikněte na **Publikovat**.
 
 Texty kolem formuláře (nadpis, úvod, text po odeslání, chybové hlášky…) jsou v **Single types → Stránka přihlášky**.

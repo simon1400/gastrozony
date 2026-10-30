@@ -11,6 +11,7 @@ import {
   itemValue,
   MAX_FILE_SIZE,
   MAX_FILES,
+  NEWSLETTER_KEY,
   valuesFromFormData,
   type FormDefinition,
   type FormValues,
@@ -198,9 +199,9 @@ export async function POST(request: Request) {
     console.error('[application] mail failed', mail.error);
   }
 
-  // kontakt z přihlášky do Ecomailu (stejný seznam jako newsletter, se štítkem podle formuláře);
-  // selhání uživateli nehlásíme, přihláška je uložená ve Strapi
-  if (saved.contact.email) {
+  // kontakt z přihlášky do Ecomailu — JEN se zaškrtnutým souhlasem s newsletterem (GDPR: souhlas s přihláškou nestačí);
+  // stejný seznam jako newsletter, se štítkem podle formuláře. Selhání uživateli nehlásíme, přihláška je uložená ve Strapi.
+  if (form.newsletterConsent && values[NEWSLETTER_KEY] === true && saved.contact.email) {
     const ecomail = await subscribeToEcomail(saved.contact.email, {
       name: saved.contact.name,
       tags: [`prihlaska-${form.key}`],

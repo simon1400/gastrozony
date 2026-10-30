@@ -480,6 +480,8 @@ const contentTypes = {
       key: enu(['prodejce', 'poradatel'], { required: true }),
       fields: zone(FORM_FIELDS),
       consent: comp('form.checkbox'),
+      // nepovinné zaškrtávátko „chci novinky“ — jen se souhlasem jde kontakt z přihlášky do Ecomailu
+      newsletterConsent: comp('form.checkbox'),
       // на заявку можно выбрать несколько акций (15.10.2026; раньше одна — Q7)
       requiresEvent: bool({ default: false }),
     },
