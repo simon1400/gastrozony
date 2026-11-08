@@ -526,6 +526,7 @@ export interface ApiApplicationApplication extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    ecomailSynced: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     event: Schema.Attribute.Relation<'manyToMany', 'api::event.event'>;
     formKey: Schema.Attribute.Enumeration<['prodejce', 'poradatel']> &
       Schema.Attribute.Required;
@@ -536,6 +537,8 @@ export interface ApiApplicationApplication extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     mailSent: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    newsletterConsent: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     note: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
     result: Schema.Attribute.Component<'form.result-item', true>;
@@ -915,6 +918,7 @@ export interface ApiFormForm extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::form.form'> &
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
+    newsletterConsent: Schema.Attribute.Component<'form.checkbox', false>;
     publishedAt: Schema.Attribute.DateTime;
     requiresEvent: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     updatedAt: Schema.Attribute.DateTime;
