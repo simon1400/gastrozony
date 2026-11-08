@@ -205,6 +205,8 @@ export const CONTENT_TYPE_LABELS = {
     note: 'Interní poznámka',
     attachments: 'Přílohy',
     mailSent: 'Potvrzovací e-mail odeslán',
+    newsletterConsent: 'Souhlas s newsletterem',
+    ecomailSynced: 'Přeneseno do Ecomailu',
     source: 'Zdroj',
   },
   'api::team-member.team-member': {

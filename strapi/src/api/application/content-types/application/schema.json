@@ -62,6 +62,14 @@
       "type": "boolean",
       "default": false
     },
+    "newsletterConsent": {
+      "type": "boolean",
+      "default": false
+    },
+    "ecomailSynced": {
+      "type": "boolean",
+      "default": false
+    },
     "source": {
       "type": "string",
       "private": true
@@ -179,6 +187,22 @@
         },
         "list": {
           "label": "Potvrzovací e-mail odeslán"
+        }
+      },
+      "newsletterConsent": {
+        "edit": {
+          "label": "Souhlas s newsletterem"
+        },
+        "list": {
+          "label": "Souhlas s newsletterem"
+        }
+      },
+      "ecomailSynced": {
+        "edit": {
+          "label": "Přeneseno do Ecomailu"
+        },
+        "list": {
+          "label": "Přeneseno do Ecomailu"
         }
       },
       "source": {

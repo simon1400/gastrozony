@@ -60,6 +60,11 @@ export type SubscribeExtra = {
   name?: string;
   /** Štítky navíc k těm z administrace, např. `prihlaska-prodejce`. */
   tags?: string[];
+  /**
+   * Přebije `doubleOptIn` z administrace. U přihlášky `true`: souhlas dal žadatel zaškrtnutím a je uložený ve Strapi,
+   * další potvrzovací e-mail by byl navíc (a bez kliknutí by se do seznamu nedostal).
+   */
+  skipConfirmation?: boolean;
 };
 
 /** Přidá e-mail do seznamu (existujícího odběratele aktualizuje). Chybu nevyhazuje. */
@@ -88,7 +93,7 @@ export async function subscribeToEcomail(email: string, extra: SubscribeExtra = 
         },
         update_existing: true,
         // double opt-in: Ecomail pošle potvrzovací e-mail a zapíše souhlas
-        skip_confirmation: !config.doubleOptIn,
+        skip_confirmation: extra.skipConfirmation ?? !config.doubleOptIn,
       }),
       signal: AbortSignal.timeout(TIMEOUT_MS),
       cache: 'no-store',

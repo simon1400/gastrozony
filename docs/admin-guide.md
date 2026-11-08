@@ -132,6 +132,8 @@ Nabízí se akce se zapnutým **Přihlášky otevřené**, které ještě neskon
 
 **Souhlas s newsletterem (Ecomail)** — nepovinné zaškrtávátko „chci dostávat novinky“. Jen když ho žadatel zaškrtne,
 přidá se jeho e-mail a jméno do Ecomailu (do stejného seznamu jako newsletter, se štítkem `prihlaska-prodejce`).
+Bez dalšího potvrzovacího e-mailu — souhlas dal zaškrtnutím. U přihlášky se uloží **Souhlas s newsletterem**
+(důkaz souhlasu) a **Přeneseno do Ecomailu**; když přenos selže, zůstane `false` a kontakt jde doplnit později.
 Když sekci necháte prázdnou, zaškrtávátko se nezobrazí a z přihlášek se do Ecomailu neposílá nic.
 Pole **Povinné** se tu ignoruje — souhlas s marketingem nesmí být podmínkou přihlášky.
 

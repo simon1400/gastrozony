@@ -535,6 +535,9 @@ const contentTypes = {
       note: txt(),
       attachments: media(true, ['images', 'files']),
       mailSent: bool({ default: false }),
+      // důkaz souhlasu s newsletterem (GDPR čl. 7 odst. 1) + stav přenosu, aby šlo neúspěšné dosynchronizovat
+      newsletterConsent: bool({ default: false }),
+      ecomailSynced: bool({ default: false }),
       source: str({ private: true }),
     },
   },
