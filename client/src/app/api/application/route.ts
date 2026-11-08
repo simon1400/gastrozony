@@ -94,7 +94,12 @@ function contactOf(form: FormDefinition, values: FormValues) {
 }
 
 /** Upload souborů + záznam přihlášky. Při chybě smaže už nahrané soubory a chybu propustí dál. */
-async function saveApplication(form: FormDefinition, values: FormValues, events: OpenEvent[], newsletterConsent: boolean) {
+async function saveApplication(
+  form: FormDefinition,
+  values: FormValues,
+  events: OpenEvent[],
+  newsletterConsent: boolean,
+) {
   const uploaded: StrapiMedia[] = [];
   try {
     const fileUrls = new Map<string, string[]>();

@@ -56,7 +56,7 @@ export async function getEcomailConfig(): Promise<EcomailConfig> {
 }
 
 export type SubscribeExtra = {
-  /** Jméno kontaktu (z přihlášky). */
+  /** Celé jméno kontaktu (z přihlášky, „Jméno a příjmení“) — rozdělí se na `name` + `surname`. */
   name?: string;
   /** Štítky navíc k těm z administrace, např. `prihlaska-prodejce`. */
   tags?: string[];
@@ -66,6 +66,17 @@ export type SubscribeExtra = {
    */
   skipConfirmation?: boolean;
 };
+
+/**
+ * „Jan Novák“ → { name: 'Jan', surname: 'Novák' }: Ecomail má jméno a příjmení zvlášť a podle `name` skloňuje oslovení.
+ * Víceslovné příjmení zůstane celé v `surname`; jedno slovo jde jen do `name`.
+ */
+export function splitName(full?: string): { name?: string; surname?: string } {
+  const parts = (full ?? '').trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return {};
+  const [name, ...rest] = parts;
+  return rest.length ? { name, surname: rest.join(' ') } : { name };
+}
 
 /** Přidá e-mail do seznamu (existujícího odběratele aktualizuje). Chybu nevyhazuje. */
 export async function subscribeToEcomail(email: string, extra: SubscribeExtra = {}): Promise<EcomailResult> {
@@ -88,7 +99,7 @@ export async function subscribeToEcomail(email: string, extra: SubscribeExtra = 
       body: JSON.stringify({
         subscriber_data: {
           email,
-          ...(extra.name ? { name: extra.name } : {}),
+          ...splitName(extra.name),
           ...(tags.length ? { tags } : {}),
         },
         update_existing: true,

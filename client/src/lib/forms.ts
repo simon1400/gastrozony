@@ -34,7 +34,11 @@ export async function getForm(key: FormKey): Promise<FormDefinition | null> {
       else console.warn(`[forms] ${key}: pole „${f.name}“ (${f.__component}) přeskočeno — neplatný nebo duplicitní název`);
       return ok;
     });
-    return { key: form.key, name: form.name, requiresEvent: Boolean(form.requiresEvent), fields,
+    return {
+      key: form.key,
+      name: form.name,
+      requiresEvent: Boolean(form.requiresEvent),
+      fields,
       consent: form.consent ?? null,
       newsletterConsent: form.newsletterConsent ?? null,
     };
