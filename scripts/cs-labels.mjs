@@ -192,6 +192,7 @@ export const CONTENT_TYPE_LABELS = {
     key: 'Klíč formuláře',
     fields: 'Pole formuláře',
     consent: 'Souhlas (GDPR)',
+    newsletterConsent: 'Souhlas s newsletterem (Ecomail)',
     requiresEvent: 'Vyžaduje výběr akce',
   },
   'api::application.application': {
@@ -204,6 +205,8 @@ export const CONTENT_TYPE_LABELS = {
     note: 'Interní poznámka',
     attachments: 'Přílohy',
     mailSent: 'Potvrzovací e-mail odeslán',
+    newsletterConsent: 'Souhlas s newsletterem',
+    ecomailSynced: 'Přeneseno do Ecomailu',
     source: 'Zdroj',
   },
   'api::team-member.team-member': {

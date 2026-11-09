@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { after, NextResponse } from 'next/server';
 import { formatEventDate, getOpenEvents, type OpenEvent } from '@/lib/events';
 import { detectFileType } from '@/lib/files';
 import {
@@ -11,12 +11,14 @@ import {
   itemValue,
   MAX_FILE_SIZE,
   MAX_FILES,
+  NEWSLETTER_KEY,
   valuesFromFormData,
   type FormDefinition,
   type FormValues,
   type UploadField,
 } from '@/lib/form-schema';
 import { getForm, getTeamRecipients } from '@/lib/forms';
+import { subscribeToEcomail } from '@/lib/ecomail';
 import { sendApplicationMail, type MailResult } from '@/lib/mailer';
 import { clientIp, createRateLimiter } from '@/lib/rate-limit';
 import { mediaUrl, strapiDeleteFile, strapiPost, strapiPut, strapiUpload, type StrapiMedia } from '@/lib/strapi';
@@ -24,7 +26,8 @@ import { mediaUrl, strapiDeleteFile, strapiPost, strapiPut, strapiUpload, type S
 /**
  * Přihláška prodejce (multipart/form-data):
  * rate-limit → honeypot → zod (stejné schéma jako v prohlížeči) → kontrola obsahu souborů
- * → upload do Strapi (ImageKit) → záznam `application` přes serverový token → e-mail přes Resend → `mailSent`.
+ * → upload do Strapi (ImageKit) → záznam `application` přes serverový token → e-mail přes Resend → `mailSent`
+ * → po odeslání odpovědi (`after`) Ecomail, jen se souhlasem s newsletterem → `ecomailSynced`.
  *
  * Soubory jdou spolu s přihláškou, ne předem přes samostatný upload: boti tak nenaplní ImageKit osiřelými
  * soubory a na vše platí jeden rate-limit. Když zápis přihlášky selže, nahrané soubory se smažou.
@@ -91,7 +94,12 @@ function contactOf(form: FormDefinition, values: FormValues) {
 }
 
 /** Upload souborů + záznam přihlášky. Při chybě smaže už nahrané soubory a chybu propustí dál. */
-async function saveApplication(form: FormDefinition, values: FormValues, events: OpenEvent[]) {
+async function saveApplication(
+  form: FormDefinition,
+  values: FormValues,
+  events: OpenEvent[],
+  newsletterConsent: boolean,
+) {
   const uploaded: StrapiMedia[] = [];
   try {
     const fileUrls = new Map<string, string[]>();
@@ -114,6 +122,7 @@ async function saveApplication(form: FormDefinition, values: FormValues, events:
       contactName: contact.name ?? null,
       attachments: uploaded.map((m) => m.id),
       status: 'nova',
+      newsletterConsent,
       source: 'web',
     });
     return { documentId: created.data.documentId, result, contact };
@@ -170,9 +179,12 @@ export async function POST(request: Request) {
   const picked = values[EVENT_KEY] as string[];
   const chosen = events.filter((e) => picked.includes(e.slug));
 
+  // souhlas s newsletterem jen tehdy, když formulář zaškrtávátko vůbec má (jinak klíč zod zahodí)
+  const newsletterConsent = Boolean(form.newsletterConsent) && values[NEWSLETTER_KEY] === true;
+
   let saved: Awaited<ReturnType<typeof saveApplication>>;
   try {
-    saved = await saveApplication(form, values, chosen);
+    saved = await saveApplication(form, values, chosen, newsletterConsent);
   } catch (e) {
     console.error('[application] strapi error', e);
     return fail(502, 'server');
@@ -195,6 +207,30 @@ export async function POST(request: Request) {
     );
   } else if (!mail.ok) {
     console.error('[application] mail failed', mail.error);
+  }
+
+  // Kontakt z přihlášky do Ecomailu — JEN se zaškrtnutým souhlasem s newsletterem (GDPR: souhlas s přihláškou nestačí).
+  // Souhlas je už uložený ve Strapi (`newsletterConsent`), takže odpověď na Ecomail nečeká: `after` běží po odeslání
+  // odpovědi. Selhání jen zalogujeme — záznam zůstane s `ecomailSynced: false` a dá se dosynchronizovat.
+  // Stejný seznam jako newsletter, se štítkem podle formuláře; bez dalšího potvrzovacího e-mailu (souhlas dal zaškrtnutím).
+  const { email, name } = saved.contact;
+  if (newsletterConsent && email) {
+    const formKey = form.key;
+    const { documentId } = saved;
+    after(async () => {
+      const ecomail = await subscribeToEcomail(email, {
+        name,
+        tags: [`prihlaska-${formKey}`],
+        skipConfirmation: true,
+      });
+      if (!ecomail.ok) {
+        console.error('[application] ecomail error', ecomail.error);
+      } else if (ecomail.synced) {
+        await strapiPut(`/applications/${documentId}`, { ecomailSynced: true }).catch((e: unknown) =>
+          console.error('[application] ecomailSynced update failed', e),
+        );
+      }
+    });
   }
 
   return NextResponse.json({ ok: true });

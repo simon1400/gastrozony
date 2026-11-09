@@ -480,6 +480,8 @@ const contentTypes = {
       key: enu(['prodejce', 'poradatel'], { required: true }),
       fields: zone(FORM_FIELDS),
       consent: comp('form.checkbox'),
+      // nepovinné zaškrtávátko „chci novinky“ — jen se souhlasem jde kontakt z přihlášky do Ecomailu
+      newsletterConsent: comp('form.checkbox'),
       // на заявку можно выбрать несколько акций (15.10.2026; раньше одна — Q7)
       requiresEvent: bool({ default: false }),
     },
@@ -533,6 +535,9 @@ const contentTypes = {
       note: txt(),
       attachments: media(true, ['images', 'files']),
       mailSent: bool({ default: false }),
+      // důkaz souhlasu s newsletterem (GDPR čl. 7 odst. 1) + stav přenosu, aby šlo neúspěšné dosynchronizovat
+      newsletterConsent: bool({ default: false }),
+      ecomailSynced: bool({ default: false }),
       source: str({ private: true }),
     },
   },

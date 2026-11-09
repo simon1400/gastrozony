@@ -13,6 +13,7 @@ import {
   FORM_MESSAGES,
   HONEYPOT_KEY,
   itemValue,
+  NEWSLETTER_KEY,
   toFormData,
   type FormDefinition,
   type FormField,
@@ -280,7 +281,8 @@ export const DynamicForm = ({ form, events, initialEvents = [], texts, richLabel
   const eventError = errorOf(EVENT_KEY);
   const consentId = fieldId(CONSENT_KEY);
   const consentError = errorOf(CONSENT_KEY);
-  const { consent } = form;
+  const { consent, newsletterConsent } = form;
+  const newsletterId = fieldId(NEWSLETTER_KEY);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className={CARD} aria-busy={isSubmitting}>
@@ -323,29 +325,52 @@ export const DynamicForm = ({ form, events, initialEvents = [], texts, richLabel
         <input id={fieldId(HONEYPOT_KEY)} type="text" tabIndex={-1} autoComplete="off" {...register(HONEYPOT_KEY)} />
       </div>
 
-      {consent && (
-        <div className="mt-10 border-t border-grey-muted pt-8">
-          <Controller
-            control={control}
-            name={CONSENT_KEY}
-            render={({ field: f }) => (
-              <CheckboxInput
-                id={consentId}
-                label={richLabels[CONSENT_KEY] ?? consent.label}
-                checked={f.value === true}
-                onChange={f.onChange}
-                onBlur={f.onBlur}
-                invalid={Boolean(consentError)}
-                required={consent.required}
-                describedBy={describedBy(consentId, null, consentError)}
-                inputRef={f.ref}
+      {(consent || newsletterConsent) && (
+        <div className="mt-10 space-y-5 border-t border-grey-muted pt-8">
+          {consent && (
+            <div>
+              <Controller
+                control={control}
+                name={CONSENT_KEY}
+                render={({ field: f }) => (
+                  <CheckboxInput
+                    id={consentId}
+                    label={richLabels[CONSENT_KEY] ?? consent.label}
+                    checked={f.value === true}
+                    onChange={f.onChange}
+                    onBlur={f.onBlur}
+                    invalid={Boolean(consentError)}
+                    required={consent.required}
+                    describedBy={describedBy(consentId, null, consentError)}
+                    inputRef={f.ref}
+                  />
+                )}
               />
-            )}
-          />
-          {consentError && (
-            <p id={`${consentId}-error`} className="mt-2 text-[14px] font-extrabold leading-[20px] text-red-700">
-              {consentError}
-            </p>
+              {consentError && (
+                <p id={`${consentId}-error`} className="mt-2 text-[14px] font-extrabold leading-[20px] text-red-700">
+                  {consentError}
+                </p>
+              )}
+            </div>
+          )}
+          {newsletterConsent && (
+            <Controller
+              control={control}
+              name={NEWSLETTER_KEY}
+              render={({ field: f }) => (
+                <CheckboxInput
+                  id={newsletterId}
+                  label={richLabels[NEWSLETTER_KEY] ?? newsletterConsent.label}
+                  checked={f.value === true}
+                  onChange={f.onChange}
+                  onBlur={f.onBlur}
+                  invalid={false}
+                  required={false}
+                  describedBy={describedBy(newsletterId, null, undefined)}
+                  inputRef={f.ref}
+                />
+              )}
+            />
           )}
         </div>
       )}

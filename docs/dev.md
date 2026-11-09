@@ -129,7 +129,7 @@ npm run dev         # http://localhost:3000
 | `src/app/(site)/not-found.tsx`, `src/app/not-found.tsx` | 404 ve stylu webu (`NotFoundContent`) |
 | `scripts/gen-icons.mjs` | favicon / apple-icon / icon-512 / og-default ze statického loga |
 | `src/lib/mailer.ts` | стаб Resend (`sendApplicationMail`) |
-| `src/app/api/newsletter/route.ts` | подписка: zod + honeypot → Strapi; Ecomail-стаб |
+| `src/app/api/newsletter/route.ts` | подписка: zod + honeypot → Strapi → Ecomail (`syncedToEcomail`) |
 | `src/components/SectionEdge.tsx` | волнистые кромки секций — точные кривые XD в координатах артборда 1920 |
 | `src/components/Button.tsx` | primary / outline / dark (чёрная с жёлтым текстом), 66px, прямые углы |
 | `src/components/Badge.tsx` | бейдж статуса акции (37px, r 19) |
@@ -216,6 +216,16 @@ Ecomail 401 `Wrong api key`, пользователь всё равно полу
 
 **Двойное подтверждение (double opt-in):** `newsletter.doubleOptIn` (по умолчанию включено) → в Ecomail
 уходит `skip_confirmation: false`, письмо-подтверждение шлёт сам Ecomail. Выключение = моментальная подписка.
+
+**Контакты из заявок → Ecomail (11.2026):** только если заявитель отметил необязательный чекбокс
+`form.newsletterConsent` (компонент `form.checkbox`, текст в админке; пусто → чекбокса нет, в Ecomail ничего не уходит).
+Согласие с GDPR-чекбоксом заявки для рассылки не годится, поэтому отдельный. `required` у него игнорируется
+(согласие на маркетинг не может быть условием заявки).
+- Заявка сохраняет `newsletterConsent` (доказательство согласия, GDPR čl. 7(1)) и `ecomailSynced`
+  (как `mailSent`/`syncedToEcomail`): `newsletterConsent=true, ecomailSynced=false` → не долетело, можно досинхронизировать.
+- Вызов Ecomail — в `after()` из `next/server`: ответ форме не ждёт Ecomail (до `TIMEOUT_MS`).
+- Тот же список, что и newsletter, + тег `prihlaska-<formKey>`; `skipConfirmation: true` — второе письмо-подтверждение
+  не шлётся, согласие уже дано чекбоксом. «Jméno a příjmení» делится на `name` + `surname` (`splitName`).
 
 ### Вёрстка HP (шаг 3)
 - Эталон — окно **1920** (контент 1905 из-за полосы прокрутки): вертикаль совпадает с XD ±1px.

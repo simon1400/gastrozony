@@ -57,6 +57,8 @@ export type FormDefinition = {
   requiresEvent: boolean;
   fields: FormField[];
   consent: ConsentField | null;
+  /** Nepovinný souhlas s newsletterem; zaškrtnutý = kontakt z přihlášky jde do Ecomailu. */
+  newsletterConsent: ConsentField | null;
 };
 
 export type FieldValue = string | string[] | boolean | File[];
@@ -65,6 +67,7 @@ export type FormValues = Record<string, FieldValue>;
 /** Systémová pole mimo `fields` — prefix `gz_`, aby nekolidovala s názvy polí z adminu (ty s `gz_` se zahazují). */
 export const EVENT_KEY = 'gz_event'; // pole slugů — akcí na přihlášku může být víc
 export const CONSENT_KEY = 'gz_consent';
+export const NEWSLETTER_KEY = 'gz_newsletter';
 /** Honeypot: lidé ho nevidí, boti ho vyplní. */
 export const HONEYPOT_KEY = 'gz_website';
 
@@ -202,6 +205,8 @@ export function buildFormSchema(form: FormDefinition, eventSlugs: string[]) {
   if (consent) {
     shape[CONSENT_KEY] = z.boolean().refine((v) => !consent.required || v, consent.errorMessage || FORM_MESSAGES.consent);
   }
+  // vždy nepovinné, i kdyby v adminu bylo „Povinné“: souhlas s marketingem nesmí být podmínkou přihlášky
+  if (form.newsletterConsent) shape[NEWSLETTER_KEY] = z.boolean();
   return z.object(shape);
 }
 
@@ -219,7 +224,7 @@ const emptyValue = (field: FormField): FieldValue => {
 };
 
 export function defaultValues(form: FormDefinition, events: string[] = []): FormValues {
-  const values: FormValues = { [EVENT_KEY]: events, [CONSENT_KEY]: false, [HONEYPOT_KEY]: '' };
+  const values: FormValues = { [EVENT_KEY]: events, [CONSENT_KEY]: false, [NEWSLETTER_KEY]: false, [HONEYPOT_KEY]: '' };
   for (const field of form.fields) values[field.name] = emptyValue(field);
   return values;
 }
@@ -242,7 +247,11 @@ export function valuesFromFormData(form: FormDefinition, data: FormData): Record
     return typeof v === 'string' ? v : '';
   };
   const strings = (key: string) => data.getAll(key).filter((v): v is string => typeof v === 'string');
-  const values: Record<string, unknown> = { [EVENT_KEY]: [...new Set(strings(EVENT_KEY))], [CONSENT_KEY]: text(CONSENT_KEY) === 'true' };
+  const values: Record<string, unknown> = {
+    [EVENT_KEY]: [...new Set(strings(EVENT_KEY))],
+    [CONSENT_KEY]: text(CONSENT_KEY) === 'true',
+    [NEWSLETTER_KEY]: text(NEWSLETTER_KEY) === 'true',
+  };
   for (const field of form.fields) {
     switch (field.__component) {
       case 'form.checkbox':
